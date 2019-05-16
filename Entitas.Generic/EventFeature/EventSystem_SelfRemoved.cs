@@ -6,7 +6,7 @@ namespace Entitas.Generic
 public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
 		where TComp : class, IComponent, TScope
-		where TCompListen : CompListen_SelfRemoved<TScope, TComp>, IComponent, TScope
+		where TCompListen : Event_OnSelfRemoved<TScope, TComp>, IComponent, TScope
 {
 	public					EventSystem_SelfRemoved			( Contexts contexts ) : base( contexts.Get<TScope>())
 	{
