@@ -116,4 +116,4 @@ A: `Cache<T>.I`creates and reuses static copy of component for passing values to
 
 **Q: I have better implementation of some interface/feature
 
-A: Improvements are great, please write your suggestion in Issues section
+A: Improvements are great! Please write your suggestion in Issues section
