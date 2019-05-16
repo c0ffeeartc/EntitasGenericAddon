@@ -19,8 +19,11 @@ Make Entitas extensible by separate dll
   - Can be used together with regular Entitas components
   - Manual `EntityIndex` registration
 
-## Examples
-Usage
+## Installation
+Copy `Entitas.Generic` sources into same assembly as `Generated` Contexts class.
+
+## Usage
+
 ```csharp
 public void Example()
 {
