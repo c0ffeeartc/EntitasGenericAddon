@@ -20,7 +20,7 @@ Make Entitas extensible by separate dll
   - Manual `EntityIndex` registration
 
 ## Installation
-Copy `Entitas.Generic` sources into same assembly as `Generated` Contexts class.
+Copy `Entitas.Generic` sources into same assembly as generated `Contexts` class
 
 ## Usage
 
