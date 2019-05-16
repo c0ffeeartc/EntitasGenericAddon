@@ -13,7 +13,7 @@ Make Entitas extensible by separate dll
       - `ICompFlag` - gives access to `Flag<T>`, `Is<T>`
 
   - Generic Events Feature
-      - `CompListen_*<TScope, TComp>` - abstract listener classes
+      - `Event_*<TScope, TComp>` - abstract listener classes
       - `EventSystem_*<TScope, TComp, TCompListen>` - event system classes
  
   - Can be used together with regular Entitas components
@@ -40,7 +40,7 @@ public void Example()
     entity.Is<Moving>( );
     entity.Flag<Moving>( false );
 
-    context.Flag<GameActive>( true );  // provides unique component interfaces
+    game.Flag<GameActive>( true );  // provides unique component interfaces
 }
 ```
 
