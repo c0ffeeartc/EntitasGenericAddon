@@ -29,7 +29,12 @@ public sealed class EventSystem_Self<TScope, TComp, TCompListen> : Entitas.React
 		{
 			var ent					= entities[i];
 			var comp				= ent.Get<TComp>(  );
-			ent.Get<TCompListen>(  ).OnSelf.Invoke( _contexts, ent, comp );
+			var compListen			= ent.Get<TCompListen>(  );
+
+			if ( compListen.OnSelf != null )
+			{
+				compListen.OnSelf.Invoke( _contexts, ent, comp );
+			}
 		}
 	}
 }

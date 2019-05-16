@@ -28,6 +28,18 @@ namespace Entitas.Generic
 			component.OnAny		+= action;
 		}
 
+		public				void					Remove_OnAny<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
+			where TCompListen
+				: Event_OnAny<TScope, TComp>
+				, TScope
+				, IComponent
+				, new()
+		{
+			var index				= Lookup<TScope, TCompListen>.Id;
+			var component			= Get<TCompListen>();
+			component.OnAny			-= action;
+		}
+
 		public				void					Remove_OnAny<TComp, TCompListen>(  )
 			where TCompListen
 				: Event_OnAny<TScope, TComp>
@@ -61,6 +73,18 @@ namespace Entitas.Generic
 			component.OnAnyRemoved	+= action;
 		}
 
+		public				void					Remove_OnAnyRemoved<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
+			where TCompListen
+				: Event_OnAnyRemoved<TScope, TComp>
+				, TScope
+				, IComponent
+				, new()
+		{
+			var index				= Lookup<TScope, TCompListen>.Id;
+			var component			= Get<TCompListen>();
+			component.OnAnyRemoved	-= action;
+		}
+
 		public				void					Remove_OnAnyRemoved<TComp, TCompListen>(  )
 			where TCompListen : Event_OnAnyRemoved<TScope, TComp>
 		{
@@ -90,6 +114,18 @@ namespace Entitas.Generic
 			}
 
 			component.OnSelf		+= action;
+		}
+
+		public				void					Remove_OnSelf<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
+			where TCompListen
+				: Event_OnSelf<TScope, TComp>
+				, TScope
+				, IComponent
+				, new()
+		{
+			var index				= Lookup<TScope, TCompListen>.Id;
+			var component			= (TCompListen)GetComponent(index);
+			component.OnSelf		-= action;
 		}
 
 		public				void					Remove_OnSelf<TComp, TCompListen>(  )
@@ -124,6 +160,18 @@ namespace Entitas.Generic
 			}
 
 			component.OnSelfRemoved	+= action;
+		}
+
+		public				void					Remove_OnSelfRemoved<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
+			where TCompListen
+				: Event_OnSelfRemoved<TScope, TComp>
+				, TScope
+				, IComponent
+				, new()
+		{
+			var index				= Lookup<TScope, TCompListen>.Id;
+			var component			= (TCompListen)GetComponent(index);
+			component.OnSelfRemoved	-= action;
 		}
 
 		public				void					Remove_OnSelfRemoved<TComp, TCompListen>(  )

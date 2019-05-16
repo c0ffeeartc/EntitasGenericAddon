@@ -29,7 +29,12 @@ public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : Reacti
 		for (var i = 0; i < entities.Count; i++)
 		{
 			var ent					= entities[i];
-			ent.Get<TCompListen>(  ).OnSelfRemoved.Invoke( _contexts, ent, null );
+			var compListen			= ent.Get<TCompListen>(  );
+
+			if ( compListen.OnSelfRemoved != null )
+			{
+				compListen.OnSelfRemoved.Invoke( _contexts, ent, null );
+			}
 		}
 	}
 }

@@ -34,7 +34,11 @@ public sealed class EventSystem_AnyRemoved<TScope,TComp,TCompListen> : ReactiveS
 			for (var j = 0; j < listenerEnts.Count; j++)
 			{
 				var listenerEntity	= listenerEnts[j];
-				listenerEntity.Get<TCompListen>(  ).OnAnyRemoved.Invoke( _contexts, e, null );
+				var listenerComp	= listenerEntity.Get<TCompListen>(  );
+				if ( listenerComp.OnAnyRemoved != null )
+				{
+					listenerComp.OnAnyRemoved.Invoke( _contexts, e, null );
+				}
 			}
 		}
 	}
