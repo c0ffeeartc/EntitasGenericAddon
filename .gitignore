@@ -1,0 +1,8 @@
+*.orig
+.DS_Store
+
+.idea/
+bin/
+obj/
+*.csproj.DotSettings
+packages/*
