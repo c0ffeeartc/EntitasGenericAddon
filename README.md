@@ -46,6 +46,7 @@ public void Example()
     entity.Flag<Moving>( false );
 
     game.Flag<GameActive>( true );  // provides unique component interfaces
+    var gameActiveEntity = game.GetEntity<GameActive>( );
 }
 ```
 
@@ -78,7 +79,32 @@ FlagComponent
 public sealed class FlagA : IComponent, ICompFlag, Game { }
 ```
 
+Events
+```csharp
+// Step 1. Provide listener components
+public sealed class FlagA_OnAny : Event_OnAny<Game, FlagA>, Game { }
+public sealed class B_OnSelfRemoved : Event_OnSelfRemoved<Game, B>, Game { }
+
+    
+// Step 2. Add event system per event listener component to Systems
+    systems.Add( new EventSystem_SelfRemoved<Game, B, B_OnSelfRemoved>(  ) );
+    systems.Add( new EventSystem_Any<Game, FlagA, FlagA_OnAny>(  ) );
+
+// Step 3. Add listener components to entity
+public void AddListenersToEntity()
+{
+    var contexts = Contexts.sharedInstance;
+    var entity = contexts.Get<Game>.CreateEntity();
+    entity.Add_OnSelfRemoved<B, B_OnSelfRemoved>( ( contexts_, ent, comp) => {} );
+}
+
+```
+
 ## FAQ
 **Q: What `Cache<T>.I` does?**
 
-`Cache<T>.I`creates and reuses static copy of component for passing values to Entitas component through manually created `Component.Set` method. `I` is shortened `Instance`. Check [CacheT.cs](./Entitas.Generic/Lookup/CacheT.cs) for implementation.
+A: `Cache<T>.I`creates and reuses static copy of component for passing values to Entitas component through manually created `Component.Set` method. `I` is shortened `Instance`. Check [CacheT.cs](./Entitas.Generic/Lookup/CacheT.cs) for implementation.
+
+**Q: I have better implementation of some interface/feature
+
+A: Improvements are great, please write your suggestion in Issues section
