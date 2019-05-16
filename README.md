@@ -35,7 +35,7 @@ public void Example()
 
     var entity = game.CreateEntity( );
     entity.Add( Cache<Position>.I.Set(3f, 10f) );
-    entity.Replace( Cache<Position>.I.Set( 20f, 1f );
+    entity.Replace( Cache<Position>.I.Set( 20f, 1f ) );
     entity.Has<Position>( );
     entity.Remove<Position>( );
 
