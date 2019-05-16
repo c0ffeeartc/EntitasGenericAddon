@@ -86,7 +86,7 @@ public sealed class FlagA_OnAny : Event_OnAny<Game, FlagA>, Game { }
 public sealed class B_OnSelfRemoved : Event_OnSelfRemoved<Game, B>, Game { }
 
     
-// Step 2. Add event system per event listener component to Systems
+// Step 2. Add event system per event listener component to Systems. This step could be automated in future
     systems.Add( new EventSystem_SelfRemoved<Game, B, B_OnSelfRemoved>(  ) );
     systems.Add( new EventSystem_Any<Game, FlagA, FlagA_OnAny>(  ) );
 
