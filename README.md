@@ -6,7 +6,8 @@ Make Entitas extensible by separate dll
 
 ## Main Concepts
   - Code Generator is optional
-  - interfaces serve as markers for type inference
+  - Type inference allows only valid components and gives access only to needed methods
+  - Interfaces serve as markers for type inference
       - `IScope` - base interface for context scope
       - `IComponent` - allows class to be managed by **Entitas**, gives access to `Get<T>` extension methods
       - `ICompData` - gives access to `Add`, `Remove`, `Replace`, `Has` requires `ICopyFrom<TSelf>`
