@@ -114,6 +114,6 @@ private void FlagA_OnAnyAdded( Contexts contexts_, Entity<SGame> ent_, FlagA com
 
 A: `Cache<T>.I`creates and reuses static copy of component for passing values to Entitas component through manually created `Component.Set` method. `I` is shortened `Instance`. Check [CacheT.cs](./Entitas.Generic/Lookup/CacheT.cs) for implementation.
 
-**Q: I have better implementation of some interface/feature
+**Q: I have better implementation of some interface/feature**
 
 A: Improvements are great! Please write your suggestion in Issues section
