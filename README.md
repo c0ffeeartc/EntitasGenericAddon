@@ -76,3 +76,8 @@ FlagComponent
 ```csharp
 public sealed class FlagA : IComponent, ICompFlag, Game { }
 ```
+
+## FAQ
+**Q: What `Cache<T>.I` does?**
+
+`Cache<T>.I`creates static copy of component, which is used to pass values to Entitas component, through manually created `Component.Set` method. Check [CacheT.cs](./Entitas.Generic/Lookup/CacheT.cs) for implementation
