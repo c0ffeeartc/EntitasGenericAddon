@@ -94,8 +94,17 @@ public sealed class B_OnSelfRemoved : Event_OnSelfRemoved<Game, B>, Game { }
 public void AddListenersToEntity()
 {
     var contexts = Contexts.sharedInstance;
-    var entity = contexts.Get<Game>.CreateEntity();
-    entity.Add_OnSelfRemoved<B, B_OnSelfRemoved>( ( contexts_, ent, comp) => {} );
+    var entity = contexts.Get<Game>( ).CreateEntity( );
+    entity.Add_OnSelfRemoved<B, B_OnSelfRemoved>( ( contexts_, ent, comp) => { } );
+
+    entity.Add_OnAny<FlagA, FlagA_OnAny>( FlagA_OnAnyAdded ); // subscribe
+    entity.Remove_OnAny<FlagA, FlagA_OnAny>( FlagA_OnAnyAdded ); // unsubscribe
+    entity.Remove_OnAny<FlagA, FlagA_OnAny>(  ); // removes listener component
+}
+
+private void FlagA_OnAnyAdded( Contexts contexts_, Entity<SGame> ent_, FlagA comp_ )
+{
+    // some code
 }
 
 ```
