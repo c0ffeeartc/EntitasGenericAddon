@@ -11,6 +11,7 @@ Make Entitas extensible by separate dll
       - `IComponent` - allows class to be managed by **Entitas**, gives access to `Get<T>` extension methods
       - `ICompData` - gives access to `Add`, `Remove`, `Replace`, `Has` requires `ICopyFrom<TSelf>`
       - `ICompFlag` - gives access to `Flag<T>`, `Is<T>`
+      - `IUnique` - provides context `Add`, `Replace` etc methods for unique components or flags
 
   - Generic Events Feature
       - `Event_*<TScope, TComp>` - abstract listener classes
