@@ -17,7 +17,7 @@ public partial class ScopedContext<TScope>
 	}
 
 	public					Boolean					Has<TComp>				(  )
-			where TComp : IComponent, ICompData, IUnique
+			where TComp : IComponent, ICompData, IUnique, TScope
 	{
 		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  ) != null;
 	}
@@ -76,7 +76,7 @@ public partial class ScopedContext<TScope>
 	}
 
 	public					Boolean					Is<TComp>				(  )
-			where TComp : IComponent, ICompFlag, IUnique
+			where TComp : IComponent, ICompFlag, IUnique, TScope
 	{
 		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  ) != null;
 	}

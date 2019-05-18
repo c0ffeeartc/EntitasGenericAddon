@@ -1,6 +1,6 @@
 ﻿namespace Entitas.Generic
 {
-	public class Matcher<TScope, TComponent> where TScope: IScope where TComponent : IComponent
+	public class Matcher<TScope, TComponent> where TScope: IScope where TComponent : IComponent, TScope
 	{
 		private static		IMatcher<Entity<TScope>>_instance;
 		public static		IMatcher<Entity<TScope>>I  // Instance
