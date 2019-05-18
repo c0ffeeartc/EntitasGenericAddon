@@ -79,6 +79,18 @@ FlagComponent
 public sealed class FlagA : IComponent, ICompFlag, Game { }
 ```
 
+Matcher
+```csharp
+Matcher<Entity<Game>>
+    .AllOf(
+        Matcher<Game, Position>.I,
+        Matcher<Game, Velocity>.I )
+    .AnyOf(
+        Matcher<Game, Moving>.I )
+    .NoneOf(
+        Matcher<Game, Destroy>.I ) );
+```
+
 Events
 ```csharp
 // Step 1. Provide listener components
