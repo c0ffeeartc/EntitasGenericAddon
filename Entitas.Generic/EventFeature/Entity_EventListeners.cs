@@ -4,12 +4,9 @@ namespace Entitas.Generic
 {
 	public partial class Entity<TScope>
 	{
-		public				void					Add_OnAny<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnAny<TScope, TComp>
-				, TScope
-				, IComponent
-				, new()
+		public				void					Add_OnAny<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+				where TCompListen : Event_Any<TComp>, TScope, new()
+				where TComp : TScope, IComponent
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 
@@ -28,12 +25,9 @@ namespace Entitas.Generic
 			component.OnAny		+= action;
 		}
 
-		public				void					Remove_OnAny<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnAny<TScope, TComp>
-				, TScope
-				, IComponent
-				, new()
+		public				void					Remove_OnAny<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+				where TCompListen : Event_Any<TComp>, TScope, new()
+				where TComp : TScope, IComponent
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			var component			= Get<TCompListen>();
@@ -41,20 +35,16 @@ namespace Entitas.Generic
 		}
 
 		public				void					Remove_OnAny<TComp, TCompListen>(  )
-			where TCompListen
-				: Event_OnAny<TScope, TComp>
-				, TScope
+				where TCompListen : Event_Any<TComp>, TScope
+				where TComp : TScope, IComponent
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			RemoveComponent( index );
 		}
 
-		public				void					Add_OnAnyRemoved<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnAnyRemoved<TScope, TComp>
-				, IComponent
-				, TScope
-				, new()
+		public				void					Add_OnAnyRemoved<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+				where TCompListen : Event_AnyRemoved<TComp>, TScope, new()
+				where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 
@@ -73,12 +63,9 @@ namespace Entitas.Generic
 			component.OnAnyRemoved	+= action;
 		}
 
-		public				void					Remove_OnAnyRemoved<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnAnyRemoved<TScope, TComp>
-				, TScope
-				, IComponent
-				, new()
+		public				void					Remove_OnAnyRemoved<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+				where TCompListen : Event_AnyRemoved<TComp>, TScope
+				where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			var component			= Get<TCompListen>();
@@ -86,18 +73,16 @@ namespace Entitas.Generic
 		}
 
 		public				void					Remove_OnAnyRemoved<TComp, TCompListen>(  )
-			where TCompListen : Event_OnAnyRemoved<TScope, TComp>
+				where TCompListen : Event_AnyRemoved<TComp>, TScope
+				where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			RemoveComponent( index );
 		}
 
-		public				void					Add_OnSelf<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnSelf<TScope, TComp>
-				, TScope
-				, IComponent
-				, new()
+		public				void					Add_OnSelf<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+				where TCompListen : Event_Self<TComp>, TScope, new()
+				where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 
@@ -116,12 +101,9 @@ namespace Entitas.Generic
 			component.OnSelf		+= action;
 		}
 
-		public				void					Remove_OnSelf<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnSelf<TScope, TComp>
-				, TScope
-				, IComponent
-				, new()
+		public				void					Remove_OnSelf<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+			where TCompListen: Event_Self<TComp>, TScope, new()
+			where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			var component			= (TCompListen)GetComponent(index);
@@ -129,21 +111,16 @@ namespace Entitas.Generic
 		}
 
 		public				void					Remove_OnSelf<TComp, TCompListen>(  )
-			where TCompListen
-				: Event_OnSelf<TScope, TComp>
-				, TScope
-				, IComponent
+			where TCompListen: Event_Self<TComp>, TScope, IComponent
+			where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			RemoveComponent( index );
 		}
 
-		public				void					Add_OnSelfRemoved<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnSelfRemoved<TScope, TComp>
-				, TScope
-				, IComponent
-				, new()
+		public				void					Add_OnSelfRemoved<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+			where TCompListen : Event_SelfRemoved<TComp>, TScope, new()
+			where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 
@@ -162,12 +139,9 @@ namespace Entitas.Generic
 			component.OnSelfRemoved	+= action;
 		}
 
-		public				void					Remove_OnSelfRemoved<TComp, TCompListen>( Action<Contexts, Entity<TScope>, TComp> action )
-			where TCompListen
-				: Event_OnSelfRemoved<TScope, TComp>
-				, TScope
-				, IComponent
-				, new()
+		public				void					Remove_OnSelfRemoved<TComp, TCompListen>( Action<Contexts, IEntity, TComp> action )
+			where TCompListen : Event_SelfRemoved<TComp>, TScope, new()
+			where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			var component			= (TCompListen)GetComponent(index);
@@ -175,7 +149,8 @@ namespace Entitas.Generic
 		}
 
 		public				void					Remove_OnSelfRemoved<TComp, TCompListen>(  )
-			where TCompListen : Event_OnSelfRemoved<TScope, TComp>
+			where TCompListen : Event_SelfRemoved<TComp>, TScope
+			where TComp : IComponent, TScope
 		{
 			var index				= Lookup<TScope, TCompListen>.Id;
 			RemoveComponent( index );
