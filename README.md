@@ -94,24 +94,24 @@ Matcher<Entity<Game>>
 Events
 ```csharp
 // Step 1. Provide listener components
-public sealed class FlagA_OnAny : Event_OnAny<FlagA>, Game { }
-public sealed class B_OnSelfRemoved : Event_OnSelfRemoved<B>, Game, Settings { }
+public sealed class FlagA_Any : Event_Any<FlagA>, Game { }
+public sealed class B_SelfRemoved : Event_SelfRemoved<B>, Game, Settings { }
 
     
-// Step 2. Add event system per event listener component to Systems. This step could be automated in future
-    systems.Add( new EventSystem_SelfRemoved<Game, B, B_OnSelfRemoved>(  ) );
-    systems.Add( new EventSystem_Any<Game, FlagA, FlagA_OnAny>(  ) );
+// Step 2. Add event system per scoped components to Systems. This step could be automated in future
+    systems.Add( new EventSystem_SelfRemoved<Game, B, B_SelfRemoved>(  ) );
+    systems.Add( new EventSystem_Any<Game, FlagA, FlagA_Any>(  ) );
 
 // Step 3. Add listener components to entity
 public void AddListenersToEntity()
 {
     var contexts = Contexts.sharedInstance;
     var entity = contexts.Get<Game>( ).CreateEntity( );
-    entity.Add_OnSelfRemoved<B, B_OnSelfRemoved>( ( contexts_, ent, comp) => { } );
+    entity.Add_OnSelfRemoved<B, B_SelfRemoved>( ( contexts_, ent, comp) => { } );
 
-    entity.Add_OnAny<FlagA, FlagA_OnAny>( OnAnyFlagA ); // subscribe
-    entity.Remove_OnAny<FlagA, FlagA_OnAny>( OnAnyFlagA ); // unsubscribe
-    entity.Remove_OnAny<FlagA, FlagA_OnAny>(  ); // removes listener component
+    entity.Add_OnAny<FlagA, FlagA_Any>( OnAnyFlagA ); // subscribe
+    entity.Remove_OnAny<FlagA, FlagA_Any>( OnAnyFlagA ); // unsubscribe
+    entity.Remove_OnAny<FlagA, FlagA_Any>(  ); // removes listener component
 }
 
 private void OnAnyFlagA( Contexts contexts, IEntity entity, FlagA component )
