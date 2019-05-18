@@ -94,8 +94,8 @@ Matcher<Entity<Game>>
 Events
 ```csharp
 // Step 1. Provide listener components
-public sealed class FlagA_OnAny : Event_OnAny<Game, FlagA>, Game { }
-public sealed class B_OnSelfRemoved : Event_OnSelfRemoved<Game, B>, Game { }
+public sealed class FlagA_OnAny : Event_OnAny<FlagA>, Game { }
+public sealed class B_OnSelfRemoved : Event_OnSelfRemoved<B>, Game, Settings { }
 
     
 // Step 2. Add event system per event listener component to Systems. This step could be automated in future
@@ -109,13 +109,14 @@ public void AddListenersToEntity()
     var entity = contexts.Get<Game>( ).CreateEntity( );
     entity.Add_OnSelfRemoved<B, B_OnSelfRemoved>( ( contexts_, ent, comp) => { } );
 
-    entity.Add_OnAny<FlagA, FlagA_OnAny>( FlagA_OnAnyAdded ); // subscribe
-    entity.Remove_OnAny<FlagA, FlagA_OnAny>( FlagA_OnAnyAdded ); // unsubscribe
+    entity.Add_OnAny<FlagA, FlagA_OnAny>( OnAnyFlagA ); // subscribe
+    entity.Remove_OnAny<FlagA, FlagA_OnAny>( OnAnyFlagA ); // unsubscribe
     entity.Remove_OnAny<FlagA, FlagA_OnAny>(  ); // removes listener component
 }
 
-private void FlagA_OnAnyAdded( Contexts contexts_, Entity<SGame> ent_, FlagA comp_ )
+private void OnAnyFlagA( Contexts contexts, IEntity entity, FlagA component )
 {
+    var ent = (Entity<Game>)entity;
     // some code
 }
 
