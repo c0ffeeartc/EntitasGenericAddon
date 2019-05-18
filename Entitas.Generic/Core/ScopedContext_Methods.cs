@@ -7,7 +7,7 @@ public partial class ScopedContext<TScope>
 	public					Entity<TScope>			GetEntity<TComp>		(  )
 			where TComp : IComponent, IUnique, TScope
 	{
-		return GetGroup( Matcher<TScope, TComp>.Instance ).GetSingleEntity(  );
+		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  );
 	}
 
 	public					TComp					Get<TComp>				(  )
@@ -19,7 +19,7 @@ public partial class ScopedContext<TScope>
 	public					Boolean					Has<TComp>				(  )
 			where TComp : IComponent, ICompData, IUnique
 	{
-		return GetGroup( Matcher<TScope, TComp>.Instance ).GetSingleEntity(  ) != null;
+		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  ) != null;
 	}
 
 	public					Entity<TScope>			Set<TComp>				( TComp component )
@@ -59,7 +59,7 @@ public partial class ScopedContext<TScope>
 	public					void					Flag<TComp>				( Boolean value )
 			where TComp : TScope, IComponent, ICompFlag, IUnique, new(  )
 	{
-		var ent = GetGroup( Matcher<TScope, TComp>.Instance ).GetSingleEntity(  );
+		var ent = GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  );
 		if ( value == ( ent != null ) )
 		{
 			return;
@@ -78,7 +78,7 @@ public partial class ScopedContext<TScope>
 	public					Boolean					Is<TComp>				(  )
 			where TComp : IComponent, ICompFlag, IUnique
 	{
-		return GetGroup( Matcher<TScope, TComp>.Instance ).GetSingleEntity(  ) != null;
+		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  ) != null;
 	}
 }
 }

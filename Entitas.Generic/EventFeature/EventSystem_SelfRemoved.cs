@@ -17,7 +17,7 @@ public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : Reacti
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) {
 		return context.CreateCollector(
-			Matcher<TScope,TComp>.Instance.Removed(  ) ); }
+			Matcher<TScope,TComp>.I.Removed(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
 		return ent.HasIComponent<TCompListen>(  )

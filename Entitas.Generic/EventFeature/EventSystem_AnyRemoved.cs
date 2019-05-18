@@ -11,7 +11,7 @@ public sealed class EventSystem_AnyRemoved<TScope,TComp,TCompListen> : ReactiveS
 	public					EventSystem_AnyRemoved	( Contexts contexts ) : base(contexts.Get<TScope>())
 	{
 		_contexts					= contexts;
-		_groupListen				= contexts.Get<TScope>(  ).GetGroup(Matcher<TScope, TCompListen>.Instance);
+		_groupListen				= contexts.Get<TScope>(  ).GetGroup(Matcher<TScope, TCompListen>.I);
 		_buff						= new List<Entity<TScope>>(  );
 	}
 
@@ -20,7 +20,7 @@ public sealed class EventSystem_AnyRemoved<TScope,TComp,TCompListen> : ReactiveS
 	readonly				List<Entity<TScope>>	_buff;
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) { return context.CreateCollector(
-		Matcher<TScope,TComp>.Instance.Removed(  ) ); }
+		Matcher<TScope,TComp>.I.Removed(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
 		return !ent.HasIComponent<TComp>(); }
