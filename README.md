@@ -134,7 +134,7 @@ private void OnEnable()
 
     // writing types explicitly is required when implicit inference is impossible
     entity.Add_OnAny<Game, FlagA, FlagA_Any>( this );
-    entity.Remove<FlagA_Any>(  ); // removes listener component
+    entity.Remove_OnAny<Game, FlagA, FlagA_Any>(  ); // removes listener component
 }
 }
 
