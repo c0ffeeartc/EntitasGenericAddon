@@ -102,13 +102,27 @@ public sealed class B_SelfRemoved : Event_SelfRemoved<B>, Game, Settings { }
     systems.Add( new EventSystem_SelfRemoved<Game, B, B_SelfRemoved>(  ) );
     systems.Add( new EventSystem_Any<Game, FlagA, FlagA_Any>(  ) );
 
+
 // Step 3. Inherit and implement event interface
 public class Some : MonoBehaviour
     , IOnAny<FlagA, FlagA_Any>
     , IOnSelfRemoved<B, B_SelfRemoved>
 {
-  
-public void AddListenersToEntity()
+private void OnAny( FlagA component, IEntity entity, Contexts contexts )
+{
+    var ent = (Entity<Game>)entity;
+    // some code
+}
+
+private void OnSelfRemoved( B component, IEntity entity, Contexts contexts )
+{
+    var ent = (Entity<Game>)entity;
+    // some code
+}
+
+
+// Step 4. Add listeners to entity
+private void OnEnable()
 {
     var contexts = Contexts.sharedInstance;
     var entity = contexts.Get<Game>( ).CreateEntity( );
@@ -121,18 +135,6 @@ public void AddListenersToEntity()
     // writing types explicitly is required when implicit inference is impossible
     entity.Add_OnAny<Game, FlagA, FlagA_Any>( this );
     entity.Remove<FlagA_Any>(  ); // removes listener component
-}
-
-private void OnAny( FlagA component, IEntity entity, Contexts contexts )
-{
-    var ent = (Entity<Game>)entity;
-    // some code
-}
-
-private void OnSelfRemoved( B component, IEntity entity, Contexts contexts )
-{
-    var ent = (Entity<Game>)entity;
-    // some code
 }
 }
 
