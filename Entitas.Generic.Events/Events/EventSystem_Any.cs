@@ -6,19 +6,21 @@ namespace Entitas.Generic
 public sealed class EventSystem_Any<TScope,TComp,TCompListen> : Entitas.ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
 		where TComp : IComponent, TScope
-		where TCompListen : Event_Any<TComp>, IComponent, TScope
+		where TCompListen : Event_Any<TComp, TCompListen>, IComponent, TScope
 {
 	public					EventSystem_Any			( Contexts contexts ) : base(contexts.Get<TScope>())
 	{
 		_contexts					= contexts;
 		var context					= contexts.Get<TScope>(  );
 		_listeners					= context.GetGroup( Matcher<TScope, TCompListen>.I );
-		_buff						= new List<Entity<TScope>>(  );
+		_listenersBuffer			= new List<Entity<TScope>>(  );
+		_interfaceBuffer			= new List<IOnAny<TComp, TCompListen>>(  );
 	}
 
 	readonly				Contexts				_contexts;
 	readonly				IGroup<Entity<TScope>>	_listeners;
-	readonly				List<Entity<TScope>>	_buff;
+	readonly				List<Entity<TScope>>	_listenersBuffer;
+	readonly	List<IOnAny<TComp, TCompListen>>	_interfaceBuffer;
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) { return context.CreateCollector(
 		Matcher<TScope,TComp>.I.Added(  ) ); }
@@ -31,15 +33,14 @@ public sealed class EventSystem_Any<TScope,TComp,TCompListen> : Entitas.Reactive
 		for ( var i = 0; i < entities.Count; i++ )
 		{
 			var e					= entities[i];
-			var ents				= _listeners.GetEntities( _buff );
-			var comp				= e.Get<TComp>(  );
-			for ( var j = 0; j < ents.Count; j++ )
+			var component			= e.Get<TComp>(   );
+			foreach ( var listenerEntity in _listeners.GetEntities( _listenersBuffer ) )
 			{
-				var listenerEntity	= ents[j];
-				var listenerComp	= listenerEntity.Get<TCompListen>(  );
-				if ( listenerComp.OnAny != null )
+				_interfaceBuffer.Clear(  );
+				_interfaceBuffer.AddRange( listenerEntity.Get<TCompListen>(   ).Listeners );
+				foreach ( var listener in _interfaceBuffer )
 				{
-					listenerComp.OnAny.Invoke( _contexts, e, comp );
+					listener.OnAny( component, e, _contexts );
 				}
 			}
 		}

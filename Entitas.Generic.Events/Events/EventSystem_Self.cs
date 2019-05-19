@@ -6,12 +6,14 @@ namespace Entitas.Generic
 public sealed class EventSystem_Self<TScope, TComp, TCompListen> : Entitas.ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
 		where TComp : IComponent, TScope
-		where TCompListen : Event_Self<TComp>, IComponent, TScope
+		where TCompListen : Event_Self<TComp, TCompListen>, IComponent, TScope
 {
 	public					EventSystem_Self			( Contexts contexts ) : base((IContext<Entity<TScope>>) contexts.Get<TScope>())
 	{
 		_contexts					= contexts;
 	}
+
+	readonly	List<IOnSelf<TComp, TCompListen>>	_interfaceBuffer		= new List<IOnSelf<TComp, TCompListen>>(  );
 
 	readonly				Contexts				_contexts;
 
@@ -25,15 +27,16 @@ public sealed class EventSystem_Self<TScope, TComp, TCompListen> : Entitas.React
 
 	protected override		void					Execute					( List<Entity<TScope>> entities )
 	{
-		for (var i = 0; i < entities.Count; i++)
+		var entCount				= entities.Count;
+		for ( var i = 0; i < entCount; i++ )
 		{
-			var ent					= entities[i];
-			var comp				= ent.Get<TComp>(  );
-			var compListen			= ent.Get<TCompListen>(  );
-
-			if ( compListen.OnSelf != null )
+			var e					= entities[i];
+			var component			= e.Get<TComp>(   );
+			_interfaceBuffer.Clear(  );
+			_interfaceBuffer.AddRange( e.Get<TCompListen>(   ).Listeners );
+			foreach ( var listener in _interfaceBuffer )
 			{
-				compListen.OnSelf.Invoke( _contexts, ent, comp );
+				listener.OnSelf( component, e, _contexts );
 			}
 		}
 	}

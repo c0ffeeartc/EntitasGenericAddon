@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entitas.Generic", "Entitas.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{92A628D4-916C-4BCF-A816-55F3B4691F26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entitas.Generic.Events", "Entitas.Generic.Events\Entitas.Generic.Events.csproj", "{499C2104-A8AF-4AA9-8024-0A3961D44460}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{92A628D4-916C-4BCF-A816-55F3B4691F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92A628D4-916C-4BCF-A816-55F3B4691F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92A628D4-916C-4BCF-A816-55F3B4691F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{499C2104-A8AF-4AA9-8024-0A3961D44460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{499C2104-A8AF-4AA9-8024-0A3961D44460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{499C2104-A8AF-4AA9-8024-0A3961D44460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{499C2104-A8AF-4AA9-8024-0A3961D44460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

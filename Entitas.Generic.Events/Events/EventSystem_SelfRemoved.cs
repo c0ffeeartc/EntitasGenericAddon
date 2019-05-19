@@ -6,7 +6,7 @@ namespace Entitas.Generic
 public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
 		where TComp : class, IComponent, TScope
-		where TCompListen : Event_SelfRemoved<TComp>, IComponent, TScope
+		where TCompListen : Event_SelfRemoved<TComp, TCompListen>, IComponent, TScope
 {
 	public					EventSystem_SelfRemoved			( Contexts contexts ) : base( contexts.Get<TScope>())
 	{
@@ -14,6 +14,8 @@ public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : Reacti
 	}
 
 	readonly				Contexts				_contexts;
+	readonly	List<IOnSelfRemoved<TComp, TCompListen>>_interfaceBuffer = new List<IOnSelfRemoved<TComp, TCompListen>>(  );
+
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) {
 		return context.CreateCollector(
@@ -26,14 +28,15 @@ public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : Reacti
 
 	protected override		void					Execute					( List<Entity<TScope>> entities )
 	{
-		for (var i = 0; i < entities.Count; i++)
+		var entCount				= entities.Count;
+		for ( var i = 0; i < entCount; i++ )
 		{
-			var ent					= entities[i];
-			var compListen			= ent.Get<TCompListen>(  );
-
-			if ( compListen.OnSelfRemoved != null )
+			var e					= entities[i];
+			_interfaceBuffer.Clear(  );
+			_interfaceBuffer.AddRange( e.Get<TCompListen>(   ).Listeners );
+			foreach ( var listener in _interfaceBuffer )
 			{
-				compListen.OnSelfRemoved.Invoke( _contexts, ent, null );
+				listener.OnSelfRemoved( null, e, _contexts );
 			}
 		}
 	}

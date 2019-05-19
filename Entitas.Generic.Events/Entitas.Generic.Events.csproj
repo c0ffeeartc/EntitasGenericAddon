@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AC9D294B-F10A-47F2-A557-925D497BDADC}</ProjectGuid>
+    <ProjectGuid>{499C2104-A8AF-4AA9-8024-0A3961D44460}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Entitas.Generic</RootNamespace>
-    <AssemblyName>Entitas.Generic</AssemblyName>
+    <RootNamespace>EventsAction</RootNamespace>
+    <AssemblyName>Entitas.Generic.Events</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,27 +35,25 @@
     <Reference Include="Entitas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libs\Entitas.dll</HintPath>
     </Reference>
-    <Reference Include="Entitas.CodeGeneration.Attributes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libs\Entitas.CodeGeneration.Attributes.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AERCFactories.cs" />
-    <Compile Include="Core\Contexts.cs" />
-    <Compile Include="Core\EntityIndexExtensions.cs" />
-    <Compile Include="Core\Entity_Methods.cs" />
-    <Compile Include="Core\Interfaces.cs" />
-    <Compile Include="Core\Matcher.cs" />
-    <Compile Include="Core\ScopedContext.cs" />
-    <Compile Include="Core\ScopedContext_Methods.cs" />
-    <Compile Include="Lookup\CacheT.cs" />
-    <Compile Include="Lookup\Lookup.cs" />
-    <Compile Include="Lookup\Lookup_ComponentManager.cs" />
-    <Compile Include="Lookup\Lookup_ScopeManager.cs" />
+    <Compile Include="Events\CompListen.cs" />
+    <Compile Include="Events\Entity_EventListeners.cs" />
+    <Compile Include="Events\EventSystem_Any.cs" />
+    <Compile Include="Events\EventSystem_AnyRemoved.cs" />
+    <Compile Include="Events\EventSystem_Self.cs" />
+    <Compile Include="Events\EventSystem_SelfRemoved.cs" />
+    <Compile Include="Events\Interfaces.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entitas.Generic\Entitas.Generic.csproj">
+      <Project>{ac9d294b-f10a-47f2-a557-925d497bdadc}</Project>
+      <Name>Entitas.Generic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
