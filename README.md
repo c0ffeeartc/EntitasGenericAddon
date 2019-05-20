@@ -149,12 +149,11 @@ public static class EntIndex
 }
 
 
-// Step 2. Add EntityIndex during initialization stage (Improvements are welcome)
-var context = contexts.Get<Game>();
-context.AddEntityIndex( new EntityIndex<Entity<Game>, Int32>(
-    EntIndex.B
+// Step 2. Add EntityIndex during initialization stage
+var context = contexts.Get<Game>( );
+context.AddEntityIndex( EntIndex.B
     , context.GetGroup( Matcher<Game, B>.I )
-    , ( e, c ) => ( (B)c ).Value ) );
+    , ( e, c ) => ( (B)c ).Value );
 
 
 // Step 3. Get entities at runtime
