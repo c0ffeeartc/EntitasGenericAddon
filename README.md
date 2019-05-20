@@ -140,6 +140,26 @@ private void OnEnable()
 
 ```
 
+EntityIndex
+```csharp
+// Step 1(Optional). Create const string key for accessing entity index
+public static class EntIndex
+{
+    public const string B = "B";
+}
+
+
+// Step 2. Add EntityIndex during initialization stage (Improvements are welcome)
+var context = contexts.Get<Game>();
+context.AddEntityIndex( new EntityIndex<Entity<Game>, Int32>(
+    EntIndex.B
+    , context.GetGroup( Matcher<Game, B>.I )
+    , ( e, c ) => ( (B)c ).Value ) );
+
+
+// Step 3. Get entities at runtime
+var entities = context.GetEntities( EntIndex.B, 23 );
+```
 ## FAQ
 **Q: What `Cache<T>.I` does?**
 
