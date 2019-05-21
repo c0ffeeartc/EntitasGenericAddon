@@ -15,7 +15,7 @@ Make Entitas extensible by separate dll
       - `IUnique` - provides context `Add`, `Replace` etc methods for unique components or flags
 
   - Generic Events Feature
-      - `Event_*<TScope, TComp>` - abstract listener classes
+      - `Event_*<TComp>` - abstract listener classes
       - `EventSystem_*<TScope, TComp, TCompListen>` - event system classes
  
   - Can be used together with regular Entitas components
