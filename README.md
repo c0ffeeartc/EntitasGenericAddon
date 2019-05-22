@@ -1,5 +1,5 @@
 # EntitasGenericAddon
-Lightweight addon to Entitas adding generic methods allowing using Entitas without code generator
+Addon to [Entitas](https://github.com/sschmid/Entitas-CSharp) that allows using generic methods instead of code generator
 
 ## Goal
 Make Entitas extensible by separate dll
