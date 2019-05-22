@@ -1,5 +1,5 @@
 # EntitasGenericAddon
-Lightweight wrapper of Entitas functions into generic methods replicating code generator
+Lightweight addon to Entitas adding generic methods allowing using Entitas without code generator
 
 ## Goal
 Make Entitas extensible by separate dll
