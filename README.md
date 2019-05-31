@@ -22,7 +22,12 @@ Make Entitas extensible by separate dll
   - Manual `EntityIndex` registration
 
 ## Installation
-Copy `Entitas.Generic` sources into same assembly as generated `Contexts` class
+There are two ways of using EntitasGenericAddon:
+  - with existing generated Contexts
+    - For now it only adds new generic contexts, generated and generic context instances have different workflows. Improvements are welcome
+    - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into same assembly as generated `Contexts` class
+  - standalone without generator
+    - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into `Assets` folder somewhere
 
 ## Usage
 
@@ -33,6 +38,11 @@ public void Example()
     Lookup_ScopeManager.RegisterAll( );
 
     var contexts = Contexts.sharedInstance;
+
+    // if generator is not used in project
+    // var contexts			= new Contexts(  );
+		// contexts.AddScopedContexts(  );
+
     var game = contexts.Get<Game>( );
 
     var entity = game.CreateEntity( );
