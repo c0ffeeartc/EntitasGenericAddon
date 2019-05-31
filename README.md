@@ -40,8 +40,8 @@ public void Example()
     var contexts = Contexts.sharedInstance;
 
     // if generator is not used in project
-    // var contexts			= new Contexts(  );
-		// contexts.AddScopedContexts(  );
+    // var contexts = new Contexts(  );
+    // contexts.AddScopedContexts(  );
 
     var game = contexts.Get<Game>( );
 
