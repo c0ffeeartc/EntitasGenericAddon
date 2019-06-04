@@ -6,17 +6,19 @@ Make Entitas extensible by separate dll
 
 ## Main Concepts
   - Code Generator is optional
-  - Type inference allows only valid components and gives access only to needed methods
+  - Type inference forces only valid type combinations during development and gives access only to needed methods
   - Interfaces serve as markers for type inference
       - `IScope` - base interface for context scope
+      - `Scope<T>` - context scope of IComponent
       - `IComponent` - allows class to be managed by **Entitas**, gives access to `Get<T>` extension methods
       - `ICompData` - gives access to `Add`, `Remove`, `Replace`, `Has` requires `ICopyFrom<TSelf>`
       - `ICompFlag` - gives access to `Flag<T>`, `Is<T>`
       - `IUnique` - provides context `Add`, `Replace` etc methods for unique components or flags
 
   - Generic Events Feature
-      - `Event_*<TComp>` - abstract listener classes
-      - `EventSystem_*<TScope, TComp, TCompListen>` - event system classes
+      - `IEvent_*<TScope, TComp>` - interface marker for `IComponent` classes
+      - `IOn*<TScope, TComp>` - interface to implement by listener classes
+      - `EventSystem_*<TScope, TComp>` - event system classes
  
   - Can be used together with regular Entitas components
   - Manual `EntityIndex` registration
@@ -67,7 +69,7 @@ public interface Game : IScope { }
 
 Component
 ```csharp
-public sealed class A : IComponent, ICompData, ICopyFrom<A>, Game
+public sealed class A : IComponent, ICompData, ICopyFrom<A>, Scope<Game>
 {
     public int Value;
 
@@ -86,7 +88,7 @@ public sealed class A : IComponent, ICompData, ICopyFrom<A>, Game
 
 FlagComponent
 ```csharp
-public sealed class FlagA : IComponent, ICompFlag, Game { }
+public sealed class FlagA : IComponent, ICompFlag, Scope<Game> { }
 ```
 
 Matcher
@@ -103,30 +105,35 @@ Matcher<Entity<Game>>
 
 Events
 ```csharp
-// Step 1. Provide listener components
-public sealed class FlagA_Any : Event_Any<FlagA>, Game { }
-public sealed class B_SelfRemoved : Event_SelfRemoved<B>, Game, Settings { }
-
-    
-// Step 2. Add event system per scoped components to Systems. This step could be automated in future
-    systems.Add( new EventSystem_SelfRemoved<Game, B, B_SelfRemoved>(  ) );
-    systems.Add( new EventSystem_Any<Game, FlagA, FlagA_Any>(  ) );
-
-
-// Step 3. Inherit and implement event interface
-public class Some : MonoBehaviour
-    , IOnAny<FlagA, FlagA_Any>
-    , IOnSelfRemoved<B, B_SelfRemoved>
+// Step 1. Add event markers to components
+public sealed class FlagA : IComponent, ICompFlag, Scope<Game>
+    , IEvent_Any<Game, FlagA> // <---
+{ }
+public sealed class B : IComponent, ICompData, ICopyFrom<B>, Scope<Game>
+    , IEvent_SelfRemoved<Game, B>  // <---
 {
-private void OnAny( FlagA component, IEntity entity, Contexts contexts )
-{
-    var ent = (Entity<Game>)entity;
     // some code
 }
 
-private void OnSelfRemoved( B component, IEntity entity, Contexts contexts )
+    
+// Step 2. Add event systems to Systems. This step could be automated in future
+    systems.Add( new EventSystem_SelfRemoved<Game, B>(  ) );
+    systems.Add( new EventSystem_Any<Game, FlagA>(  ) );
+
+
+// Step 3. Inherit and implement event interface
+public class Some
+    : MonoBehaviour
+    , IOnAny<Game, FlagA>
+    , IOnSelfRemoved<Game, B>
 {
-    var ent = (Entity<Game>)entity;
+private void OnAny( FlagA component, Entity<Game> entity, Contexts contexts )
+{
+    // some code
+}
+
+private void OnSelfRemoved( B component, Entity<Game> entity, Contexts contexts )
+{
     // some code
 }
 
@@ -143,8 +150,8 @@ private void OnEnable()
     entity.Remove_OnAny( this ); // unsubscribe
 
     // writing types explicitly is required when implicit inference is impossible
-    entity.Add_OnAny<Game, FlagA, FlagA_Any>( this );
-    entity.Remove_OnAny<Game, FlagA, FlagA_Any>(  ); // removes listener component
+    entity.Add_OnAny<Game, FlagA>( this );
+    entity.Remove_OnAny<Game, FlagA>(  ); // removes listener component
 }
 }
 
