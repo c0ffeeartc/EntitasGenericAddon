@@ -22,7 +22,7 @@ namespace Tests
 			it["Set component"]		= ()=>
 			{
 				// given
-				var context			= _contexts.Get<STestA>(  );
+				var context			= _contexts.Get<ScopeA>(  );
 				context.Has<TestCompAUnique>(  ).should_be_false(  );
 
 				// when
@@ -35,7 +35,7 @@ namespace Tests
 			it["Set twice throws"] = ()=>
 			{
 				// given
-				var context			= _contexts.Get<STestA>(  );
+				var context			= _contexts.Get<ScopeA>(  );
 				context.Has<TestCompAUnique>(  ).should_be_false(  );
 
 				// when
@@ -55,7 +55,7 @@ namespace Tests
 			it["Remove component"]	= ()=>
 			{
 				// given
-				var context			= _contexts.Get<STestA>(  );
+				var context			= _contexts.Get<ScopeA>(  );
 				context.Has<TestCompAUnique>(  ).should_be_false(  );
 
 				var entity			= context.Set( new TestCompAUnique(  ) );
@@ -71,7 +71,7 @@ namespace Tests
 			it["Remove inexistent throws"]	= ()=>
 			{
 				// given
-				var context			= _contexts.Get<STestA>(  );
+				var context			= _contexts.Get<ScopeA>(  );
 				context.Has<TestCompAUnique>(  ).should_be_false(  );
 
 				// then
@@ -85,7 +85,7 @@ namespace Tests
 			it["Replace component"] = (  )=>
 			{
 				// given
-				var context			= _contexts.Get<STestA>(  );
+				var context			= _contexts.Get<ScopeA>(  );
 				context.Has<TestCompAUnique>(  ).should_be_false(  );
 
 				context.Set( Cache<TestCompAUnique>.I.Set( 1f ) );
@@ -102,7 +102,7 @@ namespace Tests
 			it["Flag, Is"] = ()=>
 			{
 				// given
-				var context			= _contexts.Get<STestA>(  );
+				var context			= _contexts.Get<ScopeA>(  );
 				context.Is<TestFlagAUnique>(  ).should_be_false(  );
 
 				// when

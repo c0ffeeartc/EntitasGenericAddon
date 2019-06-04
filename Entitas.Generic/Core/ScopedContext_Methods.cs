@@ -5,25 +5,25 @@ namespace Entitas.Generic
 public partial class ScopedContext<TScope>
 {
 	public					Entity<TScope>			GetEntity<TComp>		(  )
-			where TComp : IComponent, IUnique, TScope
+			where TComp : Scope<TScope>, IComponent, IUnique
 	{
 		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  );
 	}
 
 	public					TComp					Get<TComp>				(  )
-			where TComp : TScope, IComponent, ICompData, IUnique
+			where TComp : Scope<TScope>, IComponent, ICompData, IUnique
 	{
 		return GetEntity<TComp>( ).Get<TComp>( );
 	}
 
 	public					Boolean					Has<TComp>				(  )
-			where TComp : IComponent, ICompData, IUnique, TScope
+			where TComp : Scope<TScope>, IComponent, ICompData, IUnique
 	{
 		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  ) != null;
 	}
 
 	public					Entity<TScope>			Set<TComp>				( TComp component )
-			where TComp : TScope, IComponent, ICompData, IUnique, ICopyFrom<TComp>, new(  )
+			where TComp : Scope<TScope>, IComponent, ICompData, IUnique, ICopyFrom<TComp>, new(  )
 	{
 		if ( Has<TComp>(  ) )
 		{
@@ -37,13 +37,13 @@ public partial class ScopedContext<TScope>
 	}
 
 	public					void					Remove<TComp>			(  )
-			where TComp : TScope, IComponent, ICompData, IUnique
+			where TComp : Scope<TScope>, IComponent, ICompData, IUnique
 	{
 		GetEntity<TComp>(  ).Remove<TComp>( );
 	}
 
 	public					void					Replace<TComp>			( TComp component )
-			where TComp : TScope, IComponent, ICompData, IUnique, ICopyFrom<TComp>, new(  )
+			where TComp : Scope<TScope>, IComponent, ICompData, IUnique, ICopyFrom<TComp>, new(  )
 	{
 		var entity					= GetEntity<TComp>(  );
 		if ( entity == null )
@@ -57,7 +57,7 @@ public partial class ScopedContext<TScope>
 	}
 
 	public					void					Flag<TComp>				( Boolean value )
-			where TComp : TScope, IComponent, ICompFlag, IUnique, new(  )
+			where TComp : Scope<TScope>, IComponent, ICompFlag, IUnique, new(  )
 	{
 		var ent = GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  );
 		if ( value == ( ent != null ) )
@@ -76,7 +76,7 @@ public partial class ScopedContext<TScope>
 	}
 
 	public					Boolean					Is<TComp>				(  )
-			where TComp : IComponent, ICompFlag, IUnique, TScope
+			where TComp : Scope<TScope>, IComponent, ICompFlag, IUnique
 	{
 		return GetGroup( Matcher<TScope, TComp>.I ).GetSingleEntity(  ) != null;
 	}

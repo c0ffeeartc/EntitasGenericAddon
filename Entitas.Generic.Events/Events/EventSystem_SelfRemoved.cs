@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace Entitas.Generic
 {
-public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : ReactiveSystem<Entity<TScope>>
+public sealed class EventSystem_SelfRemoved<TScope, TComp> : ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
-		where TComp : class, IComponent, TScope
-		where TCompListen : Event_SelfRemoved<TComp, TCompListen>, IComponent, TScope
+		where TComp : class, IComponent, Scope<TScope>, IEvent_SelfRemoved<TScope,TComp>
 {
 	public					EventSystem_SelfRemoved			( Contexts contexts ) : base( contexts.Get<TScope>())
 	{
@@ -14,7 +13,7 @@ public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : Reacti
 	}
 
 	readonly				Contexts				_contexts;
-	readonly	List<IOnSelfRemoved<TComp, TCompListen>>_interfaceBuffer = new List<IOnSelfRemoved<TComp, TCompListen>>(  );
+	readonly	List<IOnSelfRemoved<TScope,TComp>>	_interfaceBuffer		= new List<IOnSelfRemoved<TScope,TComp>>(  );
 
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) {
@@ -22,9 +21,8 @@ public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : Reacti
 			Matcher<TScope,TComp>.I.Removed(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
-		return ent.HasIComponent<TCompListen>(  )
-			&& !ent.HasIComponent<TComp>(  );
-	}
+		return ent.HasIComponent<Event_SelfRemovedComponent<TScope,TComp>>(  )
+			&& !ent.HasIComponent<TComp>(  ); }
 
 	protected override		void					Execute					( List<Entity<TScope>> entities )
 	{
@@ -33,7 +31,7 @@ public sealed class EventSystem_SelfRemoved<TScope, TComp, TCompListen> : Reacti
 		{
 			var e					= entities[i];
 			_interfaceBuffer.Clear(  );
-			_interfaceBuffer.AddRange( e.Get<TCompListen>(   ).Listeners );
+			_interfaceBuffer.AddRange( e.Get<Event_SelfRemovedComponent<TScope,TComp>>(   ).Listeners );
 			foreach ( var listener in _interfaceBuffer )
 			{
 				listener.OnSelfRemoved( null, e, _contexts );

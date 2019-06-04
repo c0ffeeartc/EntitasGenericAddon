@@ -1,6 +1,6 @@
 ﻿namespace Entitas.Generic
 {
-	public class Matcher<TScope, TComponent> where TScope: IScope where TComponent : IComponent, TScope
+	public class Matcher<TScope, TComponent> where TScope: IScope where TComponent : IComponent, Scope<TScope>
 	{
 		private static		IMatcher<Entity<TScope>>_instance;
 		public static		IMatcher<Entity<TScope>>I  // Instance
@@ -11,7 +11,8 @@
 				{
 					return _instance;
 				}
-				var matcher				= (Matcher<Entity<TScope>>) Matcher<Entity<TScope>>.AllOf(Lookup<TScope, TComponent>.Id);
+				var index				= Lookup<TScope, TComponent>.Id;
+				var matcher				= (Matcher<Entity<TScope>>) Matcher<Entity<TScope>>.AllOf( index );
 				matcher.componentNames	= Lookup_ComponentManager<TScope>.ComponentNamesCache;
 				_instance					= matcher;
 				return _instance;

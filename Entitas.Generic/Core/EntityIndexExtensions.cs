@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace Entitas.Generic
 {
+	public interface IListen<TScope, TComp>
+		where TScope : IScope
+		where TComp : IComponent, IScope
+	{
+	}
 public static class EntityIndexExtensions
 {
 	public static		void					AddEntityIndex<TScope, TKey>			( this Context<Entity<TScope>> context

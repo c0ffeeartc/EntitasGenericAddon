@@ -52,6 +52,9 @@
     <Compile Include="Core\Matcher.cs" />
     <Compile Include="Core\ScopedContext.cs" />
     <Compile Include="Core\ScopedContext_Methods.cs" />
+    <Compile Include="Events\Component_EventInterfaces.cs" />
+    <Compile Include="Events\EventComponents.cs" />
+    <Compile Include="Events\OnEvent_Interfaces.cs" />
     <Compile Include="Lookup\CacheT.cs" />
     <Compile Include="Lookup\Lookup.cs" />
     <Compile Include="Lookup\Lookup_ComponentManager.cs" />

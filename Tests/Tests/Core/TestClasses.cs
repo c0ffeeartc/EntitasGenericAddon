@@ -4,10 +4,10 @@ using Entitas.Generic;
 
 namespace Tests
 {
-	internal interface STestA : IScope {}
-	internal interface STestB : IScope {}
+	internal interface ScopeA : IScope {}
+	internal interface ScopeB : IScope {}
 
-	internal sealed class TestCompA : IComponent, ICompData, ICopyFrom<TestCompA>, STestA
+	internal sealed class TestCompA : IComponent, ICompData, ICopyFrom<TestCompA>, Scope<ScopeA>
 	{
 		public				Single					Value;
 
@@ -23,7 +23,7 @@ namespace Tests
 		}
 	}
 
-	internal sealed class TestCompAUnique : IComponent, ICompData, ICopyFrom<TestCompAUnique>, STestA, IUnique
+	internal sealed class TestCompAUnique : IComponent, ICompData, ICopyFrom<TestCompAUnique>, Scope<ScopeA>, IUnique
 	{
 		public				Single					Value;
 
@@ -39,7 +39,7 @@ namespace Tests
 		}
 	}
 
-	internal sealed class TestCompB : IComponent, ICompData, ICopyFrom<TestCompB>, STestB
+	internal sealed class TestCompB : IComponent, ICompData, ICopyFrom<TestCompB>, ScopeB
 	{
 		public				Single					Value;
 
@@ -55,11 +55,11 @@ namespace Tests
 		}
 	}
 
-	internal sealed class TestFlagA : IComponent, ICompFlag, STestA
+	internal sealed class TestFlagA : IComponent, ICompFlag, Scope<ScopeA>
 	{ }
-	internal sealed class TestFlagB : IComponent, ICompFlag, STestB
+	internal sealed class TestFlagB : IComponent, ICompFlag, Scope<ScopeB>
 	{ }
-	internal sealed class TestFlagAUnique : IComponent, ICompFlag, STestA, IUnique
+	internal sealed class TestFlagAUnique : IComponent, ICompFlag, Scope<ScopeA>, IUnique
 	{ }
 
 }

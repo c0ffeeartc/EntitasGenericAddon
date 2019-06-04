@@ -23,7 +23,7 @@ namespace Tests
 			it["add component"] = ()=>
 			{
 				// given
-				var entity				= _contexts.Get<STestA>(  ).CreateEntity(  );
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Has<TestCompA>(  ).should_be_false(  );
 
 				// when
@@ -36,7 +36,7 @@ namespace Tests
 			it["add twice throws"] = ()=>
 			{
 				// given
-				var entity				= _contexts.Get<STestA>(  ).CreateEntity(  );
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Has<TestCompA>(  ).should_be_false(  );
 
 				// when
@@ -53,7 +53,7 @@ namespace Tests
 			it["remove component"] = ()=>
 			{
 				// given
-				var entity				= _contexts.Get<STestA>(  ).CreateEntity(  );
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Add( new TestCompA(  ) );
 				entity.Has<TestCompA>(  ).should_be_true(  );
 
@@ -67,7 +67,7 @@ namespace Tests
 			it["remove inexistent throws"] = ()=>
 			{
 				// given
-				var entity				= _contexts.Get<STestA>(  ).CreateEntity(  );
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 
 				// when
 				Action act = (  )=>
@@ -82,7 +82,7 @@ namespace Tests
 			it["replace component"] = ()=>
 			{
 				// given
-				var entity				= _contexts.Get<STestA>(  ).CreateEntity(  );
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Add( Cache<TestCompA>.I.Set( 1f ) );
 				entity.Get<TestCompA>(  ).Value.should_be( 1f );
 
@@ -97,7 +97,7 @@ namespace Tests
 			it["flag, is"] = ()=>
 			{
 				// given
-				var entity				= _contexts.Get<STestA>(  ).CreateEntity(  );
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Is<TestFlagA>(  ).should_be( false );
 
 				// when
