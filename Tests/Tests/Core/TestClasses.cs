@@ -4,10 +4,16 @@ using Entitas.Generic;
 
 namespace Tests
 {
-	internal interface ScopeA : IScope {}
-	internal interface ScopeB : IScope {}
+	public interface ScopeA : IScope {}
+	public interface ScopeB : IScope {}
 
-	internal sealed class TestCompA : IComponent, ICompData, ICopyFrom<TestCompA>, Scope<ScopeA>
+	public sealed class TestCompA
+			: IComponent
+			, ICompData
+			, ICopyFrom<TestCompA>
+			, Scope<ScopeA>
+			, IEvent_Any<ScopeA, TestCompA>
+			, IEvent_AnyRemoved<ScopeA, TestCompA>, IEvent_Self<ScopeA, TestCompA>, IEvent_SelfRemoved<ScopeA, TestCompA>
 	{
 		public				Single					Value;
 

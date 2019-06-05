@@ -33,11 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DesperateDevs.Utils, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\Assets\Entitas\DesperateDevs\DesperateDevs.Utils.dll</HintPath>
-    </Reference>
     <Reference Include="Entitas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\Assets\Entitas\Entitas\Entitas.dll</HintPath>
+      <HintPath>../Libs/Entitas.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=4.19.4.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a">
       <HintPath>..\packages\FluentAssertions.4.19.4\lib\net40\FluentAssertions.dll</HintPath>
@@ -48,13 +45,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NSpec, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libs\NSpec.dll</HintPath>
+      <HintPath>Libs\NSpec.dll</HintPath>
     </Reference>
     <Reference Include="NSpecRunner, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libs\NSpecRunner.dll</HintPath>
+      <HintPath>Libs\NSpecRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute, Version=2.0.3.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca">
+      <HintPath>Libs/NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <HintPath>..\Libs\nunit.framework.dll</HintPath>
+      <HintPath>Libs\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,11 +66,16 @@
     <Compile Include="Tests\Core\describe_EntityCoreMethods.cs" />
     <Compile Include="Tests\Core\describe_ScopedContextMethods.cs" />
     <Compile Include="Tests\Core\TestClasses.cs" />
+    <Compile Include="Tests\Events\describe_EventMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Entitas.Generic.Events\Entitas.Generic.Events.csproj">
+      <Project>{499c2104-a8af-4aa9-8024-0a3961d44460}</Project>
+      <Name>Entitas.Generic.Events</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Entitas.Generic\Entitas.Generic.csproj">
       <Project>{ac9d294b-f10a-47f2-a557-925d497bdadc}</Project>
       <Name>Entitas.Generic</Name>

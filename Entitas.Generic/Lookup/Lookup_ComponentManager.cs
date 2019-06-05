@@ -44,46 +44,30 @@ namespace Entitas.Generic
             Scan_EventSelfRemoved(  );
         }
 
-        public static void Scan_EventAny()
+        private static List<Type> Collect_EventAnyComps()
         {
+            var eventComps = new List<Type>();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                var event_anyComps = new List<Type>();
                 foreach (var type in assembly.GetTypes())
                 {
                     if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
                         || !IsInScope(type)
-                    || !IsEventAnyChild(type) )
+                        || !IsEventAnyChild(type) )
                     {
                         continue;
                     }
-                    event_anyComps.Add( type );
-                }
-
-                foreach (var type in assembly.GetTypes())
-                {
-                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent)) )
-                    {
-                        continue;
-                    }
-
-                    if ( type.IsGenericType && type.GetGenericTypeDefinition(  ) == typeof(Event_AnyComponent<,>) )
-                    {
-                        foreach (var t in event_anyComps )
-                        {
-                            var eventType = type.MakeGenericType(typeof(TScope),t);
-                            Register( eventType );
-                        }
-                    }
+                    eventComps.Add( type );
                 }
             }
+            return eventComps;
         }
 
-        public static void Scan_EventAnyRemoved()
+        private static List<Type> Collect_EventAnyRemovedComps()
         {
+            var eventComps = new List<Type>();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                var event_anyComps = new List<Type>();
                 foreach (var type in assembly.GetTypes())
                 {
                     if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
@@ -92,95 +76,91 @@ namespace Entitas.Generic
                     {
                         continue;
                     }
-                    event_anyComps.Add( type );
+                    eventComps.Add( type );
                 }
+            }
+            return eventComps;
+        }
 
+        private static List<Type> Collect_EventSelfComps()
+        {
+            var eventComps = new List<Type>();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent)) )
+                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
+                        || !IsInScope(type)
+                        || !IsEventSelfChild(type) )
                     {
                         continue;
                     }
-
-                    if ( type.IsGenericType && type.GetGenericTypeDefinition(  ) == typeof(Event_AnyRemovedComponent<,>) )
-                    {
-                        foreach (var t in event_anyComps )
-                        {
-                            var eventType = type.MakeGenericType(typeof(TScope),t);
-                            Register( eventType );
-                        }
-                    }
+                    eventComps.Add( type );
                 }
+            }
+            return eventComps;
+        }
+
+        private static List<Type> Collect_EventSelfRemovedComps()
+        {
+            var eventComps = new List<Type>();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
+                        || !IsInScope(type)
+                        || !IsEventSelfRemovedChild(type) )
+                    {
+                        continue;
+                    }
+                    eventComps.Add( type );
+                }
+            }
+            return eventComps;
+        }
+
+        public static void Scan_EventAny()
+        {
+            var eventComps = Collect_EventAnyComps(  );
+            var type = typeof(Event_AnyComponent<,>);
+            foreach (var t in eventComps )
+            {
+                var eventType = type.MakeGenericType(typeof(TScope),t);
+                Register( eventType );
+            }
+        }
+
+        public static void Scan_EventAnyRemoved()
+        {
+            var eventComps = Collect_EventAnyRemovedComps(  );
+            var type = typeof(Event_AnyRemovedComponent<,>);
+            foreach (var t in eventComps )
+            {
+                var eventType = type.MakeGenericType(typeof(TScope),t);
+                Register( eventType );
             }
         }
 
         public static void Scan_EventSelf()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var eventComps = Collect_EventSelfComps(  );
+            var type = typeof(Event_SelfComponent<,>);
+            foreach (var t in eventComps )
             {
-                var event_anyComps = new List<Type>();
-                foreach (var type in assembly.GetTypes())
-                {
-                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
-                        || !IsInScope(type)
-                    || !IsEventSelfChild(type) )
-                    {
-                        continue;
-                    }
-                    event_anyComps.Add( type );
-                }
-
-                foreach (var type in assembly.GetTypes())
-                {
-                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent)) )
-                    {
-                        continue;
-                    }
-
-                    if ( type.IsGenericType && type.GetGenericTypeDefinition(  ) == typeof(Event_SelfComponent<,>) )
-                    {
-                        foreach (var t in event_anyComps )
-                        {
-                            var eventType = type.MakeGenericType(typeof(TScope),t);
-                            Register( eventType );
-                        }
-                    }
-                }
+                var eventType = type.MakeGenericType(typeof(TScope),t);
+                Register( eventType );
             }
         }
 
         public static void Scan_EventSelfRemoved()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var eventComps = Collect_EventSelfRemovedComps(  );
+            var type = typeof(Event_SelfRemovedComponent<,>);
+            foreach (var t in eventComps )
             {
-                var event_anyComps = new List<Type>();
-                foreach (var type in assembly.GetTypes())
-                {
-                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
-                        || !IsInScope(type)
-                    || !IsEventSelfRemovedChild(type) )
-                    {
-                        continue;
-                    }
-                    event_anyComps.Add( type );
-                }
-
-                foreach (var type in assembly.GetTypes())
-                {
-                    if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent)) )
-                    {
-                        continue;
-                    }
-
-                    if ( type.IsGenericType && type.GetGenericTypeDefinition(  ) == typeof(Event_SelfRemovedComponent<,>) )
-                    {
-                        foreach (var t in event_anyComps )
-                        {
-                            var eventType = type.MakeGenericType(typeof(TScope),t);
-                            Register( eventType );
-                        }
-                    }
-                }
+                var eventType = type.MakeGenericType(typeof(TScope),t);
+                Register( eventType );
             }
         }
 

@@ -12,10 +12,10 @@ namespace Tests
 
 		private				void					test_CoreMethods		(  )
 		{
+			Lookup_ScopeManager.RegisterAll();
+
 			before					= ()=>
 			{
-				Lookup_ScopeManager.RegisterAll();
-
 				_contexts			= new Contexts(  );
 				_contexts.AddScopedContexts(  );
 			};
