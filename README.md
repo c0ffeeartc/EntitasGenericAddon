@@ -1,6 +1,8 @@
 # EntitasGenericAddon
 Addon to [Entitas](https://github.com/sschmid/Entitas-CSharp) that allows using generic methods instead of code generator
 
+This project is based on [Entitas.Generic](https://github.com/yosadchyi/Entitas.Generic)
+
 ## Goal
 Make Entitas extensible by separate dll
 
@@ -184,3 +186,6 @@ A: `Cache<T>.I`creates and reuses static copy of component for passing values to
 **Q: I have better implementation of some interface/feature**
 
 A: Improvements are great! Please write your suggestion in Issues section
+
+## TODO
+  - Add ability to use struct ComponentData for better API, same as in [Entitas.Generic](https://github.com/yosadchyi/Entitas.Generic)
