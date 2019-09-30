@@ -29,6 +29,19 @@ namespace Tests
 		}
 	}
 
+	public struct TestDataA
+			: IComponent
+			, ICompData
+			, Scope<ScopeA>
+	{
+		public				Single					Value;
+
+		public TestDataA( Single value)
+		{
+			Value = value;
+		}
+	}
+
 	internal sealed class TestCompAUnique : IComponent, ICompData, ICopyFrom<TestCompAUnique>, Scope<ScopeA>, IUnique
 	{
 		public				Single					Value;

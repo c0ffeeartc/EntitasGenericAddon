@@ -5,7 +5,7 @@ using NSpec;
 
 namespace Tests
 {
-	public class describe_ScopedContextMethods : nspec
+	public class describe_ScopedContext_ClassMethods : nspec
 	{
 		private				Contexts				_contexts;
 

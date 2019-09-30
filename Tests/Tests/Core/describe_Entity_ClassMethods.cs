@@ -6,11 +6,11 @@ using NSpec;
 
 namespace Tests
 {
-	public class describe_EntityCoreMethods : nspec
+	public class describe_Entity_ClassMethods : nspec
 	{
 		private				Contexts				_contexts;
 
-		private				void					test_CoreMethods		(  )
+		private				void					test_Entity_ClassMethods(  )
 		{
 			Lookup_ScopeManager.RegisterAll();
 
