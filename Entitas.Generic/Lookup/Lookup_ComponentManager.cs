@@ -20,6 +20,22 @@ namespace Entitas.Generic
 
         public static void Autoscan()
         {
+            Scan_IComponents(  );
+            Scan_EventAny(  );
+            Scan_EventAnyRemoved(  );
+            Scan_EventSelf(  );
+            Scan_EventSelfRemoved(  );
+
+            Console.WriteLine( _registeredCount );
+            foreach ( var regT in _registeredTypes )
+            {
+//                Console.WriteLine( regT );
+                Console.WriteLine( regT.FullName );
+            }
+        }
+
+        private static void Scan_IComponents()
+        {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
@@ -37,11 +53,6 @@ namespace Entitas.Generic
                     Register(type);
                 }
             }
-
-            Scan_EventAny(  );
-            Scan_EventAnyRemoved(  );
-            Scan_EventSelf(  );
-            Scan_EventSelfRemoved(  );
         }
 
         private static List<Type> Collect_EventAnyComps()
@@ -168,6 +179,12 @@ namespace Entitas.Generic
         {
             var componentType = typeof(Lookup<,>);
 
+            if ( !dataType.IsClass )
+            {
+                var structComponentType = typeof(StructComponent<>);
+                dataType = structComponentType.MakeGenericType(dataType);
+            }
+
             var genericType = componentType.MakeGenericType(typeof(TScope), dataType);
 
             if (_registeredTypes.Contains(genericType))
@@ -271,7 +288,7 @@ namespace Entitas.Generic
 
                     for (var i = 0; i < _componentNamesCache.Length; i++)
                     {
-                        _componentNamesCache[i] = _registeredTypes[i].Name;
+                        _componentNamesCache[i] = _registeredTypes[i].FullName;
                     }
                 }
                 return _componentNamesCache;

@@ -22,8 +22,8 @@ public partial class ScopedContext<TScope>
 		return GetGroup( Matcher_<TScope, TData>.I ).GetSingleEntity(  ) != null;
 	}
 
-	public					Entity<TScope>			Set_<TData>				( TData component )
-			where TData : struct, Scope<TScope>, IComponent, ICompData, IUnique, ICopyFrom<TData>
+	public					Entity<TScope>			Set_<TData>				( TData data )
+			where TData : struct, Scope<TScope>, IComponent, ICompData, IUnique
 	{
 		if ( Has_<TData>(  ) )
 		{
@@ -32,7 +32,7 @@ public partial class ScopedContext<TScope>
 				"You should check if the context already has a " + typename + "Entity before setting it or use context.Replace<" + typename + ">().");
 		}
 		var entity = CreateEntity(  );
-		entity.Add_( component );
+		entity.Add_( data );
 		return entity;
 	}
 
@@ -43,7 +43,7 @@ public partial class ScopedContext<TScope>
 	}
 
 	public					void					Replace_<TData>			( TData data )
-			where TData : struct, Scope<TScope>, IComponent, ICompData, IUnique, ICopyFrom<TData>
+			where TData : struct, Scope<TScope>, IComponent, ICompData, IUnique
 	{
 		var entity					= GetEntity_<TData>(  );
 		if ( entity == null )
