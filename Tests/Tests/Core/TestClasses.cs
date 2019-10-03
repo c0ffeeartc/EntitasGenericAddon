@@ -13,7 +13,9 @@ namespace Tests
 			, ICopyFrom<TestCompA>
 			, Scope<ScopeA>
 			, IEvent_Any<ScopeA, TestCompA>
-			, IEvent_AnyRemoved<ScopeA, TestCompA>, IEvent_Self<ScopeA, TestCompA>, IEvent_SelfRemoved<ScopeA, TestCompA>
+			, IEvent_AnyRemoved<ScopeA, TestCompA>
+			, IEvent_Self<ScopeA, TestCompA>
+			, IEvent_SelfRemoved<ScopeA, TestCompA>
 	{
 		public				Single					Value;
 
@@ -33,6 +35,10 @@ namespace Tests
 			: IComponent
 			, ICompData
 			, Scope<ScopeA>
+			, IEvent_Any<ScopeA, TestDataA>
+			, IEvent_AnyRemoved<ScopeA, TestDataA>
+			, IEvent_Self<ScopeA, TestDataA>
+			, IEvent_SelfRemoved<ScopeA, TestDataA>
 	{
 		public				Single					Value;
 

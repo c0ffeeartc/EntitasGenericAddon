@@ -41,11 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\Entity_EventMethods.cs" />
+    <Compile Include="Events\EventSystem_AnyRemoved_.cs" />
+    <Compile Include="Events\EventSystem_Any_.cs" />
+    <Compile Include="Events\EventSystem_SelfRemoved_.cs" />
+    <Compile Include="Events\EventSystem_Self_.cs" />
+    <Compile Include="Events\Event_Entity_ClassMethods.cs" />
     <Compile Include="Events\EventSystem_Any.cs" />
     <Compile Include="Events\EventSystem_AnyRemoved.cs" />
     <Compile Include="Events\EventSystem_Self.cs" />
     <Compile Include="Events\EventSystem_SelfRemoved.cs" />
+    <Compile Include="Events\Event_Entity_StructMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entitas.Generic\Entitas.Generic.csproj">
