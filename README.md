@@ -73,6 +73,11 @@ public interface Game : IScope { }
 
 Component
 ```csharp
+public struct B : IComponent, ICompData, Scope<Game>
+{
+    public int Value;
+}
+
 public sealed class A
         : IComponent
         , ICompData
