@@ -13,7 +13,7 @@ Make Entitas extensible by separate dll
       - `IScope` - base interface for context scope
       - `Scope<T>` - context scope of IComponent
       - `IComponent` - allows class to be managed by **Entitas**, gives access to `Get<T>` extension methods
-      - `ICompData` - gives access to `Add`, `Remove`, `Replace`, `Has` requires `ICopyFrom<TSelf>`
+      - `ICompData` - gives access to `Add`, `Remove`, `Replace`, `Has` (class componenents require `ICopyFrom<TSelf>`). 
       - `ICompFlag` - gives access to `Flag<T>`, `Is<T>`
       - `IUnique` - provides context `Add`, `Replace` etc methods for unique components or flags
 
@@ -21,7 +21,9 @@ Make Entitas extensible by separate dll
       - `IEvent_*<TScope, TComp>` - interface marker for `IComponent` classes
       - `IOn*<TScope, TComp>` - interface to implement by listener classes
       - `EventSystem_*<TScope, TComp>` - event system classes
- 
+
+  - Struct components API method names end with underscore (`Add_`, `Remove_`, `Replace_`, `Has_`, `Event_System_*_`, `Matcher_`)
+
   - Can be used together with regular Entitas components
   - Manual `EntityIndex` registration
 
@@ -30,7 +32,7 @@ There are two ways of using EntitasGenericAddon:
   - with existing generated Contexts
     - For now it only adds new generic contexts, generated and generic context instances have different workflows. Improvements are welcome
     - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into same assembly as generated `Contexts` class
-  - standalone without generator
+  - standalone without generator(preferred)
     - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into `Assets` folder somewhere
 
 ## Usage
@@ -71,17 +73,21 @@ public interface Game : IScope { }
 
 Component
 ```csharp
-public sealed class A : IComponent, ICompData, ICopyFrom<A>, Scope<Game>
+public sealed class A
+        : IComponent
+        , ICompData
+        , ICopyFrom<A>  // Not needed for struct components
+        , Scope<Game>
 {
     public int Value;
 
-    public A Set(int value) // optional, allows using Cache<T>.I.Set()
+    public A Set(int value)  // optional, allows using Cache<T>.I.Set(). Not needed for struct components
     {
         Value = value;
         return this;
     }
 
-    public void CopyFrom(A other)
+    public void CopyFrom(A other)  // Not needed for struct components
     {
         Value = other.Value;
     }
@@ -181,11 +187,10 @@ var entities = context.GetEntities( EntIndex.B, 23 );
 ## FAQ
 **Q: What `Cache<T>.I` does?**
 
-A: `Cache<T>.I`creates and reuses static copy of component for passing values to Entitas component through manually created `Component.Set` method. `I` is shortened `Instance`. Check [CacheT.cs](./Entitas.Generic/Lookup/CacheT.cs) for implementation.
+A: `Cache<T>.I`creates and reuses static copy of class component for passing values to Entitas component through manually created `Component.Set` method. `I` is shortened `Instance`. Check [CacheT.cs](./Entitas.Generic/Lookup/CacheT.cs) for implementation.
+There is no need to use `Cache<T>.I` with struct components.
 
 **Q: I have better implementation of some interface/feature**
 
 A: Improvements are great! Please write your suggestion in Issues section
 
-## TODO
-  - Add ability to use struct ComponentData for better API, same as in [Entitas.Generic](https://github.com/yosadchyi/Entitas.Generic)
