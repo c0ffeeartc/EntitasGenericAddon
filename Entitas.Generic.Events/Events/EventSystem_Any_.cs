@@ -11,7 +11,7 @@ public sealed class EventSystem_Any_<TScope,TData> : Entitas.ReactiveSystem<Enti
 	{
 		_contexts					= contexts;
 		var context					= contexts.Get<TScope>(  );
-		_listeners					= context.GetGroup( Matcher<TScope, Event_AnyComponent_<TScope,TData>>.I );
+		_listeners					= context.GetGroup( Matcher<TScope, Event_AnyComponent<TScope,TData>>.I );
 		_listenersBuffer			= new List<Entity<TScope>>(  );
 		_interfaceBuffer			= new List<IOnAny<TScope, TData>>(  );
 	}
@@ -36,7 +36,7 @@ public sealed class EventSystem_Any_<TScope,TData> : Entitas.ReactiveSystem<Enti
 			foreach ( var listenerEntity in _listeners.GetEntities( _listenersBuffer ) )
 			{
 				_interfaceBuffer.Clear(  );
-				var listenerComp = listenerEntity.Get<Event_AnyComponent_<TScope,TData>>(  );
+				var listenerComp = listenerEntity.Get<Event_AnyComponent<TScope,TData>>(  );
 				_interfaceBuffer.AddRange( listenerComp.Listeners );
 				foreach ( var listener in _interfaceBuffer )
 				{

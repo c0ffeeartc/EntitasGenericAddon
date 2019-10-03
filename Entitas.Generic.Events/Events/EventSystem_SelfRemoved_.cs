@@ -21,7 +21,7 @@ public sealed class EventSystem_SelfRemoved_<TScope, TData> : ReactiveSystem<Ent
 			Matcher_<TScope,TData>.I.Removed(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
-		return ent.HasIComponent<Event_SelfRemovedComponent_<TScope,TData>>(  )
+		return ent.HasIComponent<Event_SelfRemovedComponent<TScope,TData>>(  )
 		       && !ent.Has_<TData>(  ); }
 
 	protected override		void					Execute					( List<Entity<TScope>> entities )
@@ -31,7 +31,7 @@ public sealed class EventSystem_SelfRemoved_<TScope, TData> : ReactiveSystem<Ent
 		{
 			var e					= entities[i];
 			_interfaceBuffer.Clear(  );
-			_interfaceBuffer.AddRange( e.Get<Event_SelfRemovedComponent_<TScope,TData>>(   ).Listeners );
+			_interfaceBuffer.AddRange( e.Get<Event_SelfRemovedComponent<TScope,TData>>(   ).Listeners );
 			foreach ( var listener in _interfaceBuffer )
 			{
 				listener.OnSelfRemoved( default(TData), e, _contexts );

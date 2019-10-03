@@ -21,7 +21,7 @@ public sealed class EventSystem_Self_<TScope, TData> : Entitas.ReactiveSystem<En
 			Matcher_<TScope,TData>.I.Added(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
-		return ent.HasIComponent<Event_SelfComponent_<TScope,TData>>(  )
+		return ent.HasIComponent<Event_SelfComponent<TScope,TData>>(  )
 		       && ent.Has_<TData>(  ); }
 
 	protected override		void					Execute					( List<Entity<TScope>> entities )
@@ -32,7 +32,7 @@ public sealed class EventSystem_Self_<TScope, TData> : Entitas.ReactiveSystem<En
 			var e					= entities[i];
 			var component			= e.Get_<TData>(   );
 			_interfaceBuffer.Clear(  );
-			_interfaceBuffer.AddRange( e.Get<Event_SelfComponent_<TScope,TData>>(   ).Listeners );
+			_interfaceBuffer.AddRange( e.Get<Event_SelfComponent<TScope,TData>>(   ).Listeners );
 			foreach ( var listener in _interfaceBuffer )
 			{
 				listener.OnSelf( component, e, _contexts );

@@ -11,7 +11,7 @@ public sealed class EventSystem_AnyRemoved_<TScope,TData> : ReactiveSystem<Entit
 	{
 		_contexts					= contexts;
 		var context					= contexts.Get<TScope>(  );
-		_listeners					= context.GetGroup( Matcher<TScope, Event_AnyRemovedComponent_<TScope,TData>>.I );
+		_listeners					= context.GetGroup( Matcher<TScope, Event_AnyRemovedComponent<TScope,TData>>.I );
 		_listenersBuffer			= new List<Entity<TScope>>(  );
 		_interfaceBuffer			= new List<IOnAnyRemoved<TScope, TData>>(  );
 	}
@@ -35,7 +35,7 @@ public sealed class EventSystem_AnyRemoved_<TScope,TData> : ReactiveSystem<Entit
 			foreach ( var listenerEntity in _listeners.GetEntities( _listenersBuffer ) )
 			{
 				_interfaceBuffer.Clear(  );
-				_interfaceBuffer.AddRange( listenerEntity.Get<Event_AnyRemovedComponent_<TScope,TData>>(   ).Listeners );
+				_interfaceBuffer.AddRange( listenerEntity.Get<Event_AnyRemovedComponent<TScope,TData>>(   ).Listeners );
 				foreach ( var listener in _interfaceBuffer )
 				{
 					listener.OnAnyRemoved( default(TData), e, _contexts );

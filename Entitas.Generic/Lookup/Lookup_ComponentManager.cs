@@ -133,18 +133,10 @@ namespace Entitas.Generic
         public static void Scan_EventAny()
         {
             var eventComps = Collect_EventAnyComps(  );
+            var t_Event = typeof(Event_AnyComponent<,>);
             for ( var i = 0; i < eventComps.Count; i++ )
             {
                 var t_Inner = eventComps[i];
-                Type t_Event;
-                if ( t_Inner.IsClass )
-                {
-                    t_Event = typeof(Event_AnyComponent<,>);
-                }
-                else
-                {
-                    t_Event = typeof(Event_AnyComponent_<,>);
-                }
 
                 var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );
@@ -154,18 +146,10 @@ namespace Entitas.Generic
         public static void Scan_EventAnyRemoved()
         {
             var eventComps = Collect_EventAnyRemovedComps(  );
+            var t_Event = typeof(Event_AnyRemovedComponent<,>);
             for ( var i = 0; i < eventComps.Count; i++ )
             {
                 var t_Inner = eventComps[i];
-                Type t_Event;
-                if ( t_Inner.IsClass )
-                {
-                    t_Event = typeof(Event_AnyRemovedComponent<,>);
-                }
-                else
-                {
-                    t_Event = typeof(Event_AnyRemovedComponent_<,>);
-                }
 
                 var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );
@@ -175,18 +159,10 @@ namespace Entitas.Generic
         public static void Scan_EventSelf()
         {
             var eventComps = Collect_EventSelfComps(  );
+            var t_Event = typeof(Event_SelfComponent<,>);
             for ( var i = 0; i < eventComps.Count; i++ )
             {
                 var t_Inner = eventComps[i];
-                Type t_Event;
-                if ( t_Inner.IsClass )
-                {
-                    t_Event = typeof(Event_SelfComponent<,>);
-                }
-                else
-                {
-                    t_Event = typeof(Event_SelfComponent_<,>);
-                }
 
                 var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );
@@ -196,18 +172,10 @@ namespace Entitas.Generic
         public static void Scan_EventSelfRemoved()
         {
             var eventComps = Collect_EventSelfRemovedComps(  );
+            var t_Event = typeof(Event_SelfRemovedComponent<,>);
             for ( var i = 0; i < eventComps.Count; i++ )
             {
                 var t_Inner = eventComps[i];
-                Type t_Event;
-                if ( t_Inner.IsClass )
-                {
-                    t_Event = typeof(Event_SelfRemovedComponent<,>);
-                }
-                else
-                {
-                    t_Event = typeof(Event_SelfRemovedComponent_<,>);
-                }
 
                 var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );

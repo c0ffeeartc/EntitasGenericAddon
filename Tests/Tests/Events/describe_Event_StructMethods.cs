@@ -25,7 +25,7 @@ namespace Tests
 				var listener		= Substitute.For<IOnAny<ScopeA,TestDataA>>(  );
 				{
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnAny_( listener );
+					ent.Add_OnAny( listener );
 				}
 				listener.DidNotReceiveWithAnyArgs(  ).OnAny( default(TestDataA), null, null );
 
@@ -46,7 +46,7 @@ namespace Tests
 				var listener		= Substitute.For<IOnAnyRemoved<ScopeA,TestDataA>>(  );
 				{
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnAnyRemoved_( listener );
+					ent.Add_OnAnyRemoved( listener );
 				}
 				listener.DidNotReceiveWithAnyArgs(  ).OnAnyRemoved( default(TestDataA), null, null );
 
@@ -72,7 +72,7 @@ namespace Tests
 				{
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 					ent.Add_( new TestDataA(  ) );
-					ent.Add_OnSelf_( listener );
+					ent.Add_OnSelf( listener );
 				}
 
 				system.Execute(  );
@@ -91,7 +91,7 @@ namespace Tests
 				// when
 				{
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnSelf_( listener );
+					ent.Add_OnSelf( listener );
 				}
 				{
 					var entity		= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -115,7 +115,7 @@ namespace Tests
 				{
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 					ent.Add_( new TestDataA(  ) );
-					ent.Add_OnSelfRemoved_( listener );
+					ent.Add_OnSelfRemoved( listener );
 					ent.Remove_<TestDataA>(  );
 				}
 
@@ -135,7 +135,7 @@ namespace Tests
 				// when
 				{
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnSelfRemoved_( listener );
+					ent.Add_OnSelfRemoved( listener );
 				}
 				{
 					var entity		= _contexts.Get<ScopeA>(  ).CreateEntity(  );
