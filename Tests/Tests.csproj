@@ -63,10 +63,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TestRunner.cs" />
-    <Compile Include="Tests\Core\describe_EntityCoreMethods.cs" />
-    <Compile Include="Tests\Core\describe_ScopedContextMethods.cs" />
+    <Compile Include="Tests\Core\describe_Entity_ClassMethods.cs" />
+    <Compile Include="Tests\Core\describe_Entity_StructMethods.cs" />
+    <Compile Include="Tests\Core\describe_ScopedContext_ClassMethods.cs" />
+    <Compile Include="Tests\Core\describe_ScopedContext_StructMethods.cs" />
     <Compile Include="Tests\Core\TestClasses.cs" />
-    <Compile Include="Tests\Events\describe_EventMethods.cs" />
+    <Compile Include="Tests\Events\describe_Event_ClassMethods.cs" />
+    <Compile Include="Tests\Events\describe_Event_StructMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

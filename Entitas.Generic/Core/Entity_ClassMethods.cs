@@ -4,7 +4,7 @@
         : Entitas.Entity
         where TScope : IScope
     {
-        public void Add<TComp>(TComp comp) where TComp : Scope<TScope>, ICompData, ICopyFrom<TComp>,IComponent, new()
+        public void Add<TComp>(TComp comp) where TComp : class, Scope<TScope>, ICompData, ICopyFrom<TComp>,IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;
             var component = CreateComponent(index, typeof(TComp));
@@ -12,7 +12,7 @@
             AddComponent(index, component);
         }
 
-        public void Replace<TComp>(TComp comp) where TComp : Scope<TScope>, ICompData, ICopyFrom<TComp>, IComponent, new()
+        public void Replace<TComp>(TComp comp) where TComp : class, Scope<TScope>, ICompData, ICopyFrom<TComp>, IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;
             var component = CreateComponent(index, typeof(TComp));
@@ -20,17 +20,17 @@
             ReplaceComponent(index, component);
         }
 
-        public void Remove<TComp>()where TComp : Scope<TScope>, ICompData, IComponent
+        public void Remove<TComp>()where TComp : class, Scope<TScope>, ICompData, IComponent
         {
             RemoveComponent(Lookup<TScope, TComp>.Id);
         }
 
-        public TComp Get<TComp>() where TComp : Scope<TScope>, IComponent
+        public TComp Get<TComp>() where TComp : class, Scope<TScope>, IComponent
         {
             return (TComp) GetComponent(Lookup<TScope, TComp>.Id);
         }
 
-        public void Flag<TComp>(bool flag) where TComp : Scope<TScope>, ICompFlag, IComponent, new()
+        public void Flag<TComp>(bool flag) where TComp : class, Scope<TScope>, ICompFlag, IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;
             var hasComponent = HasComponent(index);
@@ -54,17 +54,17 @@
             }
         }
 
-        public bool Is<TComp>() where TComp : Scope<TScope>, ICompFlag, IComponent
+        public bool Is<TComp>() where TComp : class, Scope<TScope>, ICompFlag, IComponent
         {
             return HasComponent(Lookup<TScope, TComp>.Id);
         }
 
-        public bool Has<TComp>() where TComp : Scope<TScope>, IComponent, ICompData
+        public bool Has<TComp>() where TComp : class, Scope<TScope>, IComponent, ICompData
         {
             return HasComponent(Lookup<TScope, TComp>.Id);
         }
 
-        public bool HasIComponent<TComp>() where TComp : Scope<TScope>, IComponent
+        public bool HasIComponent<TComp>() where TComp : class, Scope<TScope>, IComponent
         {
             return HasComponent(Lookup<TScope, TComp>.Id);
         }

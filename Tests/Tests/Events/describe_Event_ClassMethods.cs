@@ -4,7 +4,7 @@ using NSubstitute;
 
 namespace Tests
 {
-	public class describe_EventMethods : nspec
+	public class describe_Event_ClassMethods : nspec
 	{
 		private				Contexts				_contexts;
 

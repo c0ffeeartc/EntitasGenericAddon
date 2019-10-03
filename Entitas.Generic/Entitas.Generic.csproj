@@ -47,11 +47,14 @@
     <Compile Include="Core\AERCFactories.cs" />
     <Compile Include="Core\Contexts.cs" />
     <Compile Include="Core\EntityIndexExtensions.cs" />
-    <Compile Include="Core\Entity_Methods.cs" />
+    <Compile Include="Core\Entity_ClassMethods.cs" />
+    <Compile Include="Core\Entity_StructMethods.cs" />
     <Compile Include="Core\Interfaces.cs" />
     <Compile Include="Core\Matcher.cs" />
     <Compile Include="Core\ScopedContext.cs" />
-    <Compile Include="Core\ScopedContext_Methods.cs" />
+    <Compile Include="Core\ScopedContext_ClassMethods.cs" />
+    <Compile Include="Core\ScopedContext_StructMethods.cs" />
+    <Compile Include="Core\StructComponent.cs" />
     <Compile Include="Events\Component_EventInterfaces.cs" />
     <Compile Include="Events\EventComponents.cs" />
     <Compile Include="Events\OnEvent_Interfaces.cs" />
@@ -59,6 +62,7 @@
     <Compile Include="Lookup\Lookup.cs" />
     <Compile Include="Lookup\Lookup_ComponentManager.cs" />
     <Compile Include="Lookup\Lookup_ScopeManager.cs" />
+    <Compile Include="Lookup\TypeExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

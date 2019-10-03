@@ -13,7 +13,9 @@ namespace Tests
 			, ICopyFrom<TestCompA>
 			, Scope<ScopeA>
 			, IEvent_Any<ScopeA, TestCompA>
-			, IEvent_AnyRemoved<ScopeA, TestCompA>, IEvent_Self<ScopeA, TestCompA>, IEvent_SelfRemoved<ScopeA, TestCompA>
+			, IEvent_AnyRemoved<ScopeA, TestCompA>
+			, IEvent_Self<ScopeA, TestCompA>
+			, IEvent_SelfRemoved<ScopeA, TestCompA>
 	{
 		public				Single					Value;
 
@@ -26,6 +28,33 @@ namespace Tests
 		public				void					CopyFrom				( TestCompA other )
 		{
 			Value					= other.Value;
+		}
+	}
+
+	public struct TestDataA
+			: IComponent
+			, ICompData
+			, Scope<ScopeA>
+			, IEvent_Any<ScopeA, TestDataA>
+			, IEvent_AnyRemoved<ScopeA, TestDataA>
+			, IEvent_Self<ScopeA, TestDataA>
+			, IEvent_SelfRemoved<ScopeA, TestDataA>
+	{
+		public				Single					Value;
+
+		public TestDataA( Single value)
+		{
+			Value = value;
+		}
+	}
+
+	internal struct TestDataAUnique : IComponent, ICompData, Scope<ScopeA>, IUnique
+	{
+		public				Single					Value;
+
+		public TestDataAUnique( Single value)
+		{
+			Value = value;
 		}
 	}
 

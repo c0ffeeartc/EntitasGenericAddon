@@ -20,6 +20,21 @@ namespace Entitas.Generic
 
         public static void Autoscan()
         {
+            Scan_IComponents(  );
+            Scan_EventAny(  );
+            Scan_EventAnyRemoved(  );
+            Scan_EventSelf(  );
+            Scan_EventSelfRemoved(  );
+
+//            Console.WriteLine( "\n" + typeof(TScope).Name + ": " + _registeredCount );
+//            foreach ( var regT in _registeredTypes )
+//            {
+//                Console.WriteLine( regT.ToGenericTypeString() );
+//            }
+        }
+
+        private static void Scan_IComponents()
+        {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
@@ -37,11 +52,6 @@ namespace Entitas.Generic
                     Register(type);
                 }
             }
-
-            Scan_EventAny(  );
-            Scan_EventAnyRemoved(  );
-            Scan_EventSelf(  );
-            Scan_EventSelfRemoved(  );
         }
 
         private static List<Type> Collect_EventAnyComps()
@@ -123,10 +133,20 @@ namespace Entitas.Generic
         public static void Scan_EventAny()
         {
             var eventComps = Collect_EventAnyComps(  );
-            var type = typeof(Event_AnyComponent<,>);
-            foreach (var t in eventComps )
+            for ( var i = 0; i < eventComps.Count; i++ )
             {
-                var eventType = type.MakeGenericType(typeof(TScope),t);
+                var t_Inner = eventComps[i];
+                Type t_Event;
+                if ( t_Inner.IsClass )
+                {
+                    t_Event = typeof(Event_AnyComponent<,>);
+                }
+                else
+                {
+                    t_Event = typeof(Event_AnyComponent_<,>);
+                }
+
+                var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );
             }
         }
@@ -134,10 +154,20 @@ namespace Entitas.Generic
         public static void Scan_EventAnyRemoved()
         {
             var eventComps = Collect_EventAnyRemovedComps(  );
-            var type = typeof(Event_AnyRemovedComponent<,>);
-            foreach (var t in eventComps )
+            for ( var i = 0; i < eventComps.Count; i++ )
             {
-                var eventType = type.MakeGenericType(typeof(TScope),t);
+                var t_Inner = eventComps[i];
+                Type t_Event;
+                if ( t_Inner.IsClass )
+                {
+                    t_Event = typeof(Event_AnyRemovedComponent<,>);
+                }
+                else
+                {
+                    t_Event = typeof(Event_AnyRemovedComponent_<,>);
+                }
+
+                var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );
             }
         }
@@ -145,10 +175,20 @@ namespace Entitas.Generic
         public static void Scan_EventSelf()
         {
             var eventComps = Collect_EventSelfComps(  );
-            var type = typeof(Event_SelfComponent<,>);
-            foreach (var t in eventComps )
+            for ( var i = 0; i < eventComps.Count; i++ )
             {
-                var eventType = type.MakeGenericType(typeof(TScope),t);
+                var t_Inner = eventComps[i];
+                Type t_Event;
+                if ( t_Inner.IsClass )
+                {
+                    t_Event = typeof(Event_SelfComponent<,>);
+                }
+                else
+                {
+                    t_Event = typeof(Event_SelfComponent_<,>);
+                }
+
+                var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );
             }
         }
@@ -156,10 +196,20 @@ namespace Entitas.Generic
         public static void Scan_EventSelfRemoved()
         {
             var eventComps = Collect_EventSelfRemovedComps(  );
-            var type = typeof(Event_SelfRemovedComponent<,>);
-            foreach (var t in eventComps )
+            for ( var i = 0; i < eventComps.Count; i++ )
             {
-                var eventType = type.MakeGenericType(typeof(TScope),t);
+                var t_Inner = eventComps[i];
+                Type t_Event;
+                if ( t_Inner.IsClass )
+                {
+                    t_Event = typeof(Event_SelfRemovedComponent<,>);
+                }
+                else
+                {
+                    t_Event = typeof(Event_SelfRemovedComponent_<,>);
+                }
+
+                var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
                 Register( eventType );
             }
         }
@@ -167,6 +217,12 @@ namespace Entitas.Generic
         private static void Register(Type dataType)
         {
             var componentType = typeof(Lookup<,>);
+
+            if ( !dataType.IsClass )
+            {
+                var structComponentType = typeof(StructComponent<>);
+                dataType = structComponentType.MakeGenericType(dataType);
+            }
 
             var genericType = componentType.MakeGenericType(typeof(TScope), dataType);
 
@@ -244,17 +300,17 @@ namespace Entitas.Generic
                         );
         }
 
-        public static void Register<TComp>()
-        {
-            var type = typeof(TComp);
-
-            if (_registeredTypes.Contains(type))
-                return;
-
-            _registeredTypes.Add(type);
-            Lookup<TScope, TComp>.Id = _registeredCount;
-            _registeredCount++;
-        }
+//        public static void Register<TComp>()
+//        {
+//            var type = typeof(TComp);
+//
+//            if (_registeredTypes.Contains(type))
+//                return;
+//
+//            _registeredTypes.Add(type);
+//            Lookup<TScope, TComp>.Id = _registeredCount;
+//            _registeredCount++;
+//        }
 
         public static int TotalComponents
         {
@@ -271,7 +327,7 @@ namespace Entitas.Generic
 
                     for (var i = 0; i < _componentNamesCache.Length; i++)
                     {
-                        _componentNamesCache[i] = _registeredTypes[i].Name;
+                        _componentNamesCache[i] = _registeredTypes[i].FullName;
                     }
                 }
                 return _componentNamesCache;
