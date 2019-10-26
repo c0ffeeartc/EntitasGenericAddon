@@ -32,7 +32,7 @@ namespace Entitas.Generic
             if (IsScopeRegistered(scopeType))
                 return;
 
-            _contextTypes[_registeredCount] = typeof(ScopedContext<TScope>);
+            _contextTypes[_registeredCount] = typeof(TScope);
             _factories[_registeredCount] = (aercFactory) => new ScopedContext<TScope>(aercFactory);
             Lookup<TScope>.Id = _registeredCount;
             _registeredCount++;
@@ -40,10 +40,10 @@ namespace Entitas.Generic
 
         public static void RegisterAll()
         {
-            if ( _registeredCount > 0 )
-            {
-                return;
-            }
+//            if ( _registeredCount > 0 )
+//            {
+//                return;
+//            }
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -51,7 +51,8 @@ namespace Entitas.Generic
                 {
                     if ( !type.IsInterface
                         || !((IList) type.GetInterfaces()).Contains(typeof(IScope))
-                        || IsScopeRegistered( type ) )
+//                        || IsScopeRegistered( type )
+                        )
                     {
                         continue;
                     }
