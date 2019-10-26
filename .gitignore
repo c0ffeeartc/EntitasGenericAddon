@@ -7,3 +7,5 @@ bin/
 obj/
 *.csproj.DotSettings
 packages/*
+
+*.sln.DotSettings.user
