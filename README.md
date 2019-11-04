@@ -1,5 +1,5 @@
 # EntitasGenericAddon
-Addon to [Entitas](https://github.com/sschmid/Entitas-CSharp) that allows using generic methods instead of code generator
+Addon to [Entitas](https://github.com/sschmid/Entitas-CSharp) that allows using generic methods instead of code generator and uses type inference to insure compile time correctness
 
 This project is based on [Entitas.Generic](https://github.com/yosadchyi/Entitas.Generic)
 
