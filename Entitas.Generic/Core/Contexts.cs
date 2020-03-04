@@ -1,5 +1,4 @@
 ﻿using Entitas;
-using Entitas.CodeGeneration.Attributes;
 using Entitas.Generic;
 
 //namespace Entitas.Generic
@@ -8,7 +7,6 @@ using Entitas.Generic;
 	{
 		private IContext[] _scopedContexts;
 
-		[PostConstructor]
 		public void AddScopedContexts()
 		{
 			if ( _scopedContexts != null )
