@@ -41,13 +41,12 @@ There are two ways of using EntitasGenericAddon:
 public void Example()
 {
     // initialization must be called before new Contexts( ) or accessing Contexts.sharedInstance
-    Lookup_ScopeManager.RegisterAll( );
+    Lookup_ScopeManager.RegisterAll( );  // <-- 1
 
-    var contexts = Contexts.sharedInstance;
+    var contexts = Contexts.sharedInstance;  // <-- 2
+    // var contexts = new Contexts(  ); // <-- 2. If generator is not used in project
 
-    // if generator is not used in project
-    // var contexts = new Contexts(  );
-    // contexts.AddScopedContexts(  );
+    contexts.AddScopedContexts(  ); // <-- 3
 
     var game = contexts.Get<Game>( );
 
