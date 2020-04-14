@@ -18,7 +18,7 @@ public sealed class EventSystem_Self_<TScope, TData> : Entitas.ReactiveSystem<En
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) {
 		return context.CreateCollector(
-			Matcher_<TScope,TData>.I.Added(  ) ); }
+			Matcher<TScope,TData>.I.Added(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
 		return ent.HasIComponent<Event_SelfComponent<TScope,TData>>(  )

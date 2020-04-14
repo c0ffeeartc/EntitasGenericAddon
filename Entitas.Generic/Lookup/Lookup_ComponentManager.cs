@@ -186,11 +186,11 @@ namespace Entitas.Generic
         {
             var componentType = typeof(Lookup<,>);
 
-            if ( !dataType.IsClass )
-            {
-                var structComponentType = typeof(StructComponent<>);
-                dataType = structComponentType.MakeGenericType(dataType);
-            }
+            // if ( !dataType.IsClass )
+            // {
+            //     var structComponentType = typeof(StructComponent<>);
+            //     dataType = structComponentType.MakeGenericType(dataType);
+            // }
 
             var genericType = componentType.MakeGenericType(typeof(TScope), dataType);
 

@@ -22,7 +22,7 @@ public sealed class EventSystem_Any_<TScope,TData> : Entitas.ReactiveSystem<Enti
 	readonly			List<IOnAny<TScope, TData>>	_interfaceBuffer;
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) { return context.CreateCollector(
-		Matcher_<TScope,TData>.I.Added(  ) ); }
+		Matcher<TScope,TData>.I.Added(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
 		return ent.Has_<TData>(  ); }

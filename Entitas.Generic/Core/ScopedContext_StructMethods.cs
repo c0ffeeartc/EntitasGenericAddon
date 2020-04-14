@@ -7,7 +7,7 @@ public partial class ScopedContext<TScope>
 	public					Entity<TScope>			GetEntity_<TData>		(  )
 			where TData : struct, Scope<TScope>, IComponent, IUnique
 	{
-		return GetGroup( Matcher_<TScope, TData>.I ).GetSingleEntity(  );
+		return GetGroup( Matcher<TScope, TData>.I ).GetSingleEntity(  );
 	}
 
 	public					TData					Get_<TData>				(  )
@@ -19,7 +19,7 @@ public partial class ScopedContext<TScope>
 	public					Boolean					Has_<TData>				(  )
 			where TData : struct, Scope<TScope>, IComponent, ICompData, IUnique
 	{
-		return GetGroup( Matcher_<TScope, TData>.I ).GetSingleEntity(  ) != null;
+		return GetGroup( Matcher<TScope, TData>.I ).GetSingleEntity(  ) != null;
 	}
 
 	public					Entity<TScope>			Set_<TData>				( TData data )

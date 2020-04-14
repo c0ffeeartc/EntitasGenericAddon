@@ -22,7 +22,7 @@ public sealed class EventSystem_AnyRemoved_<TScope,TData> : ReactiveSystem<Entit
 	readonly			List<IOnAnyRemoved<TScope, TData>>	_interfaceBuffer;
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) { return context.CreateCollector(
-		Matcher_<TScope,TData>.I.Removed(  ) ); }
+		Matcher<TScope,TData>.I.Removed(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) {
 		return !ent.Has_<TData>(  ); }
