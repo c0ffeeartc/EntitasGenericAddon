@@ -199,7 +199,7 @@ namespace Entitas.Generic
                 return;
             }
 
-            _registeredTypes.Add(genericType);
+            _registeredTypes.Add(dataType);
 
             var fieldInfo = genericType.GetField("Id" ,
                 BindingFlags.Static
