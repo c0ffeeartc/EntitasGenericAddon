@@ -1,4 +1,5 @@
-﻿using Entitas;
+﻿using System;
+using Entitas;
 using Entitas.Generic;
 
 //namespace Entitas.Generic
@@ -31,6 +32,11 @@ using Entitas.Generic;
 		public ScopedContext<TScope> Get<TScope>() where TScope : IScope
 		{
 			return (ScopedContext<TScope>) _scopedContexts[Lookup<TScope>.Id];
+		}
+
+		public IContext Get(Int32 lookupId)
+		{
+			return _scopedContexts[lookupId];
 		}
 	}
 //}
