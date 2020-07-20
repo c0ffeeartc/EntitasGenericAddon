@@ -184,6 +184,8 @@ namespace Entitas.Generic
 
         private static void Register(Type dataType)
         {
+            try
+            {
             var componentType = typeof(Lookup<,>);
 
             // if ( !dataType.IsClass )
@@ -212,6 +214,11 @@ namespace Entitas.Generic
 
             fieldInfo.SetValue(null, _registeredCount);
             _registeredCount++;
+            }
+            catch ( Exception ) // when there is unused IComponent in code - iOS may get exception because of missing AOT 
+            {
+                // Console.WriteLine( ex.Message );
+            }
         }
 
         private static bool IsInScope(Type type)
