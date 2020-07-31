@@ -169,6 +169,42 @@ private void OnEnable()
 
 ```
 
+Events alternative for `Any`that uses `static Action` to sub/unsub
+```
+// Step 1. Add event markers to components
+public sealed class FlagA : IComponent, ICompFlag, Scope<Game>
+    , IEvent_Any<Game, FlagA> // <---
+{ }
+public struct CompB : IComponent, ICompData, Scope<Game>
+    , IEvent_Any<Game, CompB>
+    , IEvent_AnyRemoved<Game, CompB>  // <--- Removed
+{
+    // some code
+}
+
+    
+// Step 2. Add event systems to Systems. This step could be automated in future
+    systems.Add( new EventSystem_Any2<Game, CompB>(  ) );
+    systems.Add( new EventSystem_Any_Removed2<Game, CompB>(  ) );  // Removed
+    systems.Add( new EventSystem_Any_Flag2<Game, FlagA>(  ) );  // Flag, callback on True and False unlike original EventsFeature
+
+// Step 3. Subscribe/Unsubscribe callback
+private void Awake()
+{
+    OnAny<Game, CompB>.Action += OnCompB;
+}
+
+private void OnDestroy()
+{
+    OnAny<Game, CompB>.Action -= OnCompB;
+}
+
+private void OnCompB(Entity<Game> entity)
+{
+    // some code
+}
+```
+
 EntityIndex
 ```csharp
 // Step 1(Optional). Create const string key for accessing entity index
