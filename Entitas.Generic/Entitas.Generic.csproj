@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Core\AERCFactories.cs" />
     <Compile Include="Core\Contexts.cs" />
+    <Compile Include="Core\EntExtensions.cs" />
     <Compile Include="Core\EntityIndexExtensions.cs" />
     <Compile Include="Core\Entity_ClassMethods.cs" />
     <Compile Include="Core\Entity_StructMethods.cs" />

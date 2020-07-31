@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 namespace Entitas.Generic
 {
-	public interface IListen<TScope, TComp>
-		where TScope : IScope
-		where TComp : IComponent, IScope
-	{
-	}
+public interface IGetSingleEntByIndex<TKey> {}
+public interface IGetAllEntsByIndex<TKey> {}
+
 public static class EntityIndexExtensions
 {
 	public static		void					AddEntityIndex<TScope, TKey>			( this Context<Entity<TScope>> context
@@ -23,6 +21,22 @@ public static class EntityIndexExtensions
 			where TScope : IScope
 	{
 		return ((EntityIndex<Entity<TScope>, TKey>)context.GetEntityIndex( indexKey )).GetEntities( entityKey );
+	}
+
+	// for compile time type inference
+	public static			Entity<TScope>			GetSingleEntBy<TScope, TComp, TKey>	( this ScopedContext<TScope> context, String indexName, TKey key )
+			where TScope : IScope
+			where TComp : Scope<TScope>, IGetSingleEntByIndex<TKey>
+	{
+		return context.GetEntities( indexName, key ).SingleEntity(  );
+	}
+
+	// for compile time type inference
+	public static			HashSet<Entity<TScope>>	GetAllEntsBy<TScope, TComp, TKey>( this ScopedContext<TScope> context, String indexName, TKey key )
+			where TScope : IScope
+			where TComp : Scope<TScope>, IGetAllEntsByIndex<TKey>
+	{
+		return context.GetEntities( indexName, key );
 	}
 }
 }
