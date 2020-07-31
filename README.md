@@ -169,8 +169,8 @@ private void OnEnable()
 
 ```
 
-Events alternative for `Any`that uses `static Action` to sub/unsub
-```
+Events alternative for `OnAny`. Uses `static Action` to subscribe/unsubscribe
+```csharp
 // Step 1. Add event markers to components
 public sealed class FlagA : IComponent, ICompFlag, Scope<Game>
     , IEvent_Any<Game, FlagA> // <---
