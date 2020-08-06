@@ -4,80 +4,78 @@ using System.Reflection;
 
 namespace Entitas.Generic
 {
-    public class Lookup_ScopeManager
-    {
-        public const int MaxScopes = 32;
+public class Lookup_ScopeManager
+{
+	public const			int						MaxScopes				= 32;
 
-        private static readonly Type[] _contextTypes;
-        private static readonly Func<Func<IEntity, IAERC>, IContext>[] _factories;
+	private static readonly	Type[]					_contextTypes			= new Type[MaxScopes];
+	private static readonly	Func<Func<IEntity, IAERC>, IContext>[] _factories = new Func<Func<IEntity, IAERC>, IContext>[MaxScopes];
 
-        static Lookup_ScopeManager()
-        {
-            _contextTypes = new Type[MaxScopes];
-            _factories = new Func<Func<IEntity, IAERC>, IContext>[MaxScopes];
-        }
+	public static			IContext				CreateContext			( int index, Func<IEntity, IAERC> aercFactory )
+	{
+		return _factories[index](aercFactory);
+	}
 
-        public static IContext CreateContext(int index, Func<IEntity, IAERC> aercFactory)
-        {
-            return _factories[index](aercFactory);
-        }
+	public static			void					RegisterScope<TScope>	(  ) where TScope : IScope
+	{
+		var scopeType				= typeof(TScope);
 
-        public static void RegisterScope<TScope>() where TScope : IScope
-        {
-            var scopeType = typeof(TScope);
+		if ( IsScopeRegistered( scopeType ) )
+		{
+			return;
+		}
 
-            if (IsScopeRegistered(scopeType))
-                return;
+		_contextTypes[ScopeCount.Value] = typeof(TScope);
+		_factories[ScopeCount.Value] = (aercFactory) => new ScopedContext<TScope>(aercFactory);
+		Lookup<TScope>.Id			= ScopeCount.Value;
+		ScopeCount.Value++;
+	}
 
-            _contextTypes[ScopeCount.Value] = typeof(TScope);
-            _factories[ScopeCount.Value] = (aercFactory) => new ScopedContext<TScope>(aercFactory);
-            Lookup<TScope>.Id = ScopeCount.Value;
-            ScopeCount.Value++;
-        }
+	public static			void					RegisterAll				(  )
+	{
+		// if ( _registeredCount > 0 )
+		// {
+		//	 return;
+		// }
 
-        public static void RegisterAll()
-        {
-//            if ( _registeredCount > 0 )
-//            {
-//                return;
-//            }
+		foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+		{
+			foreach (var type in assembly.GetTypes())
+			{
+				if ( !type.IsInterface
+					|| !((IList) type.GetInterfaces()).Contains(typeof(IScope))
+					// || IsScopeRegistered( type )
+					)
+				{
+					continue;
+				}
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if ( !type.IsInterface
-                        || !((IList) type.GetInterfaces()).Contains(typeof(IScope))
-//                        || IsScopeRegistered( type )
-                        )
-                    {
-                        continue;
-                    }
+				{
+					MethodInfo methodInfo  = typeof(Lookup_ScopeManager).GetMethod( "RegisterScope", BindingFlags.Static | BindingFlags.Public );
+					var generic			= methodInfo.MakeGenericMethod( type );
+					generic.Invoke( null, null );
+				}
 
-                    {
-                        MethodInfo methodInfo  = typeof(Lookup_ScopeManager).GetMethod( "RegisterScope", BindingFlags.Static | BindingFlags.Public );
-                        var generic            = methodInfo.MakeGenericMethod( type );
-                        generic.Invoke( null, null );
-                    }
+				{
+					var managerType = typeof(Lookup_ComponentManager<>);
+					var genericManagerType = managerType.MakeGenericType(type);
+					MethodInfo methodInfo  = genericManagerType.GetMethod( "Autoscan", BindingFlags.Static | BindingFlags.Public );
+					methodInfo.Invoke( null, null );
+				}
+			}
+		}
+	}
 
-                    {
-                        var managerType = typeof(Lookup_ComponentManager<>);
-                        var genericManagerType = managerType.MakeGenericType(type);
-                        MethodInfo methodInfo  = genericManagerType.GetMethod( "Autoscan", BindingFlags.Static | BindingFlags.Public );
-                        methodInfo.Invoke( null, null );
-                    }
-                }
-            }
-        }
-
-        private static bool IsScopeRegistered(Type type)
-        {
-            for (var i = 0; i < ScopeCount.Value; i++)
-            {
-                if (type == _contextTypes[i])
-                    return true;
-            }
-            return false;
-        }
-    }
+	private static			bool					IsScopeRegistered		( Type type )
+	{
+		for (var i = 0; i < ScopeCount.Value; i++)
+		{
+			if ( type == _contextTypes[i] )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+}
 }
