@@ -8,11 +8,8 @@ namespace Entitas.Generic
     {
         public const int MaxScopes = 32;
 
-        private static int _registeredCount;
         private static readonly Type[] _contextTypes;
         private static readonly Func<Func<IEntity, IAERC>, IContext>[] _factories;
-
-        public static int Count { get { return _registeredCount; } }
 
         static Lookup_ScopeManager()
         {
@@ -32,10 +29,10 @@ namespace Entitas.Generic
             if (IsScopeRegistered(scopeType))
                 return;
 
-            _contextTypes[_registeredCount] = typeof(TScope);
-            _factories[_registeredCount] = (aercFactory) => new ScopedContext<TScope>(aercFactory);
-            Lookup<TScope>.Id = _registeredCount;
-            _registeredCount++;
+            _contextTypes[ScopeCount.Value] = typeof(TScope);
+            _factories[ScopeCount.Value] = (aercFactory) => new ScopedContext<TScope>(aercFactory);
+            Lookup<TScope>.Id = ScopeCount.Value;
+            ScopeCount.Value++;
         }
 
         public static void RegisterAll()
@@ -75,7 +72,7 @@ namespace Entitas.Generic
 
         private static bool IsScopeRegistered(Type type)
         {
-            for (var i = 0; i < _registeredCount; i++)
+            for (var i = 0; i < ScopeCount.Value; i++)
             {
                 if (type == _contextTypes[i])
                     return true;

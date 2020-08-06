@@ -15,9 +15,9 @@ using Entitas.Generic;
 				return;
 			}
 
-			_scopedContexts = new IContext[Lookup_ScopeManager.Count];
+			_scopedContexts = new IContext[ScopeCount.Value];
 
-			for (var i = 0; i < Lookup_ScopeManager.Count; i++)
+			for (var i = 0; i < ScopeCount.Value; i++)
 			{
 				_scopedContexts[i] = Lookup_ScopeManager.CreateContext(i,
 #if (ENTITAS_FAST_AND_UNSAFE)

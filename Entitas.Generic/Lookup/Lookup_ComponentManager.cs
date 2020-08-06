@@ -13,20 +13,26 @@ namespace Entitas.Generic
     /// <typeparam name="TScope">Scope</typeparam>
     public class Lookup_ComponentManager<TScope> where TScope : IScope
     {
-        private static int _registeredCount;
         private static readonly List<Type> _registeredTypes = new List<Type>();
         private static string[] _componentNamesCache;
         private static Type[] _typesCache;
+        private static Boolean _isInit;
 
         public static void Autoscan()
         {
+            if ( _isInit )
+            {
+                return;
+            }
+            _isInit = true;
+
             Scan_IComponents(  );
             Scan_EventAny(  );
             Scan_EventAnyRemoved(  );
             Scan_EventSelf(  );
             Scan_EventSelfRemoved(  );
 
-//            Console.WriteLine( "\n" + typeof(TScope).Name + ": " + _registeredCount );
+//            Console.WriteLine( "\n" + typeof(TScope).Name + ": " + Lookup<TScope>.CompCount.ToString(  ) );
 //            foreach ( var regT in _registeredTypes )
 //            {
 //                Console.WriteLine( regT.ToGenericTypeString() );
@@ -212,8 +218,8 @@ namespace Entitas.Generic
             if (fieldInfo == null)
                 throw new Exception(string.Format("Type `{0}' does not contains `Id' field", genericType.Name));
 
-            fieldInfo.SetValue(null, _registeredCount);
-            _registeredCount++;
+            fieldInfo.SetValue(null, Lookup<TScope>.CompCount);
+            Lookup<TScope>.CompCount++;
             }
             catch ( Exception ) // when there is unused IComponent in code - iOS may get exception because of missing AOT 
             {
@@ -286,11 +292,6 @@ namespace Entitas.Generic
 //            Lookup<TScope, TComp>.Id = _registeredCount;
 //            _registeredCount++;
 //        }
-
-        public static int TotalComponents
-        {
-            get { return _registeredTypes.Count; }
-        }
 
         public static string[] ComponentNamesCache
         {
