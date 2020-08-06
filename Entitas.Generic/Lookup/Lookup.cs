@@ -13,9 +13,11 @@ public class Lookup<TScope> where TScope : IScope
 	public static			int						Id						= -1;
 	public static			int						CompCount;
 	public static			List<Type>				CompTypes				= new List<Type>(  );
-	public static			List<String>			CompNames				= new List<String>(  );
+	public static			List<String>			CompNamesFull			= new List<String>(  );
+	public static			List<String>			CompNamesPretty			= new List<String>(  );
 	private static			Type[]					_compTypesArray;
-	private static			String[]				_compNamesArray;
+	private static			String[]				_compNamesFullArray;
+	private static			String[]				_compNamesPrettyArray;
 	public static			Type[]					CompTypesArray
 	{
 		get
@@ -28,16 +30,28 @@ public class Lookup<TScope> where TScope : IScope
 			return _compTypesArray;
 		}
 	}
-	public static			String[]				CompNamesArray
+	public static			String[]				CompNamesFullArray
 	{
 		get
 		{
-			if ( _compNamesArray == null
-				|| _compNamesArray.Length != CompNames.Count )
+			if ( _compNamesFullArray == null
+				|| _compNamesFullArray.Length != CompNamesFull.Count )
 			{
-				_compNamesArray		= CompNames.ToArray(  );
+				_compNamesFullArray		= CompNamesFull.ToArray(  );
 			}
-			return _compNamesArray;
+			return _compNamesFullArray;
+		}
+	}
+	public static			String[]				CompNamesPrettyArray
+	{
+		get
+		{
+			if ( _compNamesPrettyArray == null
+				|| _compNamesPrettyArray.Length != CompNamesPretty.Count )
+			{
+				_compNamesPrettyArray		= CompNamesPretty.ToArray(  );
+			}
+			return _compNamesPrettyArray;
 		}
 	}
 }

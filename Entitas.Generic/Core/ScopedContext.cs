@@ -9,7 +9,7 @@ namespace Entitas.Generic
             1,
             new ContextInfo(
                 typeof(TScope).Name,
-                Lookup<TScope>.CompNamesArray,
+                Lookup<TScope>.CompNamesPrettyArray,
                 Lookup<TScope>.CompTypesArray
                 ),
             aercFactory,

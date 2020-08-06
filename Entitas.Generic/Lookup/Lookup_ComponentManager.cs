@@ -202,7 +202,8 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 			}
 
 			Lookup<TScope>.CompTypes.Add( dataType );
-			Lookup<TScope>.CompNames.Add( dataType.FullName );
+			Lookup<TScope>.CompNamesFull.Add( dataType.FullName );
+			Lookup<TScope>.CompNamesPretty.Add( dataType.ToGenericTypeString(  ) );
 
 			var fieldInfo = lookupTScopeTComp.GetField("Id" ,
 				BindingFlags.Static
