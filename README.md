@@ -227,22 +227,22 @@ var entities = context.GetEntities( EntIndex.B, 23 );
 
 Visual Debugging
 ```csharp
-    public static void InitVisualDebugging ( Contexts contexts )
+public static void InitVisualDebugging ( Contexts contexts )
+{
+    #if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
+    try
     {
-        #if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
-        try
+        foreach ( var context in contexts.All )
         {
-            foreach ( var context in contexts.All )
-            {
-                var observer = new Entitas.VisualDebugging.Unity.ContextObserver(context);
-                UnityEngine.Object.DontDestroyOnLoad(observer.gameObject);
-            }
+            var observer = new Entitas.VisualDebugging.Unity.ContextObserver(context);
+            UnityEngine.Object.DontDestroyOnLoad(observer.gameObject);
         }
-        catch(System.Exception)
-        {
-        }
-        #endif
     }
+    catch(System.Exception)
+    {
+    }
+    #endif
+}
 ```
 
 ## FAQ
