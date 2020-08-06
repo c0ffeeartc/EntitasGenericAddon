@@ -33,10 +33,10 @@ public class Lookup_ScopeManager
 
 	public static			void					RegisterAll				(  )
 	{
-		// if ( _registeredCount > 0 )
-		// {
-		//	 return;
-		// }
+		if ( ScopeCount.Value > 0 )
+		{
+			return;
+		}
 
 		foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 		{
