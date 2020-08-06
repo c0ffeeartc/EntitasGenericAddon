@@ -15,8 +15,8 @@
 				}
 				var index				= Lookup<TScope, TComponent>.Id;
 				var matcher				= (Matcher<Entity<TScope>>) Matcher<Entity<TScope>>.AllOf( index );
-				matcher.componentNames	= Lookup_ComponentManager<TScope>.ComponentNamesCache;
-				_instance					= matcher;
+				matcher.componentNames	= Lookup<TScope>.CompNamesArray;
+				_instance				= matcher;
 				return _instance;
 			}
 		}

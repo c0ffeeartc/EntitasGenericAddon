@@ -9,9 +9,9 @@ namespace Entitas.Generic
             1,
             new ContextInfo(
                 typeof(TScope).Name,
-                Lookup_ComponentManager<TScope>.ComponentNamesCache,
-                Lookup_ComponentManager<TScope>.ComponentTypesCache
-            ),
+                Lookup<TScope>.CompNamesArray,
+                Lookup<TScope>.CompTypesArray
+                ),
             aercFactory,
             () => new Entity<TScope>(  ) )
         {

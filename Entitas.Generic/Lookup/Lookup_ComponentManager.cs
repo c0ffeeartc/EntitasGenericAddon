@@ -13,9 +13,6 @@ namespace Entitas.Generic
     /// <typeparam name="TScope">Scope</typeparam>
     public class Lookup_ComponentManager<TScope> where TScope : IScope
     {
-        private static readonly List<Type> _registeredTypes = new List<Type>();
-        private static string[] _componentNamesCache;
-        private static Type[] _typesCache;
         private static Boolean _isInit;
 
         public static void Autoscan()
@@ -32,11 +29,12 @@ namespace Entitas.Generic
             Scan_EventSelf(  );
             Scan_EventSelfRemoved(  );
 
-//            Console.WriteLine( "\n" + typeof(TScope).Name + ": " + Lookup<TScope>.CompCount.ToString(  ) );
-//            foreach ( var regT in _registeredTypes )
-//            {
-//                Console.WriteLine( regT.ToGenericTypeString() );
-//            }
+            // Console.WriteLine( "\n" + typeof(TScope).Name + ": " + Lookup<TScope>.CompCount.ToString(  ) );
+            // for ( var i = 0; i < Lookup<TScope>.CompTypes.Count; i++ )
+            // {
+            //     var regT = Lookup<TScope>.CompTypes[i];
+            //     Console.WriteLine( regT.ToGenericTypeString( ) );
+            // }
         }
 
         private static void Scan_IComponents()
@@ -192,7 +190,7 @@ namespace Entitas.Generic
         {
             try
             {
-            var componentType = typeof(Lookup<,>);
+            var lookupT1T2 = typeof(Lookup<,>);
 
             // if ( !dataType.IsClass )
             // {
@@ -200,23 +198,24 @@ namespace Entitas.Generic
             //     dataType = structComponentType.MakeGenericType(dataType);
             // }
 
-            var genericType = componentType.MakeGenericType(typeof(TScope), dataType);
+            var lookupTScopeTComp = lookupT1T2.MakeGenericType(typeof(TScope), dataType);
 
-            if (_registeredTypes.Contains(genericType))
+            if (Lookup<TScope>.CompTypes.Contains(lookupTScopeTComp))
             {
                 return;
             }
 
-            _registeredTypes.Add(dataType);
+            Lookup<TScope>.CompTypes.Add( dataType );
+            Lookup<TScope>.CompNames.Add( dataType.FullName );
 
-            var fieldInfo = genericType.GetField("Id" ,
+            var fieldInfo = lookupTScopeTComp.GetField("Id" ,
                 BindingFlags.Static
                 | BindingFlags.SetField
                 | BindingFlags.Public
                 );
 
             if (fieldInfo == null)
-                throw new Exception(string.Format("Type `{0}' does not contains `Id' field", genericType.Name));
+                throw new Exception(string.Format("Type `{0}' does not contains `Id' field", lookupTScopeTComp.Name));
 
             fieldInfo.SetValue(null, Lookup<TScope>.CompCount);
             Lookup<TScope>.CompCount++;
@@ -279,47 +278,6 @@ namespace Entitas.Generic
                         && x.GetGenericArguments()[0] == typeof(TScope)
                         && x.GetGenericArguments()[1] == type
                         );
-        }
-
-//        public static void Register<TComp>()
-//        {
-//            var type = typeof(TComp);
-//
-//            if (_registeredTypes.Contains(type))
-//                return;
-//
-//            _registeredTypes.Add(type);
-//            Lookup<TScope, TComp>.Id = _registeredCount;
-//            _registeredCount++;
-//        }
-
-        public static string[] ComponentNamesCache
-        {
-            get
-            {
-                if (_componentNamesCache == null)
-                {
-                    _componentNamesCache = new string[_registeredTypes.Count];
-
-                    for (var i = 0; i < _componentNamesCache.Length; i++)
-                    {
-                        _componentNamesCache[i] = _registeredTypes[i].FullName;
-                    }
-                }
-                return _componentNamesCache;
-            }
-        }
-
-        public static Type[] ComponentTypesCache
-        {
-            get
-            {
-                if (_typesCache == null)
-                {
-                    _typesCache = _registeredTypes.ToArray();
-                }
-                return _typesCache;
-            }
         }
     }
 }
