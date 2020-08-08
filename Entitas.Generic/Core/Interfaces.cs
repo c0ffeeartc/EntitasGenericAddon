@@ -5,6 +5,7 @@
 	public interface ICompData { }
 	public interface ICompFlag { }
 	public interface IUnique { }
+	public interface ICreateApply { }
 	public interface ICopyFrom<T>
 	{
 		void CopyFrom(T other);

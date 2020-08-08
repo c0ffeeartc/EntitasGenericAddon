@@ -90,6 +90,15 @@ namespace Tests
 		}
 	}
 
+	public sealed class TestComp_CreateApply_A
+			: IComponent
+			, ICompData
+			, ICreateApply
+			, Scope<ScopeA>
+	{
+		public				Single					Value;
+	}
+
 	internal sealed class TestFlagA : IComponent, ICompFlag, Scope<ScopeA>
 	{ }
 	internal sealed class TestFlagB : IComponent, ICompFlag, Scope<ScopeB>

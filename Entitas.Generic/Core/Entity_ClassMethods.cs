@@ -30,6 +30,19 @@
             return (TComp) GetComponent(Lookup<TScope, TComp>.Id);
         }
 
+        public TComp Create<TComp>() where TComp : class, Scope<TScope>, ICompData, ICreateApply, IComponent, new()
+        {
+            var index = Lookup<TScope, TComp>.Id;
+            var component = CreateComponent(index, typeof(TComp));
+            return (TComp)component;
+        }
+
+        public void Apply<TComp>(TComp comp) where TComp : class, Scope<TScope>, ICompData, ICreateApply, IComponent, new()
+        {
+            var index = Lookup<TScope, TComp>.Id;
+            ReplaceComponent(index, comp);
+        }
+
         public void Flag<TComp>(bool flag) where TComp : class, Scope<TScope>, ICompFlag, IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;

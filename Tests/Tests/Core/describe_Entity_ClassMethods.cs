@@ -94,6 +94,35 @@ namespace Tests
 				entity.Get<TestCompA>(  ).Value.should_be( 2f );
 			};
 
+			it["ICreateApply. Create component"] = ()=>
+			{
+				// given
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
+
+				// when
+				var comp				= entity.Create<TestComp_CreateApply_A>(  );
+
+				// then
+				entity.Has<TestComp_CreateApply_A>(  ).should_be_false(  );
+			};
+
+			it["ICreateApply. Apply component"] = ()=>
+			{
+				// given
+				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
+
+				// when
+				var comp				= entity.Create<TestComp_CreateApply_A>(  );
+				comp.Value.should_be( 0f );
+				comp.Value				= 1f;
+				entity.Has<TestComp_CreateApply_A>(  ).should_be_false(  );
+				entity.Apply( comp );
+
+				// then
+				entity.Has<TestComp_CreateApply_A>(  ).should_be_true(  );
+				entity.Get<TestComp_CreateApply_A>(  ).should_be_same( comp );
+			};
+
 			it["flag, is"] = ()=>
 			{
 				// given
