@@ -13,7 +13,8 @@ Make Entitas extensible by separate dll
       - `IScope` - base interface for context scope
       - `Scope<T>` - context scope of IComponent
       - `IComponent` - allows class to be managed by **Entitas**, gives access to `Get<T>` extension methods
-      - `ICompData` - gives access to `Add`, `Remove`, `Replace`, `Has` (class componenents require `ICopyFrom<TSelf>`). 
+      - `ICompData` - gives access to `Add`, `Remove`, `Replace`, `Has` (class componenents require `ICopyFrom<TSelf>`).
+      - `ICreateApply` - alternative workflow for class components that doesn't require `ICopyFrom<TSelf>`
       - `ICompFlag` - gives access to `Flag<T>`, `Is<T>`
       - `IUnique` - provides context `Add`, `Replace` etc methods for unique components or flags
 
@@ -96,6 +97,37 @@ public sealed class A
         Value = other.Value;
     }
 }
+```
+
+`ICreateApply` alternative workflow for class components doesn't require to implement `ICopyFrom<T>`.
+
+> It's still recommended to create `Set` method that ensures initializing all values even after refactoring(in rider it's as easy as writing `ctorf`, pressing tab and renaming method to Set)
+  
+```csharp
+// Step1
+public sealed class A
+        : IComponent
+        , ICompData
+        , ICreateApply
+        , Scope<Game>
+{
+    public int Value;
+    
+    public A Set (value)  // Optional
+    {
+        Value = value;
+        return this;
+    }
+}
+
+// Step2
+var comp = entity.Create<A>(  );
+comp.Value = 1f;
+entity.Apply( comp );
+
+// or recommended using Set method
+entity.Apply( entity.Create<A>(  )
+    .Set( 1f ) );
 ```
 
 FlagComponent
