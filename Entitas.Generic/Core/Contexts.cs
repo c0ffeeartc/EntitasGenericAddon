@@ -17,17 +17,11 @@ public partial class Contexts
 			return;
 		}
 
-		_all				= new List<IContext>(ScopeCount.Value);
+		_all				= new List<IContext>(Scopes.Count);
 
-		for ( var i = 0; i < ScopeCount.Value; i++ )
+		for ( var i = 0; i < Scopes.Count; i++ )
 		{
-			_all.Add( Lookup_ScopeManager.CreateContext(i,
-				#if (ENTITAS_FAST_AND_UNSAFE)
-				AERCFactories.UnsafeAERCFactory
-				#else
-				AERCFactories.SafeAERCFactory
-				#endif
-				) );
+			_all.Add( Scopes.CreateContext[i].Invoke(  ) );
 		}
 	}
 

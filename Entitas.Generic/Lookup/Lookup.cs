@@ -56,8 +56,9 @@ public class Lookup<TScope> where TScope : IScope
 	}
 }
 
-public class ScopeCount
+public class Scopes
 {
-	public static			int						Value;
+	public static			List<Func<IContext>>	CreateContext			= new List<Func<IContext>>(  );
+	public static			int						Count;
 }
 }

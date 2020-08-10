@@ -9,12 +9,6 @@ public class Lookup_ScopeManager
 	public const			int						MaxScopes				= 32;
 
 	private static readonly	Type[]					_contextTypes			= new Type[MaxScopes];
-	private static readonly	Func<Func<IEntity, IAERC>, IContext>[] _factories = new Func<Func<IEntity, IAERC>, IContext>[MaxScopes];
-
-	public static			IContext				CreateContext			( int index, Func<IEntity, IAERC> aercFactory )
-	{
-		return _factories[index](aercFactory);
-	}
 
 	public static			void					RegisterScope<TScope>	(  ) where TScope : IScope
 	{
@@ -25,15 +19,32 @@ public class Lookup_ScopeManager
 			return;
 		}
 
-		_contextTypes[ScopeCount.Value] = typeof(TScope);
-		_factories[ScopeCount.Value] = (aercFactory) => new ScopedContext<TScope>(aercFactory);
-		Lookup<TScope>.Id			= ScopeCount.Value;
-		ScopeCount.Value++;
+		_contextTypes[Scopes.Count] = typeof(TScope);
+		Scopes.CreateContext.Add( () => new ScopedContext<TScope>
+			(
+				Lookup<TScope>.CompCount,
+				1,
+				new ContextInfo(
+					typeof(TScope).Name,
+					Lookup<TScope>.CompNamesPrettyArray,
+					Lookup<TScope>.CompTypesArray
+					),
+				#if (ENTITAS_FAST_AND_UNSAFE)
+				AERCFactories.UnsafeAERCFactory
+				#else
+				AERCFactories.SafeAERCFactory
+				#endif
+					,
+				() => new Entity<TScope>(  )
+			) );
+
+		Lookup<TScope>.Id			= Scopes.Count;
+		Scopes.Count++;
 	}
 
 	public static			void					RegisterAll				(  )
 	{
-		if ( ScopeCount.Value > 0 )
+		if ( Scopes.Count > 0 )
 		{
 			return;
 		}
@@ -68,7 +79,7 @@ public class Lookup_ScopeManager
 
 	private static			bool					IsScopeRegistered		( Type type )
 	{
-		for (var i = 0; i < ScopeCount.Value; i++)
+		for (var i = 0; i < Scopes.Count; i++)
 		{
 			if ( type == _contextTypes[i] )
 			{
