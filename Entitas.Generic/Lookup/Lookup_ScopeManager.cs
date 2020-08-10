@@ -6,20 +6,13 @@ namespace Entitas.Generic
 {
 public class Lookup_ScopeManager
 {
-	public const			int						MaxScopes				= 32;
-
-	private static readonly	Type[]					_contextTypes			= new Type[MaxScopes];
-
 	public static			void					RegisterScope<TScope>	(  ) where TScope : IScope
 	{
-		var scopeType				= typeof(TScope);
-
-		if ( IsScopeRegistered( scopeType ) )
+		if ( Lookup<TScope>.Id >= 0 )
 		{
 			return;
 		}
 
-		_contextTypes[Scopes.Count] = typeof(TScope);
 		Scopes.CreateContext.Add( () => new ScopedContext<TScope>
 			(
 				Lookup<TScope>.CompCount,
@@ -75,18 +68,6 @@ public class Lookup_ScopeManager
 				}
 			}
 		}
-	}
-
-	private static			bool					IsScopeRegistered		( Type type )
-	{
-		for (var i = 0; i < Scopes.Count; i++)
-		{
-			if ( type == _contextTypes[i] )
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 }
 }
