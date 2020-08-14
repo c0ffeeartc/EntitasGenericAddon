@@ -46,9 +46,12 @@
     <ItemGroup>
         <Compile Include="PerformanceTestsRunner.cs" />
         <Compile Include="Sources\EmptyTest.cs" />
+        <Compile Include="Sources\Entity\Entity_Replace_CompData_Class.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct.cs" />
+        <Compile Include="Sources\Entity\Entity_Replace_CompData_Struct.cs" />
         <Compile Include="Sources\Fixtures\TestCompA_Scope1.cs" />
+        <Compile Include="Sources\Fixtures\TestCompB_Scope1.cs" />
         <Compile Include="Sources\Fixtures\TestScopes.cs" />
         <Compile Include="Sources\IPerformanceTest.cs" />
         <Compile Include="Program.cs" />

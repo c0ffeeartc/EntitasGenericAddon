@@ -34,3 +34,9 @@ public struct TestCompAStruct_Scope1 : IComponent
 		this.data = data;
 	}
 }
+
+public sealed class TestCompAFlag_Scope1 : IComponent
+		, Scope<TestScope1>
+		, ICompFlag
+{
+}
