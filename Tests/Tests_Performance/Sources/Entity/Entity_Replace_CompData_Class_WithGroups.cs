@@ -1,7 +1,7 @@
 using Entitas;
 using Entitas.Generic;
 
-public class Entity_Replace_CompData_Class : IPerformanceTest
+public sealed class Entity_Replace_CompData_Class_WithGroups : IPerformanceTest
 {
 	private const			int						n						= 1000000;
 	private					Entity<TestScope1>		_ent;

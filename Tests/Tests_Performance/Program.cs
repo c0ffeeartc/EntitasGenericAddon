@@ -15,8 +15,10 @@ internal class Program
 
 		run<Entity_AddRemove_CompData_Class>();
 		run<Entity_AddRemove_CompData_Struct>();
-		run<Entity_Replace_CompData_Class>();
-		run<Entity_Replace_CompData_Struct>();
+		run<Entity_AddRemove_CompData_Class_WithGroups>();
+		run<Entity_AddRemove_CompData_Struct_WithGroups>();
+		run<Entity_Replace_CompData_Class_WithGroups>();
+		run<Entity_Replace_CompData_Struct_WithGroups>();
 
 		run<Entity_Get_CompData_Class>(  );
 		run<Entity_Get_CompData_Struct>(  );
