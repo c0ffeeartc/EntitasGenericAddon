@@ -18,6 +18,12 @@ internal class Program
 		run<Entity_Replace_CompData_Class>();
 		run<Entity_Replace_CompData_Struct>();
 
+		run<Entity_Get_CompData_Class>(  );
+		run<Entity_Get_CompData_Struct>(  );
+
+		run<Entity_Has_CompData_Class>(  );
+		run<Entity_Has_CompData_Struct>(  );
+
 		Console.WriteLine("\nPress any key...");
 		Console.Read();
 	}

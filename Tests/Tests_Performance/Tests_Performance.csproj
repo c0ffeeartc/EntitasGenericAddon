@@ -46,6 +46,10 @@
     <ItemGroup>
         <Compile Include="PerformanceTestsRunner.cs" />
         <Compile Include="Sources\EmptyTest.cs" />
+        <Compile Include="Sources\Entity\Entity_Get_CompData_Class.cs" />
+        <Compile Include="Sources\Entity\Entity_Get_CompData_Struct.cs" />
+        <Compile Include="Sources\Entity\Entity_Has_CompData_Class.cs" />
+        <Compile Include="Sources\Entity\Entity_Has_CompData_Struct.cs" />
         <Compile Include="Sources\Entity\Entity_Replace_CompData_Class.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct.cs" />
