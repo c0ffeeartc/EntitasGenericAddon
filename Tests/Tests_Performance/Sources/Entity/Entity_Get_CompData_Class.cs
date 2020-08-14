@@ -4,6 +4,7 @@ public sealed class Entity_Get_CompData_Class : IPerformanceTest
 {
 	private const			int						n						= 10000000;
 	private					Entity<TestScope1>		_e;
+	public					int						Iterations				=> n;
 
 	public					void					Before					(  )
 	{
@@ -21,7 +22,7 @@ public sealed class Entity_Get_CompData_Class : IPerformanceTest
 	{
 		for ( int i = 0; i < n; i++ )
 		{
-			_e.Get<TestCompA_Scope1>(  );
+			var comp = _e.Get<TestCompA_Scope1>(  );
 		}
 	}
 }

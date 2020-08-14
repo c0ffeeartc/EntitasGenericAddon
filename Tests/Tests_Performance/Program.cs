@@ -26,8 +26,11 @@ internal class Program
 		run<Entity_Has_CompData_Class>(  );
 		run<Entity_Has_CompData_Struct>(  );
 
-		Console.WriteLine("\nPress any key...");
-		Console.Read();
+		run<Entity_Flag_CompFlag>(  );
+		run<Entity_Is_CompFlag>(  );
+
+		// Console.WriteLine("\nPress any key...");
+		// Console.Read();
 	}
 
 	//Running performance tests...
@@ -40,9 +43,10 @@ internal class Program
 			Console.WriteLine(string.Empty);
 			return;
 		}
-		Console.Write((typeof(T) + ": ").PadRight(40));
+		var test = new T();
+		Console.Write( test.Iterations.ToString( "e0" ) + " " + (typeof(T) + ": ").PadRight(60));
 		// For more reliable results, run before
-		PerformanceTestRunner.Run(new T());
+		PerformanceTestRunner.Run(test);
 		var ms = PerformanceTestRunner.Run(new T());
 		Console.WriteLine(ms + " ms");
 	}

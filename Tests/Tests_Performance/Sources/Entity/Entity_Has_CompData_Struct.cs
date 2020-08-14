@@ -4,6 +4,7 @@ public sealed class Entity_Has_CompData_Struct : IPerformanceTest
 {
 	private const			int						n						= 10000000;
 	private					Entity<TestScope1>		_e;
+	public					int						Iterations				=> n;
 
 	public					void					Before					(  )
 	{

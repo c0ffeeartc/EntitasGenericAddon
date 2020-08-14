@@ -6,6 +6,7 @@ public class Entity_AddRemove_CompData_Class_WithGroups : IPerformanceTest
 	private const			int						n						= 1000000;
 	private					Entity<TestScope1>		_ent;
 	private					TestCompA_Scope1		_testCompAScope1;
+	public					int						Iterations				=> n;
 
 	public					void					Before					(  )
 	{

@@ -3,9 +3,10 @@ using Entitas.Generic;
 
 public class Entity_AddRemove_CompData_Struct_WithGroups : IPerformanceTest
 {
-	private const			int						n						= 10000000;
+	private const			int						n						= 1000000;
 	private					Entity<TestScope1>		_ent;
 	private					TestCompAStruct_Scope1	_testCompAScope1;
+	public					int						Iterations				=> n;
 
 	public					void					Before					(  )
 	{
@@ -13,8 +14,8 @@ public class Entity_AddRemove_CompData_Struct_WithGroups : IPerformanceTest
 		contexts.AddScopedContexts(  );
 
 		var _context				= contexts.Get<TestScope1>(  );
-		var compAId					= Lookup<TestScope1,TestCompA_Scope1>.Id;
-		var compBId					= Lookup<TestScope1,TestCompB_Scope1>.Id;
+		var compAId					= Lookup<TestScope1,TestCompAStruct_Scope1>.Id;
+		var compBId					= Lookup<TestScope1,TestCompBStruct_Scope1>.Id;
 		var compAFlagId				= Lookup<TestScope1,TestCompAFlag_Scope1>.Id;
 
 		_context.GetGroup(Matcher<Entity<TestScope1>>.AllOf( compAId ));

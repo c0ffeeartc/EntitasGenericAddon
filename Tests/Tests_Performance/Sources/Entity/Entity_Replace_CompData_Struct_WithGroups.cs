@@ -6,6 +6,7 @@ public sealed class Entity_Replace_CompData_Struct_WithGroups : IPerformanceTest
 	private const			int						n						= 1000000;
 	private					Entity<TestScope1>		_ent;
 	private					TestCompAStruct_Scope1	_testCompAScope1;
+	public					int						Iterations				=> n;
 
 	public					void					Before					(  )
 	{

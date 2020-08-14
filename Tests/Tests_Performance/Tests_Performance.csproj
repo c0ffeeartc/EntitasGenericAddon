@@ -48,10 +48,12 @@
         <Compile Include="Sources\EmptyTest.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_WithGroups.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct_WithGroups.cs" />
+        <Compile Include="Sources\Entity\Entity_Flag_CompFlag.cs" />
         <Compile Include="Sources\Entity\Entity_Get_CompData_Class.cs" />
         <Compile Include="Sources\Entity\Entity_Get_CompData_Struct.cs" />
         <Compile Include="Sources\Entity\Entity_Has_CompData_Class.cs" />
         <Compile Include="Sources\Entity\Entity_Has_CompData_Struct.cs" />
+        <Compile Include="Sources\Entity\Entity_Is_CompFlag.cs" />
         <Compile Include="Sources\Entity\Entity_Replace_CompData_Class_WithGroups.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct.cs" />
