@@ -43,6 +43,7 @@
     <Compile Include="Events2\OnAny.cs" />
     <Compile Include="Events\EventSystem_AnyRemoved_.cs" />
     <Compile Include="Events\EventSystem_Any_.cs" />
+    <Compile Include="Events\EventSystem_SelfFlag.cs" />
     <Compile Include="Events\EventSystem_SelfRemoved_.cs" />
     <Compile Include="Events\EventSystem_Self_.cs" />
     <Compile Include="Events\Event_EntityMethods.cs" />
