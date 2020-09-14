@@ -99,7 +99,7 @@ namespace Tests
 		public				Single					Value;
 	}
 
-	internal sealed class TestFlagA : IComponent, ICompFlag, Scope<ScopeA>
+	public sealed class TestFlagA : IComponent, ICompFlag, Scope<ScopeA>, IEvent_Self<ScopeA,TestFlagA>
 	{ }
 	internal sealed class TestFlagB : IComponent, ICompFlag, Scope<ScopeB>
 	{ }
