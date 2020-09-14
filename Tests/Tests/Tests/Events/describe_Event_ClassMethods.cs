@@ -147,6 +147,51 @@ namespace Tests
 				// then
 				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( null, null, null );
 			};
+
+			it["OnSelfFlag listens self Added"] = ()=>
+			{
+				// given
+				var ent				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
+				var listener		= Substitute.For<IOnSelf<ScopeA,TestFlagA>>(  );
+				ent.Add_OnSelf( listener );
+
+				var system			= new EventSystem_SelfFlag<ScopeA, TestFlagA>( _contexts );
+
+				// when
+				ent.Flag<TestFlagA>( false );
+				system.Execute(  );
+				// then
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( null, null, null );
+
+				// when
+				ent.Flag<TestFlagA>( true );
+				system.Execute(  );
+				// then
+				listener.Received(  ).OnSelf( null, ent, _contexts );
+			};
+
+			it["OnSelfFlag listens self Removed"] = ()=>
+			{
+				// given
+				var ent				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
+				var listener		= Substitute.For<IOnSelf<ScopeA,TestFlagA>>(  );
+				ent.Add_OnSelf( listener );
+				ent.Flag<TestFlagA>( true );
+
+				var system			= new EventSystem_SelfFlag<ScopeA, TestFlagA>( _contexts );
+
+				// when
+				ent.Flag<TestFlagA>( true );
+				system.Execute(  );
+				// then
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( null, null, null );
+
+				// when
+				ent.Flag<TestFlagA>( false );
+				system.Execute(  );
+				// then
+				listener.Received(  ).OnSelf( null, ent, _contexts );
+			};
 		}
 	}
 }
