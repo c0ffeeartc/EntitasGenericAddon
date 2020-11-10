@@ -63,7 +63,9 @@ internal class Program
 		run<Entity_Flag_CompFlag>(  );
 		run<Entity_Is_CompFlag>(  );
 
-    Console.WriteLine($"memory after tests: {MemoryHelper.GetMemoryAllStatsString(currentProcess)}");
+		run<Struct_ToString_Implemented>(  );
+		run<Struct_ToString_NotImplemented>(  );
+		run<Struct_ToString_ToGenericTypeString>(  );    Console.WriteLine($"memory after tests: {MemoryHelper.GetMemoryAllStatsString(currentProcess)}");
     
     try {
       GC.EndNoGCRegion();
