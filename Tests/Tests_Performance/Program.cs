@@ -29,6 +29,10 @@ internal class Program
 		run<Entity_Flag_CompFlag>(  );
 		run<Entity_Is_CompFlag>(  );
 
+		run<Struct_ToString_Implemented>(  );
+		run<Struct_ToString_NotImplemented>(  );
+		run<Struct_ToString_ToGenericTypeString>(  );
+
 		// Console.WriteLine("\nPress any key...");
 		// Console.Read();
 	}

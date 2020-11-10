@@ -4,10 +4,20 @@ public class StructComponent<TData> : IComponent where TData : struct
 {
 	public TData Data;
 
-	// Consider removing ToString here and deal with string formatting in concrete places
+	// Slow. Don't use in release builds
 	public override string ToString()
 	{
-		return typeof(TData).ToGenericTypeString(  );
+		var tData = typeof(TData);
+		if ( tData.IsGenericType )
+		{
+			var s = Data.ToString(  );
+			if ( s == tData.FullName )
+			{
+				return tData.ToGenericTypeString(  );
+			}
+		}
+
+		return Data.ToString(  );
 	}
 }
 }

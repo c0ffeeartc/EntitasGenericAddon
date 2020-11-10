@@ -45,6 +45,9 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="PerformanceTestsRunner.cs" />
+        <Compile Include="Sources\Component\Struct_ToString_Implemented.cs" />
+        <Compile Include="Sources\Component\Struct_ToString_NotImplemented.cs" />
+        <Compile Include="Sources\Component\Struct_ToString_ToGenericTypeString.cs" />
         <Compile Include="Sources\EmptyTest.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_WithGroups.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct_WithGroups.cs" />
@@ -59,6 +62,7 @@
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct.cs" />
         <Compile Include="Sources\Entity\Entity_Replace_CompData_Struct_WithGroups.cs" />
         <Compile Include="Sources\Fixtures\TestCompA_Scope1.cs" />
+        <Compile Include="Sources\Fixtures\TestCompStruct_ToString.cs" />
         <Compile Include="Sources\Fixtures\TestCompB_Scope1.cs" />
         <Compile Include="Sources\Fixtures\TestScopes.cs" />
         <Compile Include="Sources\IPerformanceTest.cs" />
