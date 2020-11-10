@@ -23,18 +23,20 @@ Make Entitas extensible by separate dll
       - `IOn*<TScope, TComp>` - interface to implement by listener classes
       - `EventSystem_*<TScope, TComp>` - event system classes
 
-  - Struct components API method names end with underscore (`Add_`, `Remove_`, `Replace_`, `Has_`, `Event_System_*_`, `Matcher_`)
+  - Struct components API method names end with underscore (`Add_`, `Remove_`, `Replace_`, `Has_`, `Event_System_*_`)
 
   - Can be used together with regular Entitas components
   - Manual `EntityIndex` registration
 
 ## Installation
 There are two ways of using EntitasGenericAddon:
-  - with existing generated Contexts
+  - with existing generated Contexts(not preferred)
     - For now it only adds new generic contexts, generated and generic context instances have different workflows. Improvements are welcome
     - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into same assembly as generated `Contexts` class
   - standalone without generator(preferred)
     - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into `Assets` folder somewhere
+
+Warning: Please test project on target devices as soon as possible, and then regularly to avoid any pitfalls and show stoppers. 
 
 ## Usage
 
@@ -249,15 +251,15 @@ public static class EntIndex
 // Step 2. Add EntityIndex during initialization stage
 var context = contexts.Get<Game>( );
 
-// Step2.1 for Class Component
+// for Class Component
 context.AddEntityIndex( EntIndex.B
     , context.GetGroup( Matcher<Game, B>.I )
     , ( e, c ) => ( (B)c ).Value );
 
-// OR Step2.2 for Struct Component
-context.AddEntityIndex( EntIndex.B
-    , context.GetGroup( Matcher<Game, B>.I )
-    , ( e, c ) => ( (StructComponent<B>) c).Data.value );
+// for Struct Component
+context.AddEntityIndex( EntIndex.S
+    , context.GetGroup( Matcher<Game, SStruct>.I )
+    , ( e, c ) => ( (StructComponent<SStruct>) c).Data.value );
 
 
 // Step 3. Get entities at runtime
