@@ -5,6 +5,7 @@
 public sealed class TestCompA_Scope1 : IComponent
 		, Scope<TestScope1>
 		, ICompData
+    , ICreateApply
 		, ICopyFrom<TestCompA_Scope1>
 {
 	public Int32 data;
@@ -12,6 +13,12 @@ public sealed class TestCompA_Scope1 : IComponent
 	{
 		data = other.data;
 	}
+
+  public TestCompA_Scope1 Set(Int32 value)  // optional, allows using Cache<T>.I.Set(). Not needed for struct components
+  {
+    data = value;
+    return this;
+  }
 
 	public TestCompA_Scope1( Int32 data )
 	{
