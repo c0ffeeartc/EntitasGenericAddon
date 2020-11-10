@@ -44,12 +44,18 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="MemoryHelper.cs" />
         <Compile Include="PerformanceTestsRunner.cs" />
         <Compile Include="Sources\Component\Struct_ToString_Implemented.cs" />
         <Compile Include="Sources\Component\Struct_ToString_NotImplemented.cs" />
         <Compile Include="Sources\Component\Struct_ToString_ToGenericTypeString.cs" />
         <Compile Include="Sources\EmptyTest.cs" />
+        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_InitSet.cs" />
+        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_CreateSetApply.cs" />
+        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_AddNewInstance.cs" />
+        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_SetUsingCache.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_WithGroups.cs" />
+        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct_IncludeInit.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct_WithGroups.cs" />
         <Compile Include="Sources\Entity\Entity_Flag_CompFlag.cs" />
         <Compile Include="Sources\Entity\Entity_Get_CompData_Class.cs" />

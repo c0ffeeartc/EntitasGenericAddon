@@ -43,6 +43,14 @@
             ReplaceComponent(index, comp);
         }
 
+        public TComp Init<TComp>() where TComp : class, Scope<TScope>, ICompData, IComponent, new()
+        {
+          var index = Lookup<TScope, TComp>.Id;
+          var compData = (TComp) CreateComponent(index, typeof(TComp));
+          ReplaceComponent(index, compData);
+          return compData;
+        }
+
         public void Flag<TComp>(bool flag) where TComp : class, Scope<TScope>, ICompFlag, IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;
@@ -80,6 +88,13 @@
         public bool HasIComponent<TComp>() where TComp : class, Scope<TScope>, IComponent
         {
             return HasComponent(Lookup<TScope, TComp>.Id);
+        }
+        
+        public void RemoveIfExists<TComp>()where TComp : class, Scope<TScope>, ICompData, IComponent
+        {
+          if (Has<TComp>()) {
+            RemoveComponent(Lookup<TScope, TComp>.Id);
+          }
         }
     }
 }

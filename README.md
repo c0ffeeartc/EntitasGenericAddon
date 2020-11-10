@@ -248,9 +248,16 @@ public static class EntIndex
 
 // Step 2. Add EntityIndex during initialization stage
 var context = contexts.Get<Game>( );
+
+// Step2.1 for Class Component
 context.AddEntityIndex( EntIndex.B
     , context.GetGroup( Matcher<Game, B>.I )
     , ( e, c ) => ( (B)c ).Value );
+
+// OR Step2.2 for Struct Component
+context.AddEntityIndex( EntIndex.B
+    , context.GetGroup( Matcher<Game, B>.I )
+    , ( e, c ) => ( (StructComponent<B>) c).Data.value );
 
 
 // Step 3. Get entities at runtime
