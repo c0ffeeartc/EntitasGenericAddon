@@ -50,7 +50,6 @@
         <Compile Include="Sources\Component\Struct_ToString_NotImplemented.cs" />
         <Compile Include="Sources\Component\Struct_ToString_ToGenericTypeString.cs" />
         <Compile Include="Sources\EmptyTest.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_InitSet.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_CreateSetApply.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_AddNewInstance.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_SetUsingCache.cs" />

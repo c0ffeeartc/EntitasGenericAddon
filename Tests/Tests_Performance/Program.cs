@@ -46,9 +46,6 @@ internal class Program
 		// 4 Create-Apply workflow
 		// (results can be compared with tests 2, 3 5  and 11)
 		run<Entity_AddRemove_CompData_Class_CreateSetApply>();
-		// 5 InitSet is a syntax-variant of Create-Apply
-		// (results can be compared with tests 2, 3 4 and 11 but especially with 4)
-		run<Entity_AddRemove_CompData_Class_InitSet>();
 		// 3.2 repeat test#3 to double check stats accuracy
 		run<Entity_AddRemove_CompData_Class_SetUsingCache>();
     

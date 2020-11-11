@@ -98,19 +98,6 @@ namespace Tests
 	{
 		public				Single					Value;
 	}
-  
-  public sealed class TestComp_InitSet
-      : IComponent
-          , ICompData
-          , Scope<ScopeA>
-  {
-    public				Single					Value;
-    
-    public TestComp_InitSet Set(float value) {
-      Value = value;
-      return this;
-    }
-  }
 
 	public sealed class TestFlagA : IComponent, ICompFlag, Scope<ScopeA>, IEvent_Self<ScopeA,TestFlagA>
 	{ }

@@ -43,14 +43,6 @@
             ReplaceComponent(index, comp);
         }
 
-        public TComp Init<TComp>() where TComp : class, Scope<TScope>, ICompData, IComponent, new()
-        {
-          var index = Lookup<TScope, TComp>.Id;
-          var compData = (TComp) CreateComponent(index, typeof(TComp));
-          ReplaceComponent(index, compData);
-          return compData;
-        }
-
         public void Flag<TComp>(bool flag) where TComp : class, Scope<TScope>, ICompFlag, IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;
