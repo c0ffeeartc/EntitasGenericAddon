@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Entitas;
 using Entitas.Generic;
 
@@ -47,6 +48,6 @@ public struct TestCompStruct_ToString_ToGenericTypeString
 
 	public override String ToString( )
 	{
-		return typeof( TestCompStruct_ToString_ToGenericTypeString ).ToGenericTypeString(  );
+		return typeof(Dictionary<String,Dictionary<String,Int32>>).ToGenericTypeString(  );
 	}
 }

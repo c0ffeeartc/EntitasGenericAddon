@@ -2,7 +2,7 @@
 // ReSharper disable once CheckNamespace
 public class Struct_ToString_ToGenericTypeString : IPerformanceTest
 {
-	private const			int						n						= 1000000;
+	private const			int						n						= 100000;
 	private		TestCompStruct_ToString_ToGenericTypeString	_testComp;
 	public					int						Iterations				=> n;
 

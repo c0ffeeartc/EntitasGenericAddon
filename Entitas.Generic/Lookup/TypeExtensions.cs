@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 public static class TypeExtensions
 {
@@ -9,10 +8,23 @@ public static class TypeExtensions
 		{
 			return t.Name;
 		}
-		string genericTypeName		= t.GetGenericTypeDefinition().Name;
-		genericTypeName				= genericTypeName.Substring(0, genericTypeName.IndexOf('`'));
-		string genericArgs			= string.Join(",", t.GetGenericArguments()
-			.Select(ta => ToGenericTypeString(ta)).ToArray());
-		return genericTypeName + "<" + genericArgs + ">";
+		var typeName 				= t.Name;
+		var curTypeName				= typeName.Substring(0, typeName.IndexOf('`'));
+
+		var genericArgs				= !t.IsGenericTypeDefinition
+			? t.GetGenericArguments()
+			: Type.EmptyTypes;
+
+		var genericArgsStr			= string.Empty;
+		for (var i = 0; i < genericArgs.Length; i++)
+		{
+			if (i > 0)
+			{
+				genericArgsStr		+= ",";
+			}
+			genericArgsStr			+= genericArgs[i].ToGenericTypeString();
+		}
+
+		return $"{curTypeName}<{genericArgsStr}>";
 	}
 }
