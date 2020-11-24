@@ -123,46 +123,6 @@ namespace Tests
 				entity.Get<TestComp_CreateApply_A>(  ).should_be_same( comp );
 			};
       
-      it["Init (Create or Replace) component"] = ()=>
-      {
-        // given
-        var entity = _contexts.Get<ScopeA>().CreateEntity();
-
-        // when
-        var comp1 = entity.Init<TestComp_InitSet>();
-
-        // then - entity has component at once after Init
-        comp1.Value.should_be(0f);
-        entity.Has<TestComp_InitSet>().should_be_true();
-
-        // when Remove updated component and Init it again
-        comp1.Value = 1f;
-        entity.Remove<TestComp_InitSet>();
-        var comp2 = entity.Init<TestComp_InitSet>();
-
-        // then
-        entity.Has<TestComp_InitSet>().should_be_true();
-        // ... it is the same component as comp1, it was taken from components pool
-        entity.Get<TestComp_InitSet>().should_be_same(comp1);
-        entity.Get<TestComp_InitSet>().should_be_same(comp2);
-        // ... and its value is not reset after Init !
-        // users have to remember to call .Set method
-        comp2.Value.should_be(1);
-      };
-      
-      it["Init-Set (Create or Replace + Set) component data"] = ()=>
-      {
-        // given
-        var entity = _contexts.Get<ScopeA>().CreateEntity();
-
-        // when
-        var comp1 = entity.Init<TestComp_InitSet>().Set(1);
-
-        // then
-        entity.Has<TestComp_InitSet>().should_be_true();
-        comp1.Value.should_be(1);
-      };
-
 			it["flag, is"] = ()=>
 			{
 				// given
