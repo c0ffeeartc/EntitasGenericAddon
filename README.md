@@ -68,12 +68,12 @@ public void Example()
 }
 ```
 
-Scope
+#### Scope
 ```csharp
 public interface Game : IScope { }
 ```
 
-Component
+#### Component
 ```csharp
 public struct B : IComponent, ICompData, Scope<Game>
 {
@@ -132,12 +132,12 @@ entity.Apply( entity.Create<A>(  )
     .Set( 1f ) );
 ```
 
-FlagComponent
+#### FlagComponent
 ```csharp
 public sealed class FlagA : IComponent, ICompFlag, Scope<Game> { }
 ```
 
-Matcher
+#### Matcher
 ```csharp
 Matcher<Entity<Game>>
     .AllOf(
@@ -149,7 +149,7 @@ Matcher<Entity<Game>>
         Matcher<Game, Destroy>.I ) );
 ```
 
-Events
+#### Events
 ```csharp
 // Step 1. Add event markers to components
 public sealed class FlagA : IComponent, ICompFlag, Scope<Game>
@@ -239,7 +239,7 @@ private void OnCompB(Entity<Game> entity)
 }
 ```
 
-EntityIndex
+#### EntityIndex
 ```csharp
 // Step 1(Optional). Create const string key for accessing entity index
 public static class EntIndex
@@ -266,7 +266,7 @@ context.AddEntityIndex( EntIndex.S
 var entities = context.GetEntities( EntIndex.B, 23 );
 ```
 
-Visual Debugging
+#### Visual Debugging
 ```csharp
 public static void InitVisualDebugging ( Contexts contexts )
 {
@@ -284,6 +284,114 @@ public static void InitVisualDebugging ( Contexts contexts )
     }
     #endif
 }
+```
+
+Copy somewhere into your project and use `var systems = new Feature();` to visually debug `Systems`.
+> Because `Feature` class uses `#if` preprocessor directives it must be present in unity project in source form and not in a precompiled EntitasGenericAddon dll.
+
+```csharp
+#if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
+
+public class Feature : Entitas.VisualDebugging.Unity.DebugSystems {
+
+    public Feature(string name) : base(name) {
+    }
+
+    public Feature() : base(true) {
+        var typeName = DesperateDevs.Utils.SerializationTypeExtension.ToCompilableString(GetType());
+        var shortType = DesperateDevs.Utils.SerializationTypeExtension.ShortTypeName(typeName);
+        var readableType = DesperateDevs.Utils.StringExtension.ToSpacedCamelCase(shortType);
+
+        initialize(readableType);
+    }
+}
+
+#elif (!ENTITAS_DISABLE_DEEP_PROFILING && DEVELOPMENT_BUILD)
+
+public class Feature : Entitas.Systems {
+
+    System.Collections.Generic.List<string> _initializeSystemNames;
+    System.Collections.Generic.List<string> _executeSystemNames;
+    System.Collections.Generic.List<string> _cleanupSystemNames;
+    System.Collections.Generic.List<string> _tearDownSystemNames;
+
+    public Feature(string name) : this() {
+    }
+
+    public Feature() {
+        _initializeSystemNames = new System.Collections.Generic.List<string>();
+        _executeSystemNames = new System.Collections.Generic.List<string>();
+        _cleanupSystemNames = new System.Collections.Generic.List<string>();
+        _tearDownSystemNames = new System.Collections.Generic.List<string>();
+    }
+
+    public override Entitas.Systems Add(Entitas.ISystem system) {
+        var systemName = system.GetType().FullName;
+
+        if (system is Entitas.IInitializeSystem) {
+            _initializeSystemNames.Add(systemName);
+        }
+
+        if (system is Entitas.IExecuteSystem) {
+            _executeSystemNames.Add(systemName);
+        }
+
+        if (system is Entitas.ICleanupSystem) {
+            _cleanupSystemNames.Add(systemName);
+        }
+
+        if (system is Entitas.ITearDownSystem) {
+            _tearDownSystemNames.Add(systemName);
+        }
+
+        return base.Add(system);
+    }
+
+    public override void Initialize() {
+        for (int i = 0; i < _initializeSystems.Count; i++) {
+            UnityEngine.Profiling.Profiler.BeginSample(_initializeSystemNames[i]);
+            _initializeSystems[i].Initialize();
+            UnityEngine.Profiling.Profiler.EndSample();
+        }
+    }
+
+    public override void Execute() {
+        for (int i = 0; i < _executeSystems.Count; i++) {
+            UnityEngine.Profiling.Profiler.BeginSample(_executeSystemNames[i]);
+            _executeSystems[i].Execute();
+            UnityEngine.Profiling.Profiler.EndSample();
+        }
+    }
+
+    public override void Cleanup() {
+        for (int i = 0; i < _cleanupSystems.Count; i++) {
+            UnityEngine.Profiling.Profiler.BeginSample(_cleanupSystemNames[i]);
+            _cleanupSystems[i].Cleanup();
+            UnityEngine.Profiling.Profiler.EndSample();
+        }
+    }
+
+    public override void TearDown() {
+        for (int i = 0; i < _tearDownSystems.Count; i++) {
+            UnityEngine.Profiling.Profiler.BeginSample(_tearDownSystemNames[i]);
+            _tearDownSystems[i].TearDown();
+            UnityEngine.Profiling.Profiler.EndSample();
+        }
+    }
+}
+
+#else
+
+public class Feature : Entitas.Systems {
+
+    public Feature(string name) {
+    }
+
+    public Feature() {
+    }
+}
+
+#endif
 ```
 
 ## FAQ
