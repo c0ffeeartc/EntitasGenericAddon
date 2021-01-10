@@ -264,6 +264,35 @@ context.AddEntityIndex( EntIndex.S
 
 // Step 3. Get entities at runtime
 var entities = context.GetEntities( EntIndex.B, 23 );
+var sameEntities = context.GetAllEntsBy<Game, B, int>( EntIndex.B, 23 ); // preferred, compile time error checked variation(can be wrapped into extension method for simplicity)
+```
+
+#### PrimaryEntityIndex
+```csharp
+// Step 1(Optional). Create const string key for accessing entity index
+public static class EntIndex
+{
+    public const string B = "B";
+}
+
+
+// Step 2. Add PrimaryEntityIndex during initialization stage
+var context = contexts.Get<Game>( );
+
+// for Class Component
+context.AddPrimaryEntityIndex( EntIndex.B
+    , context.GetGroup( Matcher<Game, B>.I )
+    , ( e, c ) => ( (B)c ).Value );
+
+// for Struct Component
+context.AddPrimaryEntityIndex( EntIndex.S
+    , context.GetGroup( Matcher<Game, SStruct>.I )
+    , ( e, c ) => ( (StructComponent<SStruct>) c).Data.value );
+
+
+// Step 3. Get entity at runtime
+var entity = context.GetEntity( EntIndex.B, 23 );
+var sameEntity = context.GetSingleEntBy<Game, B, int>( EntIndex.B, 23 ); // preferred, compile time error checked variation(can be wrapped into extension method for simplicity)
 ```
 
 #### Visual Debugging
