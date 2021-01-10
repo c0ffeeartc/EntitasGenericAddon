@@ -264,7 +264,8 @@ context.AddEntityIndex( EntIndex.S
 
 // Step 3. Get entities at runtime
 var entities = context.GetEntities( EntIndex.B, 23 );
-var sameEntities = context.GetAllEntsBy<Game, B, int>( EntIndex.B, 23 ); // preferred, compile time error checked variation(can be wrapped into extension method for simplicity)
+// preferred, compile time error checked variation(can be wrapped into extension method for simplicity)
+var sameEntities = context.GetAllEntsBy<Game, B, int>( EntIndex.B, 23 );
 ```
 
 #### PrimaryEntityIndex
@@ -292,7 +293,8 @@ context.AddPrimaryEntityIndex( EntIndex.S
 
 // Step 3. Get entity at runtime
 var entity = context.GetEntity( EntIndex.B, 23 );
-var sameEntity = context.GetSingleEntBy<Game, B, int>( EntIndex.B, 23 ); // preferred, compile time error checked variation(can be wrapped into extension method for simplicity)
+// preferred, compile time error checked variation(can be wrapped into extension method for simplicity)
+var sameEntity = context.GetSingleEntBy<Game, B, int>( EntIndex.B, 23 );
 ```
 
 #### Visual Debugging
