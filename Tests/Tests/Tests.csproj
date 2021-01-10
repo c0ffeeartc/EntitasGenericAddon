@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TestRunner.cs" />
+    <Compile Include="Tests\Core\describe_EntityIndex.cs" />
     <Compile Include="Tests\Core\describe_Entity_ClassMethods.cs" />
     <Compile Include="Tests\Core\describe_Entity_StructMethods.cs" />
     <Compile Include="Tests\Core\describe_ScopedContext_ClassMethods.cs" />

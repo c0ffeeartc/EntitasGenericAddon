@@ -83,15 +83,15 @@ namespace Tests
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Add( Cache<TestCompA>.I.Set( 1f ) );
-				entity.Get<TestCompA>(  ).Value.should_be( 1f );
+				entity.Add( Cache<TestCompA>.I.Set( 1 ) );
+				entity.Get<TestCompA>(  ).Value.should_be( 1 );
 
 				// when
-				entity.Replace( Cache<TestCompA>.I.Set( 2f ) );
-				Cache<TestCompA>.I.Set( 3f );
+				entity.Replace( Cache<TestCompA>.I.Set( 2 ) );
+				Cache<TestCompA>.I.Set( 3 );
 
 				// then
-				entity.Get<TestCompA>(  ).Value.should_be( 2f );
+				entity.Get<TestCompA>(  ).Value.should_be( 2 );
 			};
 
 			it["ICreateApply. Create component"] = ()=>

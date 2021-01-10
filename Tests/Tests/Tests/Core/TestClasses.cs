@@ -16,10 +16,11 @@ namespace Tests
 			, IEvent_AnyRemoved<ScopeA, TestCompA>
 			, IEvent_Self<ScopeA, TestCompA>
 			, IEvent_SelfRemoved<ScopeA, TestCompA>
+			, IGetAllEntsByIndex<Int32>
 	{
-		public				Single					Value;
+		public				Int32					Value;
 
-		public				TestCompA				Set						( Single value = 0 )
+		public				TestCompA				Set						( Int32 value = 0 )
 		{
 			Value					= value;
 			return this;
