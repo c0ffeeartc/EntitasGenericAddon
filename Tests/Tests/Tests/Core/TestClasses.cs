@@ -75,11 +75,16 @@ namespace Tests
 		}
 	}
 
-	internal sealed class TestCompB : IComponent, ICompData, ICopyFrom<TestCompB>, ScopeB
+	internal sealed class TestCompB
+			: IComponent
+			, ICompData
+			, ICopyFrom<TestCompB>
+			, Scope<ScopeB>
+			, IGetSingleEntByIndex<Int32>
 	{
-		public				Single					Value;
+		public				Int32					Value;
 
-		public				TestCompB				Set						( Single value = 0 )
+		public				TestCompB				Set						( Int32 value = 0 )
 		{
 			Value					= value;
 			return this;

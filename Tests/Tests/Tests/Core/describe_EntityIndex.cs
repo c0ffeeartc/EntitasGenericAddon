@@ -1,5 +1,7 @@
 using System;
+using Entitas;
 using Entitas.Generic;
+using FluentAssertions;
 using NSpec;
 
 namespace Tests
@@ -90,6 +92,83 @@ public class describe_EntityIndex : nspec
 				// then
 				ents.Count.should_be( 2 );
 			}
+		};
+	}
+
+	private					void					test_PrimaryEntityIndex_GetSingleEntBy(  )
+	{
+		Lookup_ScopeManager.RegisterAll();
+
+		before						= ()=>
+		{
+			_contexts				= new Contexts(  );
+			_contexts.AddScopedContexts(  );
+		};
+
+		it["gets 0 entity by non-matching index"] = ()=>
+		{
+			// given
+			var indexKey			= "indexKey";
+			var contextB			= _contexts.Get<ScopeB>(  );
+			contextB.AddPrimaryEntityIndex(
+				indexKey
+				, contextB.GetGroup( Matcher<ScopeB,TestCompB>.I )
+				, ( e,  c ) => ((TestCompB )c).Value );
+
+			var entity			= contextB.CreateEntity(  );
+			entity.Add( new TestCompB(  ).Set( 1 ) );
+
+			// when
+			var ent = contextB.GetSingleEntBy<ScopeB, TestCompB, Int32>(indexKey, 1);
+
+			// then
+			ent.should_be_same( entity );
+		};
+
+		it["gets 1 entity by matching index"] = ()=>
+		{
+			// given
+			var indexKey			= "indexKey";
+			var contextB			= _contexts.Get<ScopeB>(  );
+			contextB.AddPrimaryEntityIndex(
+				indexKey
+				, contextB.GetGroup( Matcher<ScopeB,TestCompB>.I )
+				, ( e,  c ) => ((TestCompB )c).Value );
+
+			var entity			= contextB.CreateEntity(  );
+			entity.Add( new TestCompB(  ).Set( 1 ) );
+
+			// when
+			var ent = contextB.GetSingleEntBy<ScopeB, TestCompB, Int32>(indexKey, 1);
+
+			// then
+			ent.should_be_same( entity );
+		};
+
+		it["add same value twice throws"] = ()=>
+		{
+			// given
+			var indexKey			= "indexKey";
+			var contextB			= _contexts.Get<ScopeB>(  );
+			contextB.AddPrimaryEntityIndex(
+				indexKey
+				, contextB.GetGroup( Matcher<ScopeB,TestCompB>.I )
+				, ( e,  c ) => ((TestCompB )c).Value );
+
+			{
+				var entity			= contextB.CreateEntity(  );
+				entity.Add( new TestCompB(  ).Set( 1 ) );
+			}
+
+			// when
+			Action act = (  )=>
+				{
+					var entity			= contextB.CreateEntity(  );
+					entity.Add( new TestCompB(  ).Set( 1 ) );
+				};
+
+			// then
+			act.ShouldThrow<EntityIndexException>(  );
 		};
 	}
 }
