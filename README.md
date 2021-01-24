@@ -25,12 +25,11 @@ Make Entitas extensible by separate dll
 
   - Struct components API method names end with underscore (`Add_`, `Remove_`, `Replace_`, `Has_`, `Event_System_*_`)
 
-  - Can be used together with regular Entitas components
   - Manual `EntityIndex` registration
 
 ## Installation
 There are two ways of using EntitasGenericAddon:
-  - with existing generated Contexts(not preferred)
+  - with existing generated Contexts(not recommended)
     - For now it only adds new generic contexts, generated and generic context instances have different workflows. Improvements are welcome
     - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into same assembly as generated `Contexts` class
   - standalone without generator(preferred)
@@ -203,7 +202,7 @@ private void OnEnable()
 
 ```
 
-Events alternative for `OnAny`. Uses `static Action` to subscribe/unsubscribe
+Events alternative. Uses `Action` to subscribe/unsubscribe
 ```csharp
 // Step 1. Add event markers to components
 public sealed class FlagA : IComponent, ICompFlag, Scope<Game>
@@ -216,27 +215,34 @@ public struct CompB : IComponent, ICompData, Scope<Game>
     // some code
 }
 
-    
+
 // Step 2. Add event systems to Systems. This step could be automated in future
-    systems.Add( new EventSystem_Any2<Game, CompB>(  ) );
-    systems.Add( new EventSystem_Any_Removed2<Game, CompB>(  ) );  // Removed
-    systems.Add( new EventSystem_Any_Flag2<Game, FlagA>(  ) );  // Flag, callback on True and False unlike original EventsFeature
+    systems.Add( new EventSystem_Any2<Game,CompB>(  ) );
+    systems.Add( new EventSystem_Any_Removed2<Game,CompB>(  ) );  // Removed
+    systems.Add( new EventSystem_Any_Flag2<Game,FlagA>(  ) );  // Flag, callback on True and False unlike original EventsFeature
+
+    systems.Add( new EventSystem_Self2<Game,CompB>(  ) );  // new System must be created before calling OnSelf<Game,CompB>.I.Sub/Unsub, otherwise NullReferenceException will be thrown
+
 
 // Step 3. Subscribe/Unsubscribe callback
 private void Awake()
 {
-    OnAny<Game, CompB>.Action += OnCompB;
+    OnAny<Game,CompB>.Action += OnCompB;
+    OnAny_Removed<Game,CompB>.Action += OnCompB_Removed;
+    OnAny_Flag<Game,CompFlagA>.Action += OnCompFlagA;
+
+    OnSelf<Game,CompB>.I.Sub( entityCreationIndex, OnCompB );
 }
 
 private void OnDestroy()
 {
-    OnAny<Game, CompB>.Action -= OnCompB;
+    OnAny<Game,CompB>.Action -= OnCompB;
+    OnAny_Removed<Game,CompB>.Action -= OnCompB_Removed;
+    OnAny_Flag<Game,CompFlagA>.Action -= OnCompFlagA;
+
+    OnSelf<Game,CompB>.I.Unsub( entityCreationIndex, OnCompB );
 }
 
-private void OnCompB(Entity<Game> entity)
-{
-    // some code
-}
 ```
 
 #### EntityIndex
