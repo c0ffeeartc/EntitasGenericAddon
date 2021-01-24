@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace Entitas.Generic
 {
-public sealed class EventSystem_Self2<TScope, TComp> : ReactiveSystem<Entity<TScope>>
+public sealed class EventSystem_Self_Removed2<TScope, TComp> : ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
-		where TComp : IComponent, ICompData, Scope<TScope>, IEvent_Self<TScope, TComp>
+		where TComp : IComponent, ICompData, Scope<TScope>, IEvent_SelfRemoved<TScope, TComp>
 {
-	public					EventSystem_Self2		( Contexts db, Context<Entity<TScope>> context = null) : base( context ?? db.Get<TScope>() )
+	public					EventSystem_Self_Removed2		( Contexts db, Context<Entity<TScope>> context = null) : base( context ?? db.Get<TScope>() )
 	{
-		if ( OnSelf<TScope,TComp>.I == null )
+		if ( OnSelf_Removed<TScope,TComp>.I == null )
 		{
-			OnSelf<TScope,TComp>.I	= new OnSelf<TScope,TComp>( db );
+			OnSelf_Removed<TScope,TComp>.I	= new OnSelf_Removed<TScope,TComp>( db );
 		}
 		_context					= context ?? db.Get<TScope>(  );
 	}
@@ -19,10 +19,10 @@ public sealed class EventSystem_Self2<TScope, TComp> : ReactiveSystem<Entity<TSc
 	private					Context<Entity<TScope>> _context;
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) { return context.CreateCollector(
-		Matcher<TScope,TComp>.I.Added(   ) ); }
+		Matcher<TScope,TComp>.I.Removed(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) { return
-		ent.HasComponent( Lookup<TScope,TComp>.Id ); }
+		!ent.HasComponent( Lookup<TScope,TComp>.Id ); }
 
 	protected override		void					Execute					( List<Entity<TScope>> entities )
 	{
@@ -30,7 +30,7 @@ public sealed class EventSystem_Self2<TScope, TComp> : ReactiveSystem<Entity<TSc
 		for ( var i = 0; i < entCount; i++ )
 		{
 			var e					= entities[i];
-			OnSelf<TScope,TComp>.I.Invoke( _context, e.creationIndex, e );
+			OnSelf_Removed<TScope,TComp>.I.Invoke( _context, e.creationIndex, e );
 		}
 	}
 }
