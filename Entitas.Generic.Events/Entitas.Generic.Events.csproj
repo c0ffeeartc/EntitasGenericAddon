@@ -40,7 +40,9 @@
     <Compile Include="Events2\EventSystem_Any2.cs" />
     <Compile Include="Events2\EventSystem_Any_Flag2.cs" />
     <Compile Include="Events2\EventSystem_Any_Removed2.cs" />
+    <Compile Include="Events2\EventSystem_Self2.cs" />
     <Compile Include="Events2\OnAny.cs" />
+    <Compile Include="Events2\OnSelf.cs" />
     <Compile Include="Events\EventSystem_AnyRemoved_.cs" />
     <Compile Include="Events\EventSystem_Any_.cs" />
     <Compile Include="Events\EventSystem_SelfFlag.cs" />
