@@ -360,7 +360,7 @@ public class Feature : Entitas.Systems {
     }
 
     public override Entitas.Systems Add(Entitas.ISystem system) {
-        var systemName = system.GetType().FullName;
+        var systemName = system.GetType().ToGenericTypeString();
 
         if (system is Entitas.IInitializeSystem) {
             _initializeSystemNames.Add(systemName);
