@@ -222,6 +222,8 @@ public struct CompB : IComponent, ICompData, Scope<Game>
     systems.Add( new EventSystem_Any_Flag2<Game,FlagA>(  ) );  // Flag, callback on True and False unlike original EventsFeature
 
     systems.Add( new EventSystem_Self2<Game,CompB>(  ) );  // new System must be created before calling OnSelf<Game,CompB>.I.Sub/Unsub, otherwise NullReferenceException will be thrown
+    systems.Add( new EventSystem_Self_Removed2<Game,CompB>(  ) );  // new System must be created before calling OnSelf_Removed<Game,CompB>.I.Sub/Unsub
+    systems.Add( new EventSystem_Self_Flag2<Game,CompB>(  ) );  // new System must be created before calling OnSelf_Flag<Game,CompB>.I.Sub/Unsub
 
 
 // Step 3. Subscribe/Unsubscribe callback
@@ -232,6 +234,8 @@ private void Awake()
     OnAny_Flag<Game,CompFlagA>.Action += OnCompFlagA;
 
     OnSelf<Game,CompB>.I.Sub( entityCreationIndex, OnCompB );
+    OnSelf_Removed<Game,CompB>.I.Sub( entityCreationIndex, OnCompB );
+    OnSelf_Flag<Game,CompFlagA>.I.Sub( entityCreationIndex, OnCompFlagA );
 }
 
 private void OnDestroy()
@@ -241,6 +245,8 @@ private void OnDestroy()
     OnAny_Flag<Game,CompFlagA>.Action -= OnCompFlagA;
 
     OnSelf<Game,CompB>.I.Unsub( entityCreationIndex, OnCompB );
+    OnSelf_Removed<Game,CompB>.I.Unsub( entityCreationIndex, OnCompB );
+    OnSelf_Flag<Game,CompFlagA>.I.Unsub( entityCreationIndex, OnCompFlagA );
 }
 
 ```
