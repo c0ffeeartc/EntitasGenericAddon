@@ -30,7 +30,7 @@ public sealed class EventSystem_Self_Flag2<TScope, TComp> : ReactiveSystem<Entit
 		for ( var i = 0; i < entCount; i++ )
 		{
 			var e					= entities[i];
-			OnSelf_Flag<TScope,TComp>.I.Invoke( _context, e.creationIndex, e );
+			OnSelf_Flag<TScope,TComp>.I.Invoke( e.creationIndex, e, _context );
 		}
 	}
 }

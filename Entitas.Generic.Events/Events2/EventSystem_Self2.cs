@@ -30,7 +30,7 @@ public sealed class EventSystem_Self2<TScope, TComp> : ReactiveSystem<Entity<TSc
 		for ( var i = 0; i < entCount; i++ )
 		{
 			var e					= entities[i];
-			OnSelf<TScope,TComp>.I.Invoke( _context, e.creationIndex, e );
+			OnSelf<TScope,TComp>.I.Invoke( e.creationIndex, e, _context );
 		}
 	}
 }

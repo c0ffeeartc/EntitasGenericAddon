@@ -30,7 +30,7 @@ public sealed class EventSystem_Self_Removed2<TScope, TComp> : ReactiveSystem<En
 		for ( var i = 0; i < entCount; i++ )
 		{
 			var e					= entities[i];
-			OnSelf_Removed<TScope,TComp>.I.Invoke( _context, e.creationIndex, e );
+			OnSelf_Removed<TScope,TComp>.I.Invoke( e.creationIndex, e, _context );
 		}
 	}
 }

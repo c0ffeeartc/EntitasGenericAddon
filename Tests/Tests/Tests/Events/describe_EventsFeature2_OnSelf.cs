@@ -42,7 +42,7 @@ public class describe_EventsFeature2 : nspec
 			// then
 			OnSelf<ScopeA,TestCompA>.I
 				.Received(1)
-				.Invoke(context, ent.creationIndex, ent);
+				.Invoke( ent.creationIndex, ent, context );
 
 			OnSelf<ScopeA,TestCompA>.I = null;
 		};
@@ -64,7 +64,7 @@ public class describe_EventsFeature2 : nspec
 			// then
 			OnSelf<ScopeA,TestCompA>.I
 				.DidNotReceiveWithAnyArgs(  )
-				.Invoke( null, 0, null );
+				.Invoke( 0, null, null );
 		};
 
 		it["OnSelf listens once self ent with matching class component"] = ()=>
@@ -188,7 +188,7 @@ public class describe_EventsFeature2 : nspec
 			// then
 			OnSelf_Removed<ScopeA,TestCompA>.I
 				.Received(1)
-				.Invoke(context, ent.creationIndex, ent);
+				.Invoke( ent.creationIndex, ent, context );
 		};
 
 		it["OnSelf_Removed.Invoke is not called for entities in context with class component"] = ()=>
@@ -209,7 +209,7 @@ public class describe_EventsFeature2 : nspec
 			// then
 			OnSelf_Removed<ScopeA,TestCompA>.I
 				.DidNotReceiveWithAnyArgs(  )
-				.Invoke( null, 0, null );
+				.Invoke( 0, null, null );
 		};
 
 		it["OnSelf_Removed listens once self ent with matching removed class component"] = ()=>
@@ -334,7 +334,7 @@ public class describe_EventsFeature2 : nspec
 			// then
 			OnSelf_Flag<ScopeA,TestFlagA>.I
 				.Received(1)
-				.Invoke(context, ent.creationIndex, ent);
+				.Invoke( ent.creationIndex, ent, context );
 		};
 
 		it["OnSelf_Flag.Invoke is not called if value is same as before"] = ()=>
@@ -353,7 +353,7 @@ public class describe_EventsFeature2 : nspec
 			// then
 			OnSelf_Flag<ScopeA,TestFlagA>.I
 				.DidNotReceiveWithAnyArgs(  )
-				.Invoke( null, 0, null );
+				.Invoke( 0, null, null );
 		};
 
 		it["OnSelf_Flag listens once self ent with matching Flag class component"] = ()=>
