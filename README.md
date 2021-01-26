@@ -202,51 +202,56 @@ private void OnEnable()
 
 ```
 
-Events alternative. Uses `Action` to subscribe/unsubscribe
+#### EventsFeature2
+Alternative to original EventsFeature.
+Uses `Action` to subscribe/unsubscribe.
 ```csharp
-// Step 1. Add event markers to components
+// Step 1. Add event markers to components. Same as with original EventsFeature
 public sealed class FlagA : IComponent, ICompFlag, Scope<Game>
-    , IEvent_Any<Game, FlagA> // <---
+    , IEvent_Any<Game, FlagA>          // <---
+    , IEvent_Self<Game, FlagA>         // <---
 { }
 public struct CompB : IComponent, ICompData, Scope<Game>
-    , IEvent_Any<Game, CompB>
-    , IEvent_AnyRemoved<Game, CompB>  // <--- Removed
+    , IEvent_Any<Game, CompB>         // <---
+    , IEvent_AnyRemoved<Game, CompB>  // <---
+    , IEvent_Self<Game, CompB>        // <---
+    , IEvent_SelfRemoved<Game, CompB> // <---
 {
     // some code
 }
 
 
-// Step 2. Add event systems to Systems. This step could be automated in future
+// Step 2. Add event systems to Systems. New EventSystem must be created before calling Sub/Unsub, otherwise NullReferenceException will be thrown
     systems.Add( new EventSystem_Any2<Game,CompB>(  ) );
-    systems.Add( new EventSystem_Any_Removed2<Game,CompB>(  ) );  // Removed
+    systems.Add( new EventSystem_Any_Removed2<Game,CompB>(  ) );
     systems.Add( new EventSystem_Any_Flag2<Game,FlagA>(  ) );  // Flag, callback on True and False unlike original EventsFeature
 
-    systems.Add( new EventSystem_Self2<Game,CompB>(  ) );  // new System must be created before calling OnSelf<Game,CompB>.I.Sub/Unsub, otherwise NullReferenceException will be thrown
-    systems.Add( new EventSystem_Self_Removed2<Game,CompB>(  ) );  // new System must be created before calling OnSelf_Removed<Game,CompB>.I.Sub/Unsub
-    systems.Add( new EventSystem_Self_Flag2<Game,CompB>(  ) );  // new System must be created before calling OnSelf_Flag<Game,CompB>.I.Sub/Unsub
+    systems.Add( new EventSystem_Self2<Game,CompB>(  ) );
+    systems.Add( new EventSystem_Self_Removed2<Game,CompB>(  ) );
+    systems.Add( new EventSystem_Self_Flag2<Game,CompB>(  ) );  // Flag, callback on True and False unlike original EventsFeature
 
 
 // Step 3. Subscribe/Unsubscribe callback
 private void Awake()
 {
-    OnAny<Game,CompB>.Action += OnCompB;
-    OnAny_Removed<Game,CompB>.Action += OnCompB_Removed;
-    OnAny_Flag<Game,CompFlagA>.Action += OnCompFlagA;
+    OnAny<Game,CompB>.I.Sub( OnCompB );
+    OnAny_Removed<Game,CompB>.I.Sub( OnCompB_Removed );
+    OnAny_Flag<Game,FlagA>.I.Sub( OnFlagA );
 
     OnSelf<Game,CompB>.I.Sub( entityCreationIndex, OnCompB );
-    OnSelf_Removed<Game,CompB>.I.Sub( entityCreationIndex, OnCompB );
-    OnSelf_Flag<Game,CompFlagA>.I.Sub( entityCreationIndex, OnCompFlagA );
+    OnSelf_Removed<Game,CompB>.I.Sub( entityCreationIndex, OnCompB_Removed );
+    OnSelf_Flag<Game,FlagA>.I.Sub( entityCreationIndex, OnFlagA );
 }
 
 private void OnDestroy()
 {
-    OnAny<Game,CompB>.Action -= OnCompB;
-    OnAny_Removed<Game,CompB>.Action -= OnCompB_Removed;
-    OnAny_Flag<Game,CompFlagA>.Action -= OnCompFlagA;
+    OnAny<Game,CompB>.I.Unsub( OnCompB );
+    OnAny_Removed<Game,CompB>.I.Unsub( OnCompB_Removed );
+    OnAny_Flag<Game,FlagA>.I.Unsub( OnFlagA );
 
     OnSelf<Game,CompB>.I.Unsub( entityCreationIndex, OnCompB );
-    OnSelf_Removed<Game,CompB>.I.Unsub( entityCreationIndex, OnCompB );
-    OnSelf_Flag<Game,CompFlagA>.I.Unsub( entityCreationIndex, OnCompFlagA );
+    OnSelf_Removed<Game,CompB>.I.Unsub( entityCreationIndex, OnCompB_Removed );
+    OnSelf_Flag<Game,FlagA>.I.Unsub( entityCreationIndex, OnFlagA );
 }
 
 ```
