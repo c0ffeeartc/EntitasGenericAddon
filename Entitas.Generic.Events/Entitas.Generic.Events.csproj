@@ -45,6 +45,7 @@
     <Compile Include="Events2\EventSystem_Self_Removed2.cs" />
     <Compile Include="Events2\OnAny.cs" />
     <Compile Include="Events2\OnSelf.cs" />
+    <Compile Include="Events2\OnSelf_Base.cs" />
     <Compile Include="Events2\OnSelf_Flag.cs" />
     <Compile Include="Events2\OnSelf_Removed.cs" />
     <Compile Include="Events\EventSystem_AnyRemoved_.cs" />
