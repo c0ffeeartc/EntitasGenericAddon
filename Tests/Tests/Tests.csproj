@@ -72,7 +72,8 @@
     <Compile Include="Tests\Core\describe_ScopedContext_ClassMethods.cs" />
     <Compile Include="Tests\Core\describe_ScopedContext_StructMethods.cs" />
     <Compile Include="Tests\Core\TestClasses.cs" />
-    <Compile Include="Tests\Events\describe_EventsFeature2_OnSelf.cs" />
+    <Compile Include="Tests\EventsFeature2\describe_EventsFeature2_OnSelf.cs" />
+    <Compile Include="Tests\EventsFeature2\describe_EventsFeature2_OnAny.cs" />
     <Compile Include="Tests\Events\describe_Event_ClassMethods.cs" />
     <Compile Include="Tests\Events\describe_Event_StructMethods.cs" />
   </ItemGroup>

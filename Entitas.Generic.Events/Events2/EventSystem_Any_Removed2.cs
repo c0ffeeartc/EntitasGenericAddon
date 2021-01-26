@@ -1,15 +1,22 @@
 using System;
 using System.Collections.Generic;
-using Entitas;
-using Entitas.Generic;
 
-namespace Custom.Scripts
+namespace Entitas.Generic 
 {
 public sealed class EventSystem_Any_Removed2<TScope, TComp> : ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
 		where TComp : IComponent, ICompData, Scope<TScope>, IEvent_AnyRemoved<TScope, TComp>
 {
-	public					EventSystem_Any_Removed2 ( Contexts db ) : base( db.Get<TScope>( ) ) { }
+	public					EventSystem_Any_Removed2 ( Contexts db, Context<Entity<TScope>> context = null ) : base( context ?? db.Get<TScope>( ) )
+	{
+		if ( OnAny_Removed<TScope,TComp>.I == null )
+		{
+			OnAny_Removed<TScope,TComp>.I	= new OnAny_Removed<TScope, TComp>( db );
+		}
+		_context					= context ?? db.Get<TScope>();
+	}
+
+	private					Context<Entity<TScope>>	_context;
 
 	protected override	ICollector<Entity<TScope>>	GetTrigger				( IContext<Entity<TScope>> context ) { return context.CreateCollector(
 		Matcher<TScope, TComp>.I.Removed(   ) ); }
@@ -22,7 +29,7 @@ public sealed class EventSystem_Any_Removed2<TScope, TComp> : ReactiveSystem<Ent
 		for ( var i = 0; i < entities.Count; i++ )
 		{
 			var e					= entities[i];
-			OnAny_Removed<TScope, TComp>.Action.Invoke( e );
+			OnAny_Removed<TScope, TComp>.I.Invoke( e, _context );
 		}
 	}
 }

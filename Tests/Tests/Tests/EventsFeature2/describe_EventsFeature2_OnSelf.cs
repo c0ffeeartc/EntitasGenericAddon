@@ -5,7 +5,7 @@ using NSubstitute;
 
 namespace Tests
 {
-public class describe_EventsFeature2 : nspec
+public class describe_EventsFeature2_OnSelf : nspec
 {
 	private				Contexts				_db;
 
