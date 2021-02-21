@@ -37,6 +37,9 @@ There are two ways of using EntitasGenericAddon:
 
 Warning: Please test project on target devices as soon as possible, and then regularly to avoid any pitfalls and show stoppers. 
 
+## Examples
+For more examples see [EntitasGenericAddon.Examples](https://github.com/c0ffeeartc/EntitasGenericAddon.Examples)
+
 ## Usage
 
 ```csharp
