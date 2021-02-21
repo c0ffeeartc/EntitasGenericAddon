@@ -60,5 +60,8 @@ public class Scopes
 {
 	public static			List<Func<IContext>>	CreateContext			= new List<Func<IContext>>(  );
 	public static			int						Count;
+	public static			List<Type>				ScopedContextTypes		= new List<Type>();
+	public static			List<Type>				IScopeTypes				= new List<Type>();
+	public static			List<Type>				CompScopeTypes			= new List<Type>();
 }
 }

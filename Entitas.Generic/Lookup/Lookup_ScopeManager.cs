@@ -32,6 +32,9 @@ public class Lookup_ScopeManager
 			) );
 
 		Lookup<TScope>.Id			= Scopes.Count;
+		Scopes.IScopeTypes.Add(typeof(TScope));
+		Scopes.ScopedContextTypes.Add(typeof(ScopedContext<TScope>));
+		Scopes.CompScopeTypes.Add(typeof(Scope<TScope>));
 		Scopes.Count++;
 	}
 
