@@ -58,7 +58,7 @@ public class Lookup_ScopeManager
 				}
 
 				{
-					MethodInfo methodInfo  = typeof(Lookup_ScopeManager).GetMethod( "RegisterScope", BindingFlags.Static | BindingFlags.Public );
+					MethodInfo methodInfo  = typeof(Lookup_ScopeManager).GetMethod( nameof(Lookup_ScopeManager.RegisterScope), BindingFlags.Static | BindingFlags.Public );
 					var generic			= methodInfo.MakeGenericMethod( type );
 					generic.Invoke( null, null );
 				}
