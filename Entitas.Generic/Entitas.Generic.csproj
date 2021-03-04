@@ -46,6 +46,7 @@
     <Compile Include="Core\Interfaces.cs" />
     <Compile Include="Core\Matcher.cs" />
     <Compile Include="Core\ReactiveVersions\IVersionChanged.cs" />
+    <Compile Include="Core\ReactiveVersions\ExecuteSystem.cs" />
     <Compile Include="Core\ScopedContext.cs" />
     <Compile Include="Core\ScopedContext_ClassMethods.cs" />
     <Compile Include="Core\ScopedContext_StructMethods.cs" />
