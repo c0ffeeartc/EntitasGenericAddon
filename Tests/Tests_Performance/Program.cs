@@ -48,7 +48,7 @@ internal class Program
 		run<Entity_AddRemove_CompData_Class_CreateSetApply>();
 		// 3.2 repeat test#3 to double check stats accuracy
 		run<Entity_AddRemove_CompData_Class_SetUsingCache>();
-    
+
 		// 10 base struct Add test
 		run<Entity_AddRemove_CompData_Struct>();
 		// 11 is like 10 but component initialization is included into test
@@ -56,8 +56,10 @@ internal class Program
 		run<Entity_AddRemove_CompData_Struct_IncludeInit>();
 		run<Entity_AddRemove_CompData_Class_WithGroups>();
 		run<Entity_AddRemove_CompData_Struct_WithGroups>();
+		run<ReactV_Entity_AddRemove_CompData_Struct_WithGroups>();
 		run<Entity_Replace_CompData_Class_WithGroups>();
 		run<Entity_Replace_CompData_Struct_WithGroups>();
+		run<ReactV_Entity_Replace_CompData_Struct_WithGroups>();
 
 		run<Entity_Get_CompData_Class>(  );
 		run<Entity_Get_CompData_Struct>(  );
