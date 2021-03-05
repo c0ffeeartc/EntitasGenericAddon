@@ -79,6 +79,14 @@ namespace Entitas.Generic
 				&& ((StructComponent<TData>)component).VersionChangedId != VersionChangeId.Remove;
 		}
 
+		public				Boolean					HasChanged_<TData>		( Int32 systemLastVersion )
+				where TData : struct, Scope<TScope>, IComponent, ICompData
+		{
+			var component			= GetComponentNoCheck(Lookup<TScope, TData>.Id);
+			return component != null
+				&& ((StructComponent<TData>)component).VersionChangedId - systemLastVersion > 0;
+		}
+
 		private 			StructComponent<TData>	GetOrCreate_<TData>		(  )
 				where TData : struct, Scope<TScope>, IComponent, ICompData
 		{

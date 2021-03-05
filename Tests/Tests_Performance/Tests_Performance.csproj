@@ -72,6 +72,8 @@
         <Compile Include="Sources\Fixtures\TestScopes.cs" />
         <Compile Include="Sources\IPerformanceTest.cs" />
         <Compile Include="Program.cs" />
+        <Compile Include="Sources\IToTestString.cs" />
+        <Compile Include="Sources\ReactiveVersions\Reactive_ReactToModifiedEnts.cs" />
         <Compile Include="Sources\ReactiveVersions\ReactV_Entity_AddRemove_CompData_Struct_WithGroups.cs" />
         <Compile Include="Sources\ReactiveVersions\Fixtures\TestCompASructV_Scope1.cs" />
         <Compile Include="Sources\ReactiveVersions\ReactV_Entity_Replace_CompData_Struct_WithGroups.cs" />

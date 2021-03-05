@@ -22,11 +22,11 @@ public class Lookup_ScopeManager
 					Lookup<TScope>.CompNamesPrettyArray,
 					Lookup<TScope>.CompTypesArray
 					),
-				#if (ENTITAS_FAST_AND_UNSAFE)
+				//#if (ENTITAS_FAST_AND_UNSAFE)
 				AERCFactories.UnsafeAERCFactory
-				#else
-				AERCFactories.SafeAERCFactory
-				#endif
+				// #else
+				// AERCFactories.SafeAERCFactory
+				// #endif
 					,
 				() => new Entity<TScope>(  )
 			) );

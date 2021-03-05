@@ -35,25 +35,25 @@ internal class Program
 
 		Console.WriteLine($"memory before tests: {MemoryHelper.GetMemoryAllStatsString(currentProcess)}");
 
-		// 1 exclude component-data-init time from test
-		run<Entity_AddRemove_CompData_Class>();
-		// 2 include component-data-init into test
-		// (results can be compared with tests 3 4 5 and 11)
-		run<Entity_AddRemove_CompData_Class_AddNewInstance>();
-		// 3 replace component data init by Cache.I.Set
-		// (results can be compared with tests 2 4 5 and 11)
-		run<Entity_AddRemove_CompData_Class_SetUsingCache>();
-		// 4 Create-Apply workflow
-		// (results can be compared with tests 2, 3 5  and 11)
-		run<Entity_AddRemove_CompData_Class_CreateSetApply>();
-		// 3.2 repeat test#3 to double check stats accuracy
-		run<Entity_AddRemove_CompData_Class_SetUsingCache>();
-
-		// 10 base struct Add test
-		run<Entity_AddRemove_CompData_Struct>();
-		// 11 is like 10 but component initialization is included into test
-		// so results can be compared with tests 2-5
-		run<Entity_AddRemove_CompData_Struct_IncludeInit>();
+		// // 1 exclude component-data-init time from test
+		// run<Entity_AddRemove_CompData_Class>();
+		// // 2 include component-data-init into test
+		// // (results can be compared with tests 3 4 5 and 11)
+		// run<Entity_AddRemove_CompData_Class_AddNewInstance>();
+		// // 3 replace component data init by Cache.I.Set
+		// // (results can be compared with tests 2 4 5 and 11)
+		// run<Entity_AddRemove_CompData_Class_SetUsingCache>();
+		// // 4 Create-Apply workflow
+		// // (results can be compared with tests 2, 3 5  and 11)
+		// run<Entity_AddRemove_CompData_Class_CreateSetApply>();
+		// // 3.2 repeat test#3 to double check stats accuracy
+		// run<Entity_AddRemove_CompData_Class_SetUsingCache>();
+		//
+		// // 10 base struct Add test
+		// run<Entity_AddRemove_CompData_Struct>();
+		// // 11 is like 10 but component initialization is included into test
+		// // so results can be compared with tests 2-5
+		// run<Entity_AddRemove_CompData_Struct_IncludeInit>();
 		run<Entity_AddRemove_CompData_Class_WithGroups>();
 		run<Entity_AddRemove_CompData_Struct_WithGroups>();
 		run<ReactV_Entity_AddRemove_CompData_Struct_WithGroups>();
@@ -61,18 +61,47 @@ internal class Program
 		run<Entity_Replace_CompData_Struct_WithGroups>();
 		run<ReactV_Entity_Replace_CompData_Struct_WithGroups>();
 
-		run<Entity_Get_CompData_Class>(  );
-		run<Entity_Get_CompData_Struct>(  );
+		//
+		run<EmptyTest>();
+		var entCount = 100000;
+		var runCount = 100;
+		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 1) );
+		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 1) );
+		run<EmptyTest>();
 
-		run<Entity_Has_CompData_Class>(  );
-		run<Entity_Has_CompData_Struct>(  );
+		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 10) );
+		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 10) );
+		run<EmptyTest>();
 
-		run<Entity_Flag_CompFlag>(  );
-		run<Entity_Is_CompFlag>(  );
+		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 25) );
+		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 25) );
+		run<EmptyTest>();
 
-		run<Struct_ToString_Implemented>(  );
-		run<Struct_ToString_NotImplemented>(  );
-		run<Struct_ToString_ToGenericTypeString>(  );
+		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 50) );
+		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 50) );
+		run<EmptyTest>();
+
+		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 75) );
+		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 75) );
+		run<EmptyTest>();
+
+		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 100) );
+		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 100) );
+		run<EmptyTest>();
+
+		//
+		// run<Entity_Get_CompData_Class>(  );
+		// run<Entity_Get_CompData_Struct>(  );
+		//
+		// run<Entity_Has_CompData_Class>(  );
+		// run<Entity_Has_CompData_Struct>(  );
+		//
+		// run<Entity_Flag_CompFlag>(  );
+		// run<Entity_Is_CompFlag>(  );
+		//
+		// run<Struct_ToString_Implemented>(  );
+		// run<Struct_ToString_NotImplemented>(  );
+		// run<Struct_ToString_ToGenericTypeString>(  );
 
 		Console.WriteLine($"memory after tests: {MemoryHelper.GetMemoryAllStatsString(currentProcess)}");
     
@@ -98,18 +127,27 @@ internal class Program
 
 	static void run<T>() where T : IPerformanceTest, new()
 	{
-		Thread.Sleep(500);
+		run<T>(()=>new T());
+	}
+	
+	static void run<T>(Func<T> testFactory) where T : IPerformanceTest
+	{
+		Thread.Sleep(200);//(500);
 		if (typeof(T) == typeof(EmptyTest))
 		{
 			Console.WriteLine(string.Empty);
 			return;
 		}
-		var test = new T();
-		Console.Write( test.Iterations.ToString( "e0" ) + " " + (typeof(T) + ": ").PadRight(60));
+
+		var test = testFactory.Invoke();
+		var testString = test is IToTestString
+			? (test as IToTestString).ToTestString()
+			: typeof(T).ToString();
+		Console.Write( test.Iterations.ToString( "e0" ) + " " + (testString + ": ").PadRight(60));
 		// For more reliable results, run before
 		PerformanceTestRunner.Run(test);
 
-		Tuple<long,long> msAndMemory = PerformanceTestRunner.Run(new T());
+		Tuple<long,long> msAndMemory = PerformanceTestRunner.Run(testFactory.Invoke());
 		Console.Write((msAndMemory.Item1 + " ms").PadRight(10));
 		Console.Write(("mem.DIFF " +msAndMemory.Item2 + " bytes").PadRight(30));
 		Console.WriteLine("mem.ALL " + MemoryHelper.GetMemoryAllStatsString(currentProcess) + " bytes");
