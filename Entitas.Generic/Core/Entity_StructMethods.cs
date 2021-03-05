@@ -3,8 +3,7 @@
 namespace Entitas.Generic
 {
 	public partial class Entity<TScope>
-		: Entitas.Entity
-		where TScope : IScope
+			where TScope : IScope
 	{
 		public				void					Add_<TData>				( TData data )
 				where TData : struct, Scope<TScope>, ICompData, IComponent
@@ -31,33 +30,33 @@ namespace Entitas.Generic
 		}
 
 		public				void					AddV_<TData>	( TData data )
-				where TData : struct, Scope<TScope>, ICompData, IComponent, IVersionChanged
+				where TData : struct, Scope<TScope>, ICompData, IComponent
 		{
 			var index				= Lookup<TScope, TData>.Id;
             var component			= GetOrCreate_<TData>();
 			component.Data			= data;
-			component.Data.VersionChanged = Version.Global;
-			component.Data.VersionChangedId = VersionChangeId.Add;
+			component.VersionChanged = Version.Global;
+			component.VersionChangedId = VersionChangeId.Add;
 			ReplaceComponent(index, component);
 		}
 
 		public				void					ReplaceV_<TData>( TData data )
-				where TData : struct, Scope<TScope>, ICompData, IComponent, IVersionChanged
+				where TData : struct, Scope<TScope>, ICompData, IComponent
 		{
 			var index				= Lookup<TScope, TData>.Id;
             var component			= GetOrCreate_<TData>();
 			component.Data			= data;
-			component.Data.VersionChanged = Version.Global;
-			component.Data.VersionChangedId = VersionChangeId.Replace;
+			component.VersionChanged = Version.Global;
+			component.VersionChangedId = VersionChangeId.Replace;
 			ReplaceComponent(index, component);
 		}
 
 		public				void					RemoveV_<TData>	(  )
-				where TData : struct, Scope<TScope>, ICompData, IComponent, IVersionChanged
+				where TData : struct, Scope<TScope>, ICompData, IComponent
 		{
-			var comp = ((StructComponent<TData>) GetComponent(Lookup<TScope, TData>.Id));
-			comp.Data.VersionChanged = Version.Global;
-			comp.Data.VersionChangedId = VersionChangeId.Remove;
+			var comp = (StructComponent<TData>) GetComponent(Lookup<TScope, TData>.Id);
+			comp.VersionChanged		= Version.Global;
+			comp.VersionChangedId	= VersionChangeId.Remove;
 		}
 
 		public				TData					Get_<TData>				(  )
@@ -72,15 +71,28 @@ namespace Entitas.Generic
 			return HasComponent(Lookup<TScope, TData>.Id);
 		}
 
+		public				Boolean					HasV_<TData>				(  )
+				where TData : struct, Scope<TScope>, IComponent, ICompData
+		{
+			var component			= GetComponentNoCheck(Lookup<TScope, TData>.Id);
+			return component != null
+				&& ((StructComponent<TData>)component).VersionChangedId != VersionChangeId.Remove;
+		}
+
 		private 			StructComponent<TData>	GetOrCreate_<TData>		(  )
 				where TData : struct, Scope<TScope>, IComponent, ICompData
 		{
 			var index				= Lookup<TScope, TData>.Id;
-			if (Has_<TData>())
+			if (HasComponent(index))
 			{
-				return (StructComponent<TData>) GetComponent( index );
+				return (StructComponent<TData>)GetComponentNoCheck( index );
 			}
 			return CreateComponent<StructComponent<TData>>( index );
+		}
+
+		private 			IComponent				GetComponentNoCheck		( Int32 index )
+		{
+			return _components[index];
 		}
 	}
 }

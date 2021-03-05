@@ -35,6 +35,9 @@
     <Reference Include="Entitas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libs\Entitas.dll</HintPath>
     </Reference>
+    <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\..\..\..\..\..\..\usr\local\Cellar\mono\6.8.0.123\lib\mono\2.0-api\System.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\AERCFactories.cs" />
@@ -42,6 +45,7 @@
     <Compile Include="Core\EntExtensions.cs" />
     <Compile Include="Core\EntityIndexExtensions.cs" />
     <Compile Include="Core\Entity_ClassMethods.cs" />
+    <Compile Include="Core\Entity_Reimplement.cs" />
     <Compile Include="Core\Entity_StructMethods.cs" />
     <Compile Include="Core\Interfaces.cs" />
     <Compile Include="Core\Matcher.cs" />

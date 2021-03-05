@@ -1,8 +1,8 @@
 ﻿namespace Entitas.Generic
 {
     public partial class Entity<TScope>
-        : Entitas.Entity
-        where TScope : IScope
+            : Entitas.Generic.Entity
+                where TScope : IScope
     {
         public void Add<TComp>(TComp comp) where TComp : class, Scope<TScope>, ICompData, ICopyFrom<TComp>,IComponent, new()
         {
