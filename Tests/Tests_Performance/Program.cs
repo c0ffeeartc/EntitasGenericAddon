@@ -61,33 +61,22 @@ internal class Program
 		run<Entity_Replace_CompData_Struct_WithGroups>();
 		run<ReactV_Entity_Replace_CompData_Struct_WithGroups>();
 
-		//
-		run<EmptyTest>();
-		var entCount = 100000;
-		var runCount = 100;
-		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 1) );
-		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 1) );
 		run<EmptyTest>();
 
-		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 10) );
-		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 10) );
-		run<EmptyTest>();
+		RunTests_ReactToModifiedEnts( runCount: 100
+			, entCount: 10000
+			, reactSystemCount: 1
+			, modifyEntsPercents: new []{1,25,50,75,100} );
 
-		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 25) );
-		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 25) );
-		run<EmptyTest>();
+		RunTests_ReactToModifiedEnts( runCount: 100
+			, entCount: 10000
+			, reactSystemCount: 10
+			, modifyEntsPercents: new []{1,25,50,75,100} );
 
-		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 50) );
-		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 50) );
-		run<EmptyTest>();
-
-		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 75) );
-		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 75) );
-		run<EmptyTest>();
-
-		run( ()=> new Reactive_ReactToModifiedEnts(runCount, entCount, 100) );
-		run( ()=> new Version_ReactToModifiedEnts(runCount, entCount, 100) );
-		run<EmptyTest>();
+		RunTests_ReactToModifiedEnts( runCount: 100
+			, entCount: 10000
+			, reactSystemCount: 50
+			, modifyEntsPercents: new []{1,25,50,75,100} );
 
 		//
 		// run<Entity_Get_CompData_Class>(  );
@@ -123,6 +112,16 @@ internal class Program
 
 		// Console.WriteLine("\nPress any key...");
 		// Console.Read();
+	}
+
+	private static void RunTests_ReactToModifiedEnts(Int32 runCount, Int32 entCount, Int32 reactSystemCount, Int32[] modifyEntsPercents )
+	{
+		foreach ( var percent in modifyEntsPercents )
+		{
+			run( ( ) => new ReactToModifiedEnts_Reactive( runCount, entCount, percent, reactSystemCount ) );
+			run( ( ) => new ReactToModifiedEnts_Version( runCount, entCount, percent, reactSystemCount ) );
+		}
+		run<EmptyTest>( );
 	}
 
 	static void run<T>() where T : IPerformanceTest, new()
