@@ -44,12 +44,9 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="MemoryHelper.cs" />
-        <Compile Include="PerformanceTestsRunner.cs" />
         <Compile Include="Sources\Component\Struct_ToString_Implemented.cs" />
         <Compile Include="Sources\Component\Struct_ToString_NotImplemented.cs" />
         <Compile Include="Sources\Component\Struct_ToString_ToGenericTypeString.cs" />
-        <Compile Include="Sources\EmptyTest.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_CreateSetApply.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_AddNewInstance.cs" />
         <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_SetUsingCache.cs" />
@@ -70,8 +67,11 @@
         <Compile Include="Sources\Fixtures\TestCompStruct_ToString.cs" />
         <Compile Include="Sources\Fixtures\TestCompB_Scope1.cs" />
         <Compile Include="Sources\Fixtures\TestScopes.cs" />
-        <Compile Include="Sources\IPerformanceTest.cs" />
         <Compile Include="Program.cs" />
+        <Compile Include="Sources\PerformanceTestsRunner\IPerformanceTest.cs" />
+        <Compile Include="Sources\PerformanceTestsRunner\IToTestString.cs" />
+        <Compile Include="Sources\PerformanceTestsRunner\MemoryHelper.cs" />
+        <Compile Include="Sources\PerformanceTestsRunner\PerformanceTestRunner.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\Entitas.Generic\Entitas.Generic.csproj">
