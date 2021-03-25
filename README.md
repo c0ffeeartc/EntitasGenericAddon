@@ -28,14 +28,12 @@ Make Entitas extensible by separate dll
   - Manual `EntityIndex` registration
 
 ## Installation
-There are two ways of using EntitasGenericAddon:
-  - with existing generated Contexts(not recommended)
-    - For now it only adds new generic contexts, generated and generic context instances have different workflows. Improvements are welcome
-    - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into same assembly as generated `Contexts` class
-  - standalone without generator(preferred)
-    - Copy `Entitas.Generic`, `Entitas.Generic.Events` sources into `Assets` folder somewhere
+  - Install [Entitas](https://github.com/sschmid/Entitas-CSharp) framework into your project (tested with Entitas v1.13.0 but more recent may be also compatible)
+  - Install EntitasGenericAddon into your project:
+    - Preferred. Without using Entitas generator - copy `Entitas.Generic`, `Entitas.Generic.Events` sources into `Assets` folder somewhere
+    - Not recommended. With existing generated Contexts - copy `Entitas.Generic`, `Entitas.Generic.Events` sources into same assembly as generated `Contexts` class. For now it only adds new generic contexts, generated and generic context instances have different workflows. Improvements are welcome
 
-Warning: Please test project on target devices as soon as possible, and then regularly to avoid any pitfalls and show stoppers. 
+Warning: Please test project on target devices as soon as possible, and then regularly to avoid any pitfalls and show stoppers.
 
 ## Examples
 For more examples see [EntitasGenericAddon.Examples](https://github.com/c0ffeeartc/EntitasGenericAddon.Examples)
