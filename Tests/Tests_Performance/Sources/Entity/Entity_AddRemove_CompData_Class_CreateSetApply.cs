@@ -3,26 +3,26 @@
 #pragma warning disable
 public class Entity_AddRemove_CompData_Class_CreateSetApply : IPerformanceTest
 {
-	private const			int						n						= 10000000;
-	private					Entity<TestScope1>		_ent;
-	private					TestCompA_Scope1		_testCompAScope1;
-	public					int						Iterations				=> n;
+	private const int n = 10000000;
+	private Entity<TestScope1> _ent;
+	private TestCompA_Scope1 _testCompAScope1;
+	public int Iterations => n;
 
-	public					void					Before					(  )
+	public void Before()
 	{
-		var contexts				= new Contexts(  );
-		contexts.AddScopedContexts(  );
+		var contexts = new Contexts();
+		contexts.AddScopedContexts();
 
-		var context					= contexts.Get<TestScope1>();
-		_ent						= context.CreateEntity();
+		var context = contexts.Get<TestScope1>();
+		_ent = context.CreateEntity();
 	}
 
-	public					void					Run						(  )
+	public void Run()
 	{
-		for ( var i = 0; i < n; i++ )
+		for (var i = 0; i < n; i++)
 		{
-      _ent.Apply(_ent.Create<TestCompA_Scope1>().Set(5));
-			_ent.Remove<TestCompA_Scope1>(  );
+			_ent.Apply(_ent.Create<TestCompA_Scope1>().Set(5));
+			_ent.Remove<TestCompA_Scope1>();
 		}
 	}
 }

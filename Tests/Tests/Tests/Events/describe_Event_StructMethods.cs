@@ -6,146 +6,146 @@ namespace Tests
 {
 	public class describe_Event_StructMethods : nspec
 	{
-		private				Contexts				_contexts;
+		private Contexts _contexts;
 
-		private				void					test_CoreMethods		(  )
+		private void test_CoreMethods()
 		{
-			Lookup_ScopeManager.RegisterAll(  );
+			Lookup_ScopeManager.RegisterAll();
 
-			before					= ()=>
+			before = () =>
 			{
-				_contexts			= new Contexts(  );
-				_contexts.AddScopedContexts(  );
+				_contexts = new Contexts();
+				_contexts.AddScopedContexts();
 			};
 
-			it["OnAny listens other"] = ()=>
+			it["OnAny listens other"] = () =>
 			{
 				// given
-				var system			= new EventSystem_Any_<ScopeA, TestDataA>( _contexts );
-				var listener		= Substitute.For<IOnAny<ScopeA,TestDataA>>(  );
+				var system = new EventSystem_Any_<ScopeA, TestDataA>(_contexts);
+				var listener = Substitute.For<IOnAny<ScopeA, TestDataA>>();
 				{
-					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnAny( listener );
+					var ent = _contexts.Get<ScopeA>().CreateEntity();
+					ent.Add_OnAny(listener);
 				}
-				listener.DidNotReceiveWithAnyArgs(  ).OnAny( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs().OnAny(default(TestDataA), null, null);
 
 				// when
-				var entity			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Add_( new TestDataA(  ) );
+				var entity = _contexts.Get<ScopeA>().CreateEntity();
+				entity.Add_(new TestDataA());
 
-				system.Execute(  );
+				system.Execute();
 
 				// then
-				listener.ReceivedWithAnyArgs(  ).OnAny( default(TestDataA), null, null );
+				listener.ReceivedWithAnyArgs().OnAny(default(TestDataA), null, null);
 			};
 
-			it["OnAnyRemoved listens other"] = (  ) =>
+			it["OnAnyRemoved listens other"] = () =>
 			{
 				// given
-				var system			= new EventSystem_AnyRemoved_<ScopeA, TestDataA>( _contexts );
-				var listener		= Substitute.For<IOnAnyRemoved<ScopeA,TestDataA>>(  );
+				var system = new EventSystem_AnyRemoved_<ScopeA, TestDataA>(_contexts);
+				var listener = Substitute.For<IOnAnyRemoved<ScopeA, TestDataA>>();
 				{
-					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnAnyRemoved( listener );
+					var ent = _contexts.Get<ScopeA>().CreateEntity();
+					ent.Add_OnAnyRemoved(listener);
 				}
-				listener.DidNotReceiveWithAnyArgs(  ).OnAnyRemoved( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs().OnAnyRemoved(default(TestDataA), null, null);
 
 				// when
-				var entity			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Add_( new TestDataA(  ) );
-				entity.Remove_<TestDataA>(  );
+				var entity = _contexts.Get<ScopeA>().CreateEntity();
+				entity.Add_(new TestDataA());
+				entity.Remove_<TestDataA>();
 
-				system.Execute(  );
-
-				// then
-				listener.ReceivedWithAnyArgs(  ).OnAnyRemoved( default(TestDataA), null, null );
-			};
-
-			it["OnSelf listens self"] = ()=>
-			{
-				// given
-				var system			= new EventSystem_Self_<ScopeA, TestDataA>( _contexts );
-				var listener		= Substitute.For<IOnSelf<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
-
-				// when
-				{
-					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_( new TestDataA(  ) );
-					ent.Add_OnSelf( listener );
-				}
-
-				system.Execute(  );
+				system.Execute();
 
 				// then
-				listener.ReceivedWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
+				listener.ReceivedWithAnyArgs().OnAnyRemoved(default(TestDataA), null, null);
 			};
 
-			it["OnSelf doesn't listen other"] = ()=>
+			it["OnSelf listens self"] = () =>
 			{
 				// given
-				var system			= new EventSystem_Self_<ScopeA, TestDataA>( _contexts );
-				var listener		= Substitute.For<IOnSelf<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
+				var system = new EventSystem_Self_<ScopeA, TestDataA>(_contexts);
+				var listener = Substitute.For<IOnSelf<ScopeA, TestDataA>>();
+				listener.DidNotReceiveWithAnyArgs().OnSelf(default(TestDataA), null, null);
 
 				// when
 				{
-					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnSelf( listener );
-				}
-				{
-					var entity		= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					entity.Add_( new TestDataA(  ) );
+					var ent = _contexts.Get<ScopeA>().CreateEntity();
+					ent.Add_(new TestDataA());
+					ent.Add_OnSelf(listener);
 				}
 
-				system.Execute(  );
+				system.Execute();
 
 				// then
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
+				listener.ReceivedWithAnyArgs().OnSelf(default(TestDataA), null, null);
 			};
 
-			it["OnSelfRemoved listens self"] = ()=>
+			it["OnSelf doesn't listen other"] = () =>
 			{
 				// given
-				var system			= new EventSystem_SelfRemoved_<ScopeA, TestDataA>( _contexts );
-				var listener		= Substitute.For<IOnSelfRemoved<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
+				var system = new EventSystem_Self_<ScopeA, TestDataA>(_contexts);
+				var listener = Substitute.For<IOnSelf<ScopeA, TestDataA>>();
+				listener.DidNotReceiveWithAnyArgs().OnSelf(default(TestDataA), null, null);
 
 				// when
 				{
-					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_( new TestDataA(  ) );
-					ent.Add_OnSelfRemoved( listener );
-					ent.Remove_<TestDataA>(  );
+					var ent = _contexts.Get<ScopeA>().CreateEntity();
+					ent.Add_OnSelf(listener);
+				}
+				{
+					var entity = _contexts.Get<ScopeA>().CreateEntity();
+					entity.Add_(new TestDataA());
 				}
 
-				system.Execute(  );
+				system.Execute();
 
 				// then
-				listener.ReceivedWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs().OnSelf(default(TestDataA), null, null);
 			};
 
-			it["OnSelfRemoved doesn't listen other"] = ()=>
+			it["OnSelfRemoved listens self"] = () =>
 			{
 				// given
-				var system			= new EventSystem_SelfRemoved_<ScopeA, TestDataA>( _contexts );
-				var listener		= Substitute.For<IOnSelfRemoved<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
+				var system = new EventSystem_SelfRemoved_<ScopeA, TestDataA>(_contexts);
+				var listener = Substitute.For<IOnSelfRemoved<ScopeA, TestDataA>>();
+				listener.DidNotReceiveWithAnyArgs().OnSelfRemoved(default(TestDataA), null, null);
 
 				// when
 				{
-					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					ent.Add_OnSelfRemoved( listener );
-				}
-				{
-					var entity		= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-					entity.Add_( new TestDataA(  ) );
+					var ent = _contexts.Get<ScopeA>().CreateEntity();
+					ent.Add_(new TestDataA());
+					ent.Add_OnSelfRemoved(listener);
+					ent.Remove_<TestDataA>();
 				}
 
-				system.Execute(  );
+				system.Execute();
 
 				// then
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
+				listener.ReceivedWithAnyArgs().OnSelfRemoved(default(TestDataA), null, null);
+			};
+
+			it["OnSelfRemoved doesn't listen other"] = () =>
+			{
+				// given
+				var system = new EventSystem_SelfRemoved_<ScopeA, TestDataA>(_contexts);
+				var listener = Substitute.For<IOnSelfRemoved<ScopeA, TestDataA>>();
+				listener.DidNotReceiveWithAnyArgs().OnSelfRemoved(default(TestDataA), null, null);
+
+				// when
+				{
+					var ent = _contexts.Get<ScopeA>().CreateEntity();
+					ent.Add_OnSelfRemoved(listener);
+				}
+				{
+					var entity = _contexts.Get<ScopeA>().CreateEntity();
+					entity.Add_(new TestDataA());
+				}
+
+				system.Execute();
+
+				// then
+				listener.DidNotReceiveWithAnyArgs().OnSelfRemoved(default(TestDataA), null, null);
 			};
 		}
 	}
