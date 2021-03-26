@@ -2,13 +2,13 @@ using System;
 
 namespace Entitas.Generic
 {
-public static class EntExtensions
-{
-	public static			Boolean					IsValid					( this IEntity entity, Int32 creationIndex )
+	public static class EntExtensions
 	{
-		return entity != null
-			&& entity.isEnabled
-			&& entity.creationIndex == creationIndex;
+		public static Boolean IsValid(this IEntity entity, Int32 creationIndex)
+		{
+			return entity != null
+			       && entity.isEnabled
+			       && entity.creationIndex == creationIndex;
+		}
 	}
-}
 }
