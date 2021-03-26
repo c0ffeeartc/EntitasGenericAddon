@@ -6,77 +6,77 @@ using System.Threading;
 
 namespace PerformanceTests
 {
-public class MemoryHelper
-{
-	public static Process CurProcess;
-
-	public static string GetMemoryAllStatsString(Process process)
+	public class MemoryHelper
 	{
-	  return String.Join(", ", GetMemoryStats(process));
-	}
+		public static Process CurProcess;
 
-	public static List<long> GetMemoryStats(Process process)
-	{
-		return new List<long>
+		public static string GetMemoryAllStatsString(Process process)
 		{
-			GC.GetTotalMemory(false),
-			process.PeakVirtualMemorySize64,
-			process.PeakPagedMemorySize64,
-			process.VirtualMemorySize64,
-			process.PrivateMemorySize64,
-			process.PagedMemorySize64,
-			process.NonpagedSystemMemorySize64,
-			process.PagedSystemMemorySize64,
-		};
-	}
+			return String.Join(", ", GetMemoryStats(process));
+		}
 
-	public static void MemoryBegin( )
-	{
-		CurProcess = Process.GetCurrentProcess();
-		Console.WriteLine($"Memory at process start: {GetMemoryAllStatsString(CurProcess)}");
-
-		Thread.Sleep(1500);  // too much?
-
-		Console.WriteLine($"Memory before tests: {GetMemoryAllStatsString(CurProcess)}");
-
-		GCSettings.LatencyMode = GCLatencyMode.LowLatency;
-
-		try
+		public static List<long> GetMemoryStats(Process process)
 		{
-			if ( !GC.TryStartNoGCRegion( 0 ) )
+			return new List<long>
 			{
-				Console.WriteLine( "Can't start NoGCRegion" );
+				GC.GetTotalMemory(false),
+				process.PeakVirtualMemorySize64,
+				process.PeakPagedMemorySize64,
+				process.VirtualMemorySize64,
+				process.PrivateMemorySize64,
+				process.PagedMemorySize64,
+				process.NonpagedSystemMemorySize64,
+				process.PagedSystemMemorySize64,
+			};
+		}
+
+		public static void MemoryBegin()
+		{
+			CurProcess = Process.GetCurrentProcess();
+			Console.WriteLine($"Memory at process start: {GetMemoryAllStatsString(CurProcess)}");
+
+			Thread.Sleep(1500); // too much?
+
+			Console.WriteLine($"Memory before tests: {GetMemoryAllStatsString(CurProcess)}");
+
+			GCSettings.LatencyMode = GCLatencyMode.LowLatency;
+
+			try
+			{
+				if (!GC.TryStartNoGCRegion(0))
+				{
+					Console.WriteLine("Can't start NoGCRegion");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Can't start NoGCRegion. " + ex.Message);
+			}
+			finally
+			{
+				Console.WriteLine("");
 			}
 		}
-		catch ( Exception ex )
+
+		public static void MemoryEnd()
 		{
-			Console.WriteLine( "Can't start NoGCRegion. " + ex.Message );
-		}
-		finally
-		{
-			Console.WriteLine( "" );
+			Console.WriteLine($"\nMemory after tests: {GetMemoryAllStatsString(CurProcess)}");
+
+			try
+			{
+				GC.EndNoGCRegion();
+			}
+			catch (System.InvalidOperationException e)
+			{
+				Console.WriteLine("\nMemory validation needs to be improved... " +
+				                  "\nProcess had to clean memory while in NoGC mode" +
+				                  "\nNegative memory diffs indicate that");
+				throw;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Can't start EndNoGCRegion. " + ex.Message);
+			}
 		}
 	}
-
-	public static void MemoryEnd( )
-	{
-		Console.WriteLine( $"\nMemory after tests: {GetMemoryAllStatsString( CurProcess )}" );
-
-		try
-		{
-			GC.EndNoGCRegion( );
-		}
-		catch ( System.InvalidOperationException e )
-		{
-			Console.WriteLine( "\nMemory validation needs to be improved... " +
-				"\nProcess had to clean memory while in NoGC mode" +
-				"\nNegative memory diffs indicate that" );
-			throw;
-		}
-		catch ( Exception ex )
-		{
-			Console.WriteLine( "Can't start EndNoGCRegion. " + ex.Message );
-		}
-	}
-  }
 }

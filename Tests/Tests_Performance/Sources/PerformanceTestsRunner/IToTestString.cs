@@ -1,7 +1,7 @@
 namespace Tests
 {
-internal interface IToTestString
-{
-	string ToTestString();
-}
+	internal interface IToTestString
+	{
+		string ToTestString();
+	}
 }

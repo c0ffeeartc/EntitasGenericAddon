@@ -5,63 +5,63 @@ using Tests;
 
 namespace PerformanceTests
 {
-public static class PerformanceTestRunner
-{
-	static readonly Stopwatch _stopwatch;
-
-	static PerformanceTestRunner()
+	public static class PerformanceTestRunner
 	{
-		_stopwatch = new Stopwatch();
-	}
+		static readonly Stopwatch _stopwatch;
 
-	public static Tuple<long,long> Run(IPerformanceTest test)
-	{
-		test.Before();
-		_stopwatch.Reset();
-		var bytesBefore = MemoryHelper.GetMemoryStats(MemoryHelper.CurProcess);
-		_stopwatch.Start();
-		test.Run();
-		_stopwatch.Stop();
-		var bytesAfter = MemoryHelper.GetMemoryStats(MemoryHelper.CurProcess);
-		// only GC memory shows some differences...
-		long memoryDiff = bytesAfter[0] - bytesBefore[0];
-		return new Tuple<long, long>(_stopwatch.ElapsedMilliseconds, memoryDiff);
-	}
+		static PerformanceTestRunner()
+		{
+			_stopwatch = new Stopwatch();
+		}
 
-	public static void Log(string message = null)
-	{
-		Console.WriteLine(message ?? String.Empty);
-	}
+		public static Tuple<long, long> Run(IPerformanceTest test)
+		{
+			test.Before();
+			_stopwatch.Reset();
+			var bytesBefore = MemoryHelper.GetMemoryStats(MemoryHelper.CurProcess);
+			_stopwatch.Start();
+			test.Run();
+			_stopwatch.Stop();
+			var bytesAfter = MemoryHelper.GetMemoryStats(MemoryHelper.CurProcess);
+			// only GC memory shows some differences...
+			long memoryDiff = bytesAfter[0] - bytesBefore[0];
+			return new Tuple<long, long>(_stopwatch.ElapsedMilliseconds, memoryDiff);
+		}
 
-	public static void Run<T>()
+		public static void Log(string message = null)
+		{
+			Console.WriteLine(message ?? String.Empty);
+		}
+
+		public static void Run<T>()
 			where T : class, IPerformanceTest, new()
-	{
-		Run(()=>new T());
-	}
+		{
+			Run(() => new T());
+		}
 
-	public static void Run<T>(Func<T> testFactory)
+		public static void Run<T>(Func<T> testFactory)
 			where T : class, IPerformanceTest
-	{
-		Thread.Sleep(200);//(500);
+		{
+			Thread.Sleep(200); //(500);
 
-		var test = testFactory.Invoke();
-		var testString = test is IToTestString t
-			? t.ToTestString()
-			: test.ToTestStringDefault();
+			var test = testFactory.Invoke();
+			var testString = test is IToTestString t
+				? t.ToTestString()
+				: test.ToTestStringDefault();
 
-		Console.Write( test.Iterations.ToString( "e0" ) + " " + (testString + ": ").PadRight(60));
-		Run(test); // For more reliable results, run before
+			Console.Write(test.Iterations.ToString("e0") + " " + (testString + ": ").PadRight(60));
+			Run(test); // For more reliable results, run before
 
-		Tuple<long,long> msAndMemory = Run(testFactory.Invoke());
+			Tuple<long, long> msAndMemory = Run(testFactory.Invoke());
 
-		Console.Write((msAndMemory.Item1 + " ms").PadRight(10));
-		Console.Write(("mem.DIFF " +msAndMemory.Item2 + " bytes").PadRight(30));
-		Console.WriteLine("mem.ALL " + MemoryHelper.GetMemoryAllStatsString(MemoryHelper.CurProcess) + " bytes");
+			Console.Write((msAndMemory.Item1 + " ms").PadRight(10));
+			Console.Write(("mem.DIFF " + msAndMemory.Item2 + " bytes").PadRight(30));
+			Console.WriteLine("mem.ALL " + MemoryHelper.GetMemoryAllStatsString(MemoryHelper.CurProcess) + " bytes");
+		}
+
+		public static string ToTestStringDefault(this IPerformanceTest self)
+		{
+			return self.GetType().ToString();
+		}
 	}
-
-	public static string ToTestStringDefault (this IPerformanceTest self)
-	{
-		return self.GetType().ToString();
-	}
-}
 }

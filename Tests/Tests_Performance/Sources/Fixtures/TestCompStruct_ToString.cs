@@ -4,29 +4,29 @@ using Entitas;
 using Entitas.Generic;
 
 public struct TestCompStruct_ToString_Implemented
-		: IComponent
+	: IComponent
 		, ICompData
 		, Scope<TestScope1>
 {
-	public TestCompStruct_ToString_Implemented( String s = "test" )
+	public TestCompStruct_ToString_Implemented(String s = "test")
 	{
 		Str = "test";
 	}
 
 	public String Str;
 
-	public override String ToString( )
+	public override String ToString()
 	{
 		return Str;
 	}
 }
 
 public struct TestCompStruct_ToString_NotImplemented
-		: IComponent
+	: IComponent
 		, ICompData
 		, Scope<TestScope1>
 {
-	public TestCompStruct_ToString_NotImplemented( String s = "test" )
+	public TestCompStruct_ToString_NotImplemented(String s = "test")
 	{
 		Str = "test";
 	}
@@ -35,19 +35,19 @@ public struct TestCompStruct_ToString_NotImplemented
 }
 
 public struct TestCompStruct_ToString_ToGenericTypeString
-		: IComponent
+	: IComponent
 		, ICompData
 		, Scope<TestScope1>
 {
-	public TestCompStruct_ToString_ToGenericTypeString( String s = "test" )
+	public TestCompStruct_ToString_ToGenericTypeString(String s = "test")
 	{
 		Str = "test";
 	}
 
 	public String Str;
 
-	public override String ToString( )
+	public override String ToString()
 	{
-		return typeof(Dictionary<String,Dictionary<String,Int32>>).ToGenericTypeString(  );
+		return typeof(Dictionary<String, Dictionary<String, Int32>>).ToGenericTypeString();
 	}
 }
