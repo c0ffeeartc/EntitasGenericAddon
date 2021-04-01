@@ -25,9 +25,29 @@
             RemoveComponent(Lookup<TScope, TComp>.Id);
         }
 
+        public void RemoveSafe<TComp>()where TComp : class, Scope<TScope>, ICompData, IComponent
+        {
+            var index = Lookup<TScope, TComp>.Id;
+            if (HasComponent(index))
+            {
+                RemoveComponent(index);
+            }
+        }
+
         public TComp Get<TComp>() where TComp : class, Scope<TScope>, IComponent
         {
             return (TComp) GetComponent(Lookup<TScope, TComp>.Id);
+        }
+
+        public TComp GetOrAdd<TComp>() where TComp : class, Scope<TScope>, IComponent, ICompData
+        {
+            var index = Lookup<TScope,TComp>.Id;
+            if (!HasComponent(index))
+            {
+                var component = CreateComponent(index, typeof(TComp));
+                AddComponent(index, component);
+            }
+            return (TComp) GetComponent(index);
         }
 
         public TComp Create<TComp>() where TComp : class, Scope<TScope>, ICompData, ICreateApply, IComponent, new()

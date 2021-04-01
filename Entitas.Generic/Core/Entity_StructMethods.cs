@@ -10,8 +10,8 @@ namespace Entitas.Generic
 				where TData : struct, Scope<TScope>, ICompData, IComponent
 		{
 			var index				= Lookup<TScope, TData>.Id;
-            var component			= CreateComponent<StructComponent<TData>>( index );
-            component.Data			= data;
+			var component			= CreateComponent<StructComponent<TData>>( index );
+			component.Data			= data;
 			AddComponent(index, component);
 		}
 
@@ -19,7 +19,7 @@ namespace Entitas.Generic
 				where TData : struct, Scope<TScope>, ICompData, IComponent
 		{
 			var index				= Lookup<TScope, TData>.Id;
-            var component			= CreateComponent<StructComponent<TData>>( index );
+			var component			= CreateComponent<StructComponent<TData>>( index );
 			component.Data			= data;
 			ReplaceComponent(index, component);
 		}
@@ -30,10 +30,32 @@ namespace Entitas.Generic
 			RemoveComponent( Lookup<TScope, TData>.Id );
 		}
 
+		public				void					RemoveSafe_<TData>		(  )
+				where TData : struct, Scope<TScope>, ICompData, IComponent
+		{
+			var index				= Lookup<TScope,TData>.Id;
+			if (HasComponent(index))
+			{
+				RemoveComponent(index);
+			}
+		}
+
 		public				TData					Get_<TData>				(  )
 				where TData : struct, Scope<TScope>, IComponent
 		{
 			return ((StructComponent<TData>) GetComponent(Lookup<TScope, TData>.Id)).Data;
+		}
+
+		public				TData					GetOrAdd_<TData>		(  )
+				where TData : struct, Scope<TScope>, IComponent, ICompData
+		{
+			var index				= Lookup<TScope,TData>.Id;
+			if (!HasComponent(index))
+			{
+				var component		= CreateComponent<StructComponent<TData>>( index );
+				AddComponent(index, component);
+			}
+			return ((StructComponent<TData>)GetComponent(index)).Data;
 		}
 
 		public				Boolean					Has_<TData>				(  )
