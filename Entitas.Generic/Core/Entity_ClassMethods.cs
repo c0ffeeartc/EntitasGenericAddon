@@ -101,12 +101,5 @@
         {
             return HasComponent(Lookup<TScope, TComp>.Id);
         }
-        
-        public void RemoveIfExists<TComp>()where TComp : class, Scope<TScope>, ICompData, IComponent
-        {
-          if (Has<TComp>()) {
-            RemoveComponent(Lookup<TScope, TComp>.Id);
-          }
-        }
     }
 }
