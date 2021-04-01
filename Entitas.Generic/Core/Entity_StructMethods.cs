@@ -50,12 +50,14 @@ namespace Entitas.Generic
 				where TData : struct, Scope<TScope>, IComponent, ICompData
 		{
 			var index				= Lookup<TScope,TData>.Id;
-			if (!HasComponent(index))
+			if ( HasComponent( index ) )
 			{
-				var component		= CreateComponent<StructComponent<TData>>( index );
-				AddComponent(index, component);
+				return ((StructComponent<TData>) GetComponent( index )).Data;
 			}
-			return ((StructComponent<TData>)GetComponent(index)).Data;
+
+			var component			= CreateComponent<StructComponent<TData>>( index );
+			AddComponent(index, component);
+			return component.Data;
 		}
 
 		public				Boolean					Has_<TData>				(  )

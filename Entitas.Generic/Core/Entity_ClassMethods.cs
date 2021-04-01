@@ -42,12 +42,14 @@
         public TComp GetOrAdd<TComp>() where TComp : class, Scope<TScope>, IComponent, ICompData
         {
             var index = Lookup<TScope,TComp>.Id;
-            if (!HasComponent(index))
+            if ( HasComponent( index ) )
             {
-                var component = CreateComponent(index, typeof(TComp));
-                AddComponent(index, component);
+                return (TComp) GetComponent( index );
             }
-            return (TComp) GetComponent(index);
+
+            var component = CreateComponent(index, typeof(TComp));
+            AddComponent(index, component);
+            return (TComp) component;
         }
 
         public TComp Create<TComp>() where TComp : class, Scope<TScope>, ICompData, ICreateApply, IComponent, new()
