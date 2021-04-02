@@ -57,10 +57,7 @@ public abstract class OnSelf_Base<TScope>
 
 	public					void					UnsubAll				(  ) 
 	{ 
-		foreach ( var contextIdKey in Action.Keys )
-		{
-			Action[contextIdKey]	= null;
-		}
+		Action.Clear(  );
 	}
 }
 }

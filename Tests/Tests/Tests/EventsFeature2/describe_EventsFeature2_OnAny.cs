@@ -127,6 +127,26 @@ public class describe_EventsFeature2_OnAny : nspec
 				.OnAny( null );
 		};
 
+		it["OnAny doesn't listen after Events2.I.UnsubAll"] = ()=>
+		{
+			// given
+			var system			= new EventSystem_Any2<ScopeA, TestCompA>(_db);
+			var listener		= Substitute.For<IEventsFeature2_OnAnySubscriber<ScopeA,TestCompA>>(  );
+
+			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
+			ent.Add( new TestCompA(  ) );
+			OnAny<ScopeA, TestCompA>.I.Sub( listener.OnAny );
+
+			// when
+			Events2.I.UnsubAll(  );
+			system.Execute(  );
+
+			// then
+			listener
+				.DidNotReceiveWithAnyArgs(  )
+				.OnAny( null );
+		};
+
 		it["OnAny listens other ent with matching class component"] = ()=>
 		{
 			// given
@@ -273,6 +293,27 @@ public class describe_EventsFeature2_OnAny : nspec
 				.OnAny( null );
 		};
 
+		it["OnAny_Removed doesn't listen after Events2.I.UnsubAll"] = ()=>
+		{
+			// given
+			var system			= new EventSystem_Any_Removed2<ScopeA, TestCompA>(_db);
+			var listener		= Substitute.For<IEventsFeature2_OnAnySubscriber<ScopeA,TestCompA>>(  );
+
+			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
+			ent.Add( new TestCompA(  ) );
+			ent.Remove<TestCompA>(  );
+			OnAny_Removed<ScopeA, TestCompA>.I.Sub( listener.OnAny );
+
+			// when
+			Events2.I.UnsubAll(  );
+			system.Execute(  );
+
+			// then
+			listener
+				.DidNotReceiveWithAnyArgs(  )
+				.OnAny( null );
+		};
+
 		it["OnAny_Removed listens other ent with matching class component"] = ()=>
 		{
 			// given
@@ -386,6 +427,26 @@ public class describe_EventsFeature2_OnAny : nspec
 
 			// when
 			OnAny_Flag<ScopeA, TestFlagA>.I.Unsub( listener.OnAny );
+			system.Execute(  );
+
+			// then
+			listener
+				.DidNotReceiveWithAnyArgs(  )
+				.OnAny( null );
+		};
+
+		it["OnAny_Flag doesn't listen after Events2.I.UnsubAll"] = ()=>
+		{
+			// given
+			var system			= new EventSystem_Any_Flag2<ScopeA, TestFlagA>(_db);
+			var listener		= Substitute.For<IEventsFeature2_OnAnySubscriber<ScopeA,TestFlagA>>(  );
+
+			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
+			ent.Flag<TestFlagA>( true );
+			OnAny_Flag<ScopeA, TestFlagA>.I.Sub( listener.OnAny );
+
+			// when
+			Events2.I.UnsubAll(  );
 			system.Execute(  );
 
 			// then

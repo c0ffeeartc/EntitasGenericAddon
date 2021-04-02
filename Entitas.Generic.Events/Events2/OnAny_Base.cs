@@ -54,10 +54,7 @@ public abstract class OnAny_Base<TScope>
 
 	public					void					UnsubAll				(  ) 
 	{ 
-		foreach ( var context in Action.Keys )
-		{
-			Action[context]			= null;
-		}
+		Action.Clear(  );
 	}
 }
 }

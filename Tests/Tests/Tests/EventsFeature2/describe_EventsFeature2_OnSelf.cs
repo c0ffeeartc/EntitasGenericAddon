@@ -127,6 +127,26 @@ public class describe_EventsFeature2_OnSelf : nspec
 				.OnSelf( null );
 		};
 
+		it["OnSelf doesn't listen after Events2.I.UnsubAll"] = ()=>
+		{
+			// given
+			var system			= new EventSystem_Self2<ScopeA, TestCompA>(_db);
+			var listener		= Substitute.For<IEventsFeature2_OnSelfSubscriber<ScopeA,TestCompA>>(  );
+
+			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
+			ent.Add( new TestCompA(  ) );
+			OnSelf<ScopeA, TestCompA>.I.Sub( ent.creationIndex, listener.OnSelf );
+
+			// when
+			Events2.I.UnsubAll(  );
+			system.Execute(  );
+
+			// then
+			listener
+				.DidNotReceiveWithAnyArgs(  )
+				.OnSelf( null );
+		};
+
 		it["OnSelf doesn't listen other ent with matching class component"] = ()=>
 		{
 			// given
@@ -275,6 +295,27 @@ public class describe_EventsFeature2_OnSelf : nspec
 				.OnSelf( null );
 		};
 
+		it["OnSelf_Removed doesn't listen after Events2.I.UnsubAll"] = ()=>
+		{
+			// given
+			var system			= new EventSystem_Self_Removed2<ScopeA, TestCompA>(_db);
+			var listener		= Substitute.For<IEventsFeature2_OnSelfSubscriber<ScopeA,TestCompA>>(  );
+
+			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
+			ent.Add( new TestCompA(  ) );
+			ent.Remove<TestCompA>(  );
+			OnSelf_Removed<ScopeA, TestCompA>.I.Sub( ent.creationIndex, listener.OnSelf );
+
+			// when
+			Events2.I.UnsubAll(  );
+			system.Execute(  );
+
+			// then
+			listener
+				.DidNotReceiveWithAnyArgs(  )
+				.OnSelf( null );
+		};
+
 		it["OnSelf_Removed doesn't listen other ent with matching class component"] = ()=>
 		{
 			// given
@@ -389,6 +430,26 @@ public class describe_EventsFeature2_OnSelf : nspec
 
 			// when
 			OnSelf_Flag<ScopeA, TestFlagA>.I.Unsub( ent.creationIndex, listener.OnSelf );
+			system.Execute(  );
+
+			// then
+			listener
+				.DidNotReceiveWithAnyArgs(  )
+				.OnSelf( null );
+		};
+
+		it["OnSelf_Flag doesn't listen after Events2.I.UnsubAll"] = ()=>
+		{
+			// given
+			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
+			var listener		= Substitute.For<IEventsFeature2_OnSelfSubscriber<ScopeA,TestFlagA>>(  );
+
+			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
+			ent.Flag<TestFlagA>( true );
+			OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelf );
+
+			// when
+			Events2.I.UnsubAll(  );
 			system.Execute(  );
 
 			// then
