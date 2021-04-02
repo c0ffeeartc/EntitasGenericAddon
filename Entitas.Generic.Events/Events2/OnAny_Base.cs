@@ -15,30 +15,30 @@ public abstract class OnAny_Base<TScope>
 
 	private					Contexts				_db;
 	private					Dictionary<Context<Entity<TScope>>,Action<Entity<TScope>>>
-													Action					= new Dictionary<Context<Entity<TScope>>,Action<Entity<TScope>>>();
+													ActionDict				= new Dictionary<Context<Entity<TScope>>,Action<Entity<TScope>>>();
 
 	public					void					Sub						( Action<Entity<TScope>> action, Context<Entity<TScope>> context )
 	{
-		if ( !Action.ContainsKey( context ) )
+		if ( !ActionDict.ContainsKey( context ) )
 		{
-			Action.Add( context, null );
+			ActionDict.Add( context, null );
 		}
-		Action[context]				+= action;
+		ActionDict[context]			+= action;
 	}
 
 	public					void					Unsub					( Action<Entity<TScope>> action, Context<Entity<TScope>> context ) 
 	{ 
-		if ( Action.ContainsKey( context ) )
+		if ( ActionDict.ContainsKey( context ) )
 		{
-			Action[context]			-= action;
+			ActionDict[context]		-= action;
 		}
 	}
 
 	public					void					Invoke					( Entity<TScope> entity, Context<Entity<TScope>> context )
 	{
-		if ( Action.ContainsKey( context ) )
+		if ( ActionDict.ContainsKey( context ) )
 		{
-			Action[context]?.Invoke( entity );
+			ActionDict[context]?.Invoke( entity );
 		}
 	}
 
@@ -54,7 +54,7 @@ public abstract class OnAny_Base<TScope>
 
 	public					void					UnsubAll				(  ) 
 	{ 
-		Action.Clear(  );
+		ActionDict.Clear(  );
 	}
 }
 }

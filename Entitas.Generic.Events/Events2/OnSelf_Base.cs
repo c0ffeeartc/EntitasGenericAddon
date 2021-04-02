@@ -15,31 +15,31 @@ public abstract class OnSelf_Base<TScope>
 
 	private					Contexts				_db;
 	private					Dictionary<KeyValuePair<Context<Entity<TScope>>, int>, Action<Entity<TScope>>>
-													Action					= new Dictionary<KeyValuePair<Context<Entity<TScope>>, int>, Action<Entity<TScope>>>();
+													ActionDict				= new Dictionary<KeyValuePair<Context<Entity<TScope>>, int>, Action<Entity<TScope>>>();
 
 	public					void					Sub						( Int32 id, Action<Entity<TScope>> action, Context<Entity<TScope>> context )
 	{
 		var contextIdKey			= new KeyValuePair<Context<Entity<TScope>>, Int32>(context, id);
-		if ( !Action.ContainsKey( contextIdKey ) )
+		if ( !ActionDict.ContainsKey( contextIdKey ) )
 		{
-			Action.Add( contextIdKey, null );
+			ActionDict.Add( contextIdKey, null );
 		}
-		Action[contextIdKey]		+= action;
+		ActionDict[contextIdKey]	+= action;
 	}
 
 	public					void					Unsub					( Int32 id, Action<Entity<TScope>> action, Context<Entity<TScope>> context ) 
 	{ 
 		var contextIdKey			= new KeyValuePair<Context<Entity<TScope>>, Int32>(context, id);
-		if(Action.ContainsKey(contextIdKey)) 
+		if(ActionDict.ContainsKey(contextIdKey)) 
 		{
-			Action[contextIdKey]	-= action;
+			ActionDict[contextIdKey] -= action;
 		} 
 	}
 
 	public					void					Invoke					( Int32 id, Entity<TScope> entity, Context<Entity<TScope>> context )
 	{
 		var contextIdKey			= new KeyValuePair<Context<Entity<TScope>>, Int32>(context, id);
-		if ( Action.TryGetValue( contextIdKey, out var action ) )
+		if ( ActionDict.TryGetValue( contextIdKey, out var action ) )
 		{
 			action?.Invoke( entity );
 		}
@@ -47,17 +47,17 @@ public abstract class OnSelf_Base<TScope>
 
 	public					void					Sub						( Int32 id, Action<Entity<TScope>> action ) 
 	{ 
-		Sub(  id, action, _db.Get<TScope>() );
+		Sub( id, action, _db.Get<TScope>() );
 	}
 
 	public					void					Unsub					( Int32 id, Action<Entity<TScope>> action ) 
 	{ 
-		Unsub(  id, action, _db.Get<TScope>() );
+		Unsub( id, action, _db.Get<TScope>() );
 	}
 
 	public					void					UnsubAll				(  ) 
 	{ 
-		Action.Clear(  );
+		ActionDict.Clear(  );
 	}
 }
 }
