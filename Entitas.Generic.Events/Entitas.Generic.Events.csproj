@@ -37,6 +37,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events2\Events2.cs" />
     <Compile Include="Events2\EventSystem_Any2.cs" />
     <Compile Include="Events2\EventSystem_Any_Flag2.cs" />
     <Compile Include="Events2\EventSystem_Any_Removed2.cs" />

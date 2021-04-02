@@ -4,11 +4,13 @@ using System.Collections.Generic;
 namespace Entitas.Generic
 {
 public abstract class OnAny_Base<TScope>
+		: IUnsubAll
 		where TScope : IScope
 {
 	public					OnAny_Base				( Contexts db )
 	{
 		_db							= db;
+		Events2.I.Add( this );
 	}
 
 	private					Contexts				_db;
@@ -19,7 +21,7 @@ public abstract class OnAny_Base<TScope>
 	{
 		if ( !Action.ContainsKey( context ) )
 		{
-			Action.Add( context, delegate{  } );
+			Action.Add( context, null );
 		}
 		Action[context]				+= action;
 	}
@@ -36,7 +38,7 @@ public abstract class OnAny_Base<TScope>
 	{
 		if ( Action.ContainsKey( context ) )
 		{
-			Action[context].Invoke( entity );
+			Action[context]?.Invoke( entity );
 		}
 	}
 
@@ -48,6 +50,14 @@ public abstract class OnAny_Base<TScope>
 	public					void					Unsub					( Action<Entity<TScope>> action ) 
 	{ 
 		Unsub( action, _db.Get<TScope>() );
+	}
+
+	public					void					UnsubAll				(  ) 
+	{ 
+		foreach ( var context in Action.Keys )
+		{
+			Action[context]			= null;
+		}
 	}
 }
 }
