@@ -255,6 +255,11 @@ private void OnDestroy()
     OnSelf_Flag<Game,FlagA>.I.Unsub( entityCreationIndex, OnFlagA );
 }
 
+public static void UnsubscribeAll()
+{
+    Events2.I.UnsubAll();
+}
+
 ```
 
 #### EntityIndex
