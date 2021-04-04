@@ -255,6 +255,7 @@ private void OnDestroy()
     OnSelf_Flag<Game,FlagA>.I.Unsub( entityCreationIndex, OnFlagA );
 }
 
+// Events2.I.UnsubAll() will remove all subscriptions across all contexts and components
 public static void UnsubscribeAll()
 {
     Events2.I.UnsubAll();
