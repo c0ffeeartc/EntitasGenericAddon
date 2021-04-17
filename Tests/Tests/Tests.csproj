@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;ENT_GA_SPECIALIZATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TestRunner.cs" />
+    <Compile Include="Tests\CompOperationsSpecialization\describe_Specialization.cs" />
     <Compile Include="Tests\Core\describe_EntityIndex.cs" />
     <Compile Include="Tests\Core\describe_Entity_ClassMethods.cs" />
     <Compile Include="Tests\Core\describe_Entity_StructMethods.cs" />

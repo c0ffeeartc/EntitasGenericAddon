@@ -49,6 +49,23 @@ namespace Tests
 		}
 	}
 
+	public struct TestDataB
+			: IComponent
+			, ICompData
+			, Scope<ScopeA>
+			, IEvent_Any<ScopeA, TestDataA>
+			, IEvent_AnyRemoved<ScopeA, TestDataA>
+			, IEvent_Self<ScopeA, TestDataA>
+			, IEvent_SelfRemoved<ScopeA, TestDataA>
+	{
+		public				String					Value;
+
+		public TestDataB( String value)
+		{
+			Value = value;
+		}
+	}
+
 	internal struct TestDataAUnique : IComponent, ICompData, Scope<ScopeA>, IUnique
 	{
 		public				Single					Value;

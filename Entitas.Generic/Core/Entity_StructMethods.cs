@@ -10,6 +10,16 @@ namespace Entitas.Generic
 				where TData : struct, Scope<TScope>, ICompData, IComponent
 		{
 			var index				= Lookup<TScope, TData>.Id;
+
+			#if ENT_GA_SPECIALIZATION
+			var specialization = SpecAdd_<TScope,TData>.Spec;
+			if(specialization != null)
+			{
+				specialization.Add_(this, data);
+				return;
+			}
+			#endif
+
 			var component			= CreateComponent<StructComponent<TData>>( index );
 			component.Data			= data;
 			AddComponent(index, component);
@@ -19,6 +29,16 @@ namespace Entitas.Generic
 				where TData : struct, Scope<TScope>, ICompData, IComponent
 		{
 			var index				= Lookup<TScope, TData>.Id;
+
+			#if ENT_GA_SPECIALIZATION
+			var specialization = SpecReplace_<TScope,TData>.Spec;
+			if(specialization != null)
+			{
+				specialization.Replace_(this, data);
+				return;
+			}
+			#endif
+
 			var component			= CreateComponent<StructComponent<TData>>( index );
 			component.Data			= data;
 			ReplaceComponent(index, component);
@@ -56,6 +76,16 @@ namespace Entitas.Generic
 			}
 
 			var component			= CreateComponent<StructComponent<TData>>( index );
+
+			#if ENT_GA_SPECIALIZATION
+			var specialization = SpecAdd_<TScope,TData>.Spec;
+			if(specialization != null)
+			{
+				specialization.Add_(this, component.Data);
+				return Get_<TData>(); // return component.Data; - can return wrong value after specialization
+			}
+			#endif
+
 			AddComponent(index, component);
 			return component.Data;
 		}

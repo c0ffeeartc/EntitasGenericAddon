@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;ENT_GA_SPECIALIZATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -37,6 +37,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompOperationsSpecialization\IAdd.cs" />
+    <Compile Include="CompOperationsSpecialization\IReplace.cs" />
+    <Compile Include="CompOperationsSpecialization\SpecReplace.cs" />
     <Compile Include="Core\AERCFactories.cs" />
     <Compile Include="Core\Contexts.cs" />
     <Compile Include="Core\EntExtensions.cs" />

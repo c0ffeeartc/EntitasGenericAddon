@@ -7,6 +7,16 @@
         public void Add<TComp>(TComp comp) where TComp : class, Scope<TScope>, ICompData, ICopyFrom<TComp>,IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;
+
+            #if ENT_GA_SPECIALIZATION
+            var specialization = SpecAdd<TScope,TComp>.Spec;
+            if(specialization != null)
+            {
+                specialization.Add(this, comp);
+                return;
+            }
+            #endif
+
             var component = CreateComponent(index, typeof(TComp));
             ((TComp)component).CopyFrom(comp);
             AddComponent(index, component);
@@ -15,6 +25,16 @@
         public void Replace<TComp>(TComp comp) where TComp : class, Scope<TScope>, ICompData, ICopyFrom<TComp>, IComponent, new()
         {
             var index = Lookup<TScope, TComp>.Id;
+
+            #if ENT_GA_SPECIALIZATION
+            var specialization = SpecReplace<TScope,TComp>.Spec;
+            if(specialization != null)
+            {
+                specialization.Replace(this, comp);
+                return;
+            }
+            #endif
+
             var component = CreateComponent(index, typeof(TComp));
             ((TComp)component).CopyFrom(comp);
             ReplaceComponent(index, component);
@@ -39,7 +59,7 @@
             return (TComp) GetComponent(Lookup<TScope, TComp>.Id);
         }
 
-        public TComp GetOrAdd<TComp>() where TComp : class, Scope<TScope>, IComponent, ICompData
+        public TComp GetOrAdd<TComp>() where TComp : class, Scope<TScope>, IComponent, ICompData, ICopyFrom<TComp>, new()
         {
             var index = Lookup<TScope,TComp>.Id;
             if ( HasComponent( index ) )
@@ -47,9 +67,19 @@
                 return (TComp) GetComponent( index );
             }
 
-            var component = CreateComponent(index, typeof(TComp));
+            var component = (TComp)CreateComponent(index, typeof(TComp));
+
+            #if ENT_GA_SPECIALIZATION
+            var specialization = SpecAdd<TScope,TComp>.Spec;
+            if(specialization != null)
+            {
+                specialization.Add(this, component);
+                return component;
+            }
+            #endif
+
             AddComponent(index, component);
-            return (TComp) component;
+            return component;
         }
 
         public TComp Create<TComp>() where TComp : class, Scope<TScope>, ICompData, ICreateApply, IComponent, new()
