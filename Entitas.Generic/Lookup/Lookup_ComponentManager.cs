@@ -217,6 +217,7 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 			}
 
 			fieldInfo.SetValue(null, Lookup<TScope>.CompCount);
+			Lookup<TScope>.CompTypeToI[dataType] = Lookup<TScope>.CompCount;
 			Lookup<TScope>.CompCount++;
 		}
 		catch ( Exception )  // when there is unused IComponent in code - iOS may get exception because of missing AOT 

@@ -69,6 +69,7 @@
     <Compile Include="Tests\Core\describe_EntityIndex.cs" />
     <Compile Include="Tests\Core\describe_Entity_ClassMethods.cs" />
     <Compile Include="Tests\Core\describe_Entity_StructMethods.cs" />
+    <Compile Include="Tests\Core\describe_Lookup.cs" />
     <Compile Include="Tests\Core\describe_ScopedContext_ClassMethods.cs" />
     <Compile Include="Tests\Core\describe_ScopedContext_StructMethods.cs" />
     <Compile Include="Tests\Core\TestClasses.cs" />
