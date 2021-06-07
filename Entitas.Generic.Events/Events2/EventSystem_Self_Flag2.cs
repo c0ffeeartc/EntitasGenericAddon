@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace Entitas.Generic
 {
 public sealed class EventSystem_Self_Flag2<TScope, TComp> : ReactiveSystem<Entity<TScope>>
-	where TScope : IScope
-	where TComp : IComponent, ICompFlag, Scope<TScope>, IEvent_Self<TScope, TComp>
+		where TScope : IScope
+		where TComp : IComponent, ICompFlag, Scope<TScope>, IEvent_SelfFlag<TScope, TComp>
 {
 	public					EventSystem_Self_Flag2		( Contexts db, Context<Entity<TScope>> context = null) : base( context ?? db.Get<TScope>() )
 	{

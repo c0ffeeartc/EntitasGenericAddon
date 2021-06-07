@@ -108,8 +108,8 @@ namespace Tests
 	public sealed class TestFlagA : IComponent
 			, ICompFlag
 			, Scope<ScopeA>
-			, IEvent_Self<ScopeA,TestFlagA>
-			, IEvent_Any<ScopeA,TestFlagA>
+			, IEvent_SelfFlag<ScopeA,TestFlagA>
+			, IEvent_AnyFlag<ScopeA,TestFlagA>
 	{ }
 	internal sealed class TestFlagB : IComponent, ICompFlag, Scope<ScopeB>
 	{ }

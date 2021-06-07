@@ -24,6 +24,8 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 		Scan_EventAnyRemoved(  );
 		Scan_EventSelf(  );
 		Scan_EventSelfRemoved(  );
+		Scan_EventAnyFlag(  );
+		Scan_EventSelfFlag(  );
 
 		// Console.WriteLine( "\n" + typeof(TScope).Name + ": " + Lookup<TScope>.CompCount.ToString(  ) );
 		// for ( var i = 0; i < Lookup<TScope>.CompTypes.Count; i++ )
@@ -92,6 +94,25 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 		return eventComps;
 	}
 
+	private static			List<Type>				Collect_EventAnyFlagComps	(  )
+	{
+		var eventComps				= new List<Type>(  );
+		foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies(  ) )
+		{
+			foreach (var type in assembly.GetTypes())
+			{
+				if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
+					|| !IsInScope(type)
+					|| !IsEventAnyFlagChild(type) )
+				{
+					continue;
+				}
+				eventComps.Add( type );
+			}
+		}
+		return eventComps;
+	}
+
 	private static			List<Type>				Collect_EventSelfComps	(  )
 	{
 		var eventComps = new List<Type>();
@@ -130,6 +151,25 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 		return eventComps;
 	}
 
+	private static			List<Type>				Collect_EventSelfFlagComps	(  )
+	{
+		var eventComps = new List<Type>();
+		foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+		{
+			foreach (var type in assembly.GetTypes())
+			{
+				if ( !((IList) type.GetInterfaces()).Contains(typeof(IComponent))
+					|| !IsInScope(type)
+					|| !IsEventSelfFlagChild(type) )
+				{
+					continue;
+				}
+				eventComps.Add( type );
+			}
+		}
+		return eventComps;
+	}
+
 	public static			void					Scan_EventAny			(  )
 	{
 		var eventComps = Collect_EventAnyComps(  );
@@ -156,6 +196,19 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 		}
 	}
 
+	public static			void					Scan_EventAnyFlag		(  )
+	{
+		var eventComps = Collect_EventAnyFlagComps(  );
+		var t_Event = typeof(Event_AnyFlagComponent<,>);
+		for ( var i = 0; i < eventComps.Count; i++ )
+		{
+			var t_Inner = eventComps[i];
+
+			var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
+			Register( eventType );
+		}
+	}
+
 	public static			void					Scan_EventSelf			(  )
 	{
 		var eventComps = Collect_EventSelfComps(  );
@@ -173,6 +226,19 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 	{
 		var eventComps = Collect_EventSelfRemovedComps(  );
 		var t_Event = typeof(Event_SelfRemovedComponent<,>);
+		for ( var i = 0; i < eventComps.Count; i++ )
+		{
+			var t_Inner = eventComps[i];
+
+			var eventType = t_Event.MakeGenericType( typeof(TScope), t_Inner );
+			Register( eventType );
+		}
+	}
+
+	public static			void					Scan_EventSelfFlag			(  )
+	{
+		var eventComps = Collect_EventSelfFlagComps(  );
+		var t_Event = typeof(Event_SelfFlagComponent<,>);
 		for ( var i = 0; i < eventComps.Count; i++ )
 		{
 			var t_Inner = eventComps[i];
@@ -258,6 +324,17 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 				);
 	}
 
+	private static			bool					IsEventAnyFlagChild			( Type type )
+	{
+		return type.GetInterfaces(  )
+			.Any( x =>
+				x.IsGenericType
+				&& x.GetGenericTypeDefinition(  ) == typeof(IEvent_AnyFlag<,>)
+				&& x.GetGenericArguments()[0] == typeof(TScope)
+				&& x.GetGenericArguments()[1] == type
+				);
+	}
+
 	private static			bool					IsEventSelfChild		( Type type )
 	{
 		return type.GetInterfaces(  )
@@ -275,6 +352,17 @@ public class Lookup_ComponentManager<TScope> where TScope : IScope
 			.Any( x =>
 				x.IsGenericType
 				&& x.GetGenericTypeDefinition(  ) == typeof(IEvent_SelfRemoved<,>)
+				&& x.GetGenericArguments()[0] == typeof(TScope)
+				&& x.GetGenericArguments()[1] == type
+				);
+	}
+
+	private static			bool					IsEventSelfFlagChild		( Type type )
+	{
+		return type.GetInterfaces(  )
+			.Any( x =>
+				x.IsGenericType
+				&& x.GetGenericTypeDefinition(  ) == typeof(IEvent_SelfFlag<,>)
 				&& x.GetGenericArguments()[0] == typeof(TScope)
 				&& x.GetGenericArguments()[1] == type
 				);

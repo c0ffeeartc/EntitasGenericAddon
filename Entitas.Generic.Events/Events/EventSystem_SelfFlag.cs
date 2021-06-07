@@ -5,14 +5,14 @@ namespace Entitas.Generic
 {
 public sealed class EventSystem_SelfFlag<TScope, TCompFlag> : Entitas.ReactiveSystem<Entity<TScope>>
 	where TScope : IScope
-	where TCompFlag : class, IComponent, ICompFlag, Scope<TScope>, IEvent_Self<TScope,TCompFlag>
+	where TCompFlag : class, IComponent, ICompFlag, Scope<TScope>, IEvent_SelfFlag<TScope,TCompFlag>
 {
 	public					EventSystem_SelfFlag	( Contexts contexts ) : base((IContext<Entity<TScope>>) contexts.Get<TScope>())
 	{
 		_contexts					= contexts;
 	}
 
-	readonly		List<IOnSelf<TScope,TCompFlag>>	_interfaceBuffer		= new List<IOnSelf<TScope,TCompFlag>>(  );
+	readonly		List<IOnSelfFlag<TScope,TCompFlag>>	_interfaceBuffer	= new List<IOnSelfFlag<TScope,TCompFlag>>(  );
 
 	readonly				Contexts				_contexts;
 
@@ -20,7 +20,7 @@ public sealed class EventSystem_SelfFlag<TScope, TCompFlag> : Entitas.ReactiveSy
 		Matcher<TScope,TCompFlag>.I.AddedOrRemoved(  ) ); }
 
 	protected override		Boolean					Filter					( Entity<TScope> ent ) { return
-		ent.HasIComponent<Event_SelfComponent<TScope, TCompFlag>>(  ); }
+		ent.HasIComponent<Event_SelfFlagComponent<TScope, TCompFlag>>(  ); }
 
 	protected override		void					Execute					( List<Entity<TScope>> entities )
 	{
@@ -29,11 +29,11 @@ public sealed class EventSystem_SelfFlag<TScope, TCompFlag> : Entitas.ReactiveSy
 		{
 			var e					= entities[i];
 			_interfaceBuffer.Clear(  );
-			_interfaceBuffer.AddRange( e.Get<Event_SelfComponent<TScope,TCompFlag>>(   ).Listeners );
+			_interfaceBuffer.AddRange( e.Get<Event_SelfFlagComponent<TScope,TCompFlag>>(   ).Listeners );
 			for ( var j = 0; j < _interfaceBuffer.Count; j++ )
 			{
 				var listener		= _interfaceBuffer[j];
-				listener.OnSelf( null, e, _contexts );
+				listener.OnSelfFlag( null, e, _contexts );
 			}
 		}
 	}

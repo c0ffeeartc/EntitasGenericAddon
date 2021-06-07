@@ -401,13 +401,13 @@ public class describe_EventsFeature2_OnSelf : nspec
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
-			var listener		= Substitute.For<IEventsFeature2_OnSelfSubscriber<ScopeA,TestFlagA>>(  );
+			var listener		= Substitute.For<IEventsFeature2_OnSelfFlagSubscriber<ScopeA,TestFlagA>>(  );
 
 			// when
 			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
 			ent.Flag<TestFlagA>( true );
 			ent.Flag<TestFlagA>( false );
-			OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelf );
+			OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelfFlag );
 
 			system.Execute(  );
 			system.Execute(  );
@@ -415,38 +415,38 @@ public class describe_EventsFeature2_OnSelf : nspec
 			// then
 			listener
 				.Received( 1 )
-				.OnSelf( ent );
+				.OnSelfFlag( ent );
 		};
 
 		it["OnSelf_Flag doesn't listen after OnSelf.Unsub"] = ()=>
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
-			var listener		= Substitute.For<IEventsFeature2_OnSelfSubscriber<ScopeA,TestFlagA>>(  );
+			var listener		= Substitute.For<IEventsFeature2_OnSelfFlagSubscriber<ScopeA,TestFlagA>>(  );
 
 			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
 			ent.Flag<TestFlagA>( true );
-			OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelf );
+			OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelfFlag );
 
 			// when
-			OnSelf_Flag<ScopeA, TestFlagA>.I.Unsub( ent.creationIndex, listener.OnSelf );
+			OnSelf_Flag<ScopeA, TestFlagA>.I.Unsub( ent.creationIndex, listener.OnSelfFlag );
 			system.Execute(  );
 
 			// then
 			listener
 				.DidNotReceiveWithAnyArgs(  )
-				.OnSelf( null );
+				.OnSelfFlag( null );
 		};
 
 		it["OnSelf_Flag doesn't listen after Events2.I.UnsubAll"] = ()=>
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
-			var listener		= Substitute.For<IEventsFeature2_OnSelfSubscriber<ScopeA,TestFlagA>>(  );
+			var listener		= Substitute.For<IEventsFeature2_OnSelfFlagSubscriber<ScopeA,TestFlagA>>(  );
 
 			var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
 			ent.Flag<TestFlagA>( true );
-			OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelf );
+			OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelfFlag );
 
 			// when
 			Events2.I.UnsubAll(  );
@@ -455,19 +455,19 @@ public class describe_EventsFeature2_OnSelf : nspec
 			// then
 			listener
 				.DidNotReceiveWithAnyArgs(  )
-				.OnSelf( null );
+				.OnSelfFlag( null );
 		};
 
 		it["OnSelf_Flag doesn't listen other ent with matching class component"] = ()=>
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
-			var listener		= Substitute.For<IEventsFeature2_OnSelfSubscriber<ScopeA,TestFlagA>>(  );
+			var listener		= Substitute.For<IEventsFeature2_OnSelfFlagSubscriber<ScopeA,TestFlagA>>(  );
 
 			// when
 			{
 				var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
-				OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelf );
+				OnSelf_Flag<ScopeA, TestFlagA>.I.Sub( ent.creationIndex, listener.OnSelfFlag );
 			}
 			{
 				var ent			= _db.Get<ScopeA>(  ).CreateEntity(  );
@@ -480,15 +480,22 @@ public class describe_EventsFeature2_OnSelf : nspec
 			// then
 			listener
 				.DidNotReceiveWithAnyArgs(  )
-				.OnSelf( null );
+				.OnSelfFlag( null );
 		};
 	}
 }
 
 public interface IEventsFeature2_OnSelfSubscriber<TScope,TComp>
 		where TScope : IScope
-		where TComp : IComponent, IEvent_Self<TScope, TComp>, Scope<TScope>
+		where TComp : IComponent, IEvent_Self<TScope, TComp>, Scope<TScope>, ICompData
 {
 	void OnSelf(Entity<TScope> ent);
+}
+
+public interface IEventsFeature2_OnSelfFlagSubscriber<TScope,TComp>
+		where TScope : IScope
+		where TComp : IComponent, IEvent_SelfFlag<TScope, TComp>, Scope<TScope>, ICompFlag
+{
+	void OnSelfFlag(Entity<TScope> ent);
 }
 }

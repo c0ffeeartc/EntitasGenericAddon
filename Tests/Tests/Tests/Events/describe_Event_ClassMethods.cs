@@ -152,8 +152,8 @@ namespace Tests
 			{
 				// given
 				var ent				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				var listener		= Substitute.For<IOnSelf<ScopeA,TestFlagA>>(  );
-				ent.Add_OnSelf( listener );
+				var listener		= Substitute.For<IOnSelfFlag<ScopeA,TestFlagA>>(  );
+				ent.Add_OnSelfFlag( listener );
 
 				var system			= new EventSystem_SelfFlag<ScopeA, TestFlagA>( _contexts );
 
@@ -161,21 +161,21 @@ namespace Tests
 				ent.Flag<TestFlagA>( false );
 				system.Execute(  );
 				// then
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( null, null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelfFlag( null, null, null );
 
 				// when
 				ent.Flag<TestFlagA>( true );
 				system.Execute(  );
 				// then
-				listener.Received(  ).OnSelf( null, ent, _contexts );
+				listener.Received(  ).OnSelfFlag( null, ent, _contexts );
 			};
 
 			it["OnSelfFlag listens self Removed"] = ()=>
 			{
 				// given
 				var ent				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				var listener		= Substitute.For<IOnSelf<ScopeA,TestFlagA>>(  );
-				ent.Add_OnSelf( listener );
+				var listener		= Substitute.For<IOnSelfFlag<ScopeA,TestFlagA>>(  );
+				ent.Add_OnSelfFlag( listener );
 				ent.Flag<TestFlagA>( true );
 
 				var system			= new EventSystem_SelfFlag<ScopeA, TestFlagA>( _contexts );
@@ -184,13 +184,13 @@ namespace Tests
 				ent.Flag<TestFlagA>( true );
 				system.Execute(  );
 				// then
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( null, null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelfFlag( null, null, null );
 
 				// when
 				ent.Flag<TestFlagA>( false );
 				system.Execute(  );
 				// then
-				listener.Received(  ).OnSelf( null, ent, _contexts );
+				listener.Received(  ).OnSelfFlag( null, ent, _contexts );
 			};
 		}
 	}

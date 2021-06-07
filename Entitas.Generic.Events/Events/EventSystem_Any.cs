@@ -5,7 +5,7 @@ namespace Entitas.Generic
 {
 public sealed class EventSystem_Any<TScope,TComp> : Entitas.ReactiveSystem<Entity<TScope>>
 		where TScope : IScope
-		where TComp : class, IComponent, Scope<TScope>, IEvent_Any<TScope,TComp>
+		where TComp : class, IComponent, Scope<TScope>, IEvent_Any<TScope,TComp>, ICompData
 {
 	public					EventSystem_Any			( Contexts contexts ) : base(contexts.Get<TScope>())
 	{
