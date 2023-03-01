@@ -2,6 +2,7 @@
 *.meta
 .DS_Store
 
+
 .idea/
 bin/
 obj/
@@ -9,3 +10,15 @@ obj/
 packages/*
 
 *.sln.DotSettings.user
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
+# VS Code files for those working on multiple tools
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
