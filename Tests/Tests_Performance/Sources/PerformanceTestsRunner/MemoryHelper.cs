@@ -66,7 +66,7 @@ public class MemoryHelper
 		{
 			GC.EndNoGCRegion( );
 		}
-		catch ( System.InvalidOperationException e )
+		catch ( System.InvalidOperationException /*e*/ )
 		{
 			Console.WriteLine( "\nMemory validation needs to be improved... " +
 				"\nProcess had to clean memory while in NoGC mode" +
