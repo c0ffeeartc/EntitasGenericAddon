@@ -2,42 +2,42 @@ using System;
 using Entitas;
 using Entitas.Generic;
 using FluentAssertions;
-using NSpec;
+using NUnit.Framework;
 
 namespace Tests
 {
-	public class describe_Entity_StructMethods : nspec
+	[TestFixture]
+	public class describe_Entity_StructMethods
 	{
 		private				Contexts				_contexts;
 
-		private				void					test_Entity_StructMethods(  )
-		{
-			Lookup_ScopeManager.RegisterAll();
-
-			before					= ()=>
+			[SetUp]
+			public				void					BeforeEach()
 			{
 				_contexts			= new Contexts(  );
 				_contexts.AddScopedContexts(  );
-			};
+			}
 
-			it["add component"] = ()=>
+			[Test]
+			public				void					test_AddComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Has_<TestDataA>(  ).should_be_false(  );
+				entity.Has_<TestDataA>(  ).Should(  ).BeFalse(  );
 
 				// when
 				entity.Add_( new TestDataA( 21f ) );
 
 				// then
-				entity.Has_<TestDataA>(  ).should_be_true(  );
-			};
+				entity.Has_<TestDataA>(  ).Should(  ).BeTrue(  );
+			}
 
-			it["add twice throws"] = ()=>
+			[Test]
+			public				void					test_AddTwiceThrows(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Has_<TestDataA>(  ).should_be_false(  );
+				entity.Has_<TestDataA>(  ).Should(  ).BeFalse(  );
 
 				// when
 				entity.Add_( new TestDataA( 21f ) );
@@ -47,24 +47,26 @@ namespace Tests
 					{
 						entity.Add_( new TestDataA( 32f ) );
 					};
-				act.ShouldThrow<EntityAlreadyHasComponentException>(  );
-			};
+				act.Should().Throw<EntityAlreadyHasComponentException>(  );
+			}
 
-			it["remove component"] = (  )=>
+			[Test]
+			public				void					test_RemoveComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Add_( new TestDataA(  ) );
-				entity.Has_<TestDataA>(  ).should_be_true(  );
+				entity.Has_<TestDataA>(  ).Should(  ).BeTrue(  );
 
 				// when
 				entity.Remove_<TestDataA>(  );
 
 				// then
-				entity.Has_<TestDataA>(  ).should_be_false(  );
-			};
+				entity.Has_<TestDataA>(  ).Should(  ).BeFalse(  );
+			}
 
-			it["remove inexistent throws"] = ()=>
+			[Test]
+			public				void					test_RemoveNonExistentThrows(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -76,22 +78,22 @@ namespace Tests
 					};
 
 				// then
-				act.ShouldThrow<EntityDoesNotHaveComponentException>(  );
-			};
+				act.Should().Throw<EntityDoesNotHaveComponentException>(  );
+			}
 
-			it["replace component"] = ()=>
+			[Test]
+			public				void					test_ReplaceComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Add_( new TestDataA( 1f ) );
-				entity.Get_<TestDataA>(  ).Value.should_be( 1f );
+				entity.Get_<TestDataA>(  ).Value.Should(  ).Be( 1f );
 
 				// when
 				entity.Replace_( new TestDataA( 2f ) );
 
 				// then
-				entity.Get_<TestDataA>(  ).Value.should_be( 2f );
-			};
+				entity.Get_<TestDataA>(  ).Value.Should(  ).Be( 2f );
 		}
 	}
 }

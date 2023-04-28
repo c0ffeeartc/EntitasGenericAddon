@@ -2,42 +2,42 @@ using System;
 using Entitas;
 using Entitas.Generic;
 using FluentAssertions;
-using NSpec;
+using NUnit.Framework;
 
 namespace Tests
 {
-	public class describe_Entity_ClassMethods : nspec
+	[TestFixture]
+	public class describe_Entity_ClassMethods
 	{
 		private				Contexts				_contexts;
 
-		private				void					test_Entity_ClassMethods(  )
-		{
-			Lookup_ScopeManager.RegisterAll();
-
-			before					= ()=>
+			[SetUp]
+			public				void					BeforeEach()
 			{
 				_contexts			= new Contexts(  );
 				_contexts.AddScopedContexts(  );
-			};
+			}
 
-			it["add component"] = ()=>
+			[Test]
+			public				void					test_AddComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Has<TestCompA>(  ).should_be_false(  );
+				entity.Has<TestCompA>(  ).Should().BeFalse(  );
 
 				// when
 				entity.Add( new TestCompA(  ) );
 
 				// then
-				entity.Has<TestCompA>(  ).should_be_true(  );
-			};
+				entity.Has<TestCompA>(  ).Should().BeTrue(  );
+			}
 
-			it["add twice throws"] = ()=>
+			[Test]
+			public				void					test_AddTwiceThrows(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Has<TestCompA>(  ).should_be_false(  );
+				entity.Has<TestCompA>(  ).Should(  ).BeFalse(  );
 
 				// when
 				entity.Add( new TestCompA(  ) );
@@ -47,24 +47,26 @@ namespace Tests
 					{
 						entity.Add( new TestCompA(  ));
 					};
-				act.ShouldThrow<EntityAlreadyHasComponentException>(  );
-			};
+				act.Should().Throw<EntityAlreadyHasComponentException>(  );
+			}
 
-			it["remove component"] = ()=>
+			[Test]
+			public				void					test_RemoveComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Add( new TestCompA(  ) );
-				entity.Has<TestCompA>(  ).should_be_true(  );
+				entity.Has<TestCompA>(  ).Should(  ).BeTrue(  );
 
 				// when
 				entity.Remove<TestCompA>();
 
 				// then
-				entity.Has<TestCompA>(  ).should_be_false(  );
-			};
+				entity.Has<TestCompA>(  ).Should(  ).BeFalse(  );
+			}
 
-			it["remove inexistent throws"] = ()=>
+			[Test]
+			public				void					test_RemoveNonExistentThrows(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -76,25 +78,27 @@ namespace Tests
 					};
 
 				// then
-				act.ShouldThrow<EntityDoesNotHaveComponentException>(  );
-			};
+				act.Should().Throw<EntityDoesNotHaveComponentException>(  );
+			}
 
-			it["replace component"] = ()=>
+			[Test]
+			public				void					test_ReplaceComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 				entity.Add( Cache<TestCompA>.I.Set( 1 ) );
-				entity.Get<TestCompA>(  ).Value.should_be( 1 );
+				entity.Get<TestCompA>(  ).Value.Should().Be(1);
 
 				// when
 				entity.Replace( Cache<TestCompA>.I.Set( 2 ) );
 				Cache<TestCompA>.I.Set( 3 );
 
 				// then
-				entity.Get<TestCompA>(  ).Value.should_be( 2 );
-			};
+				entity.Get<TestCompA>(  ).Value.Should(  ).Be( 2 );
+			}
 
-			it["ICreateApply. Create component"] = ()=>
+			[Test]
+			public				void					test_ICreateApply_CreateComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -103,44 +107,45 @@ namespace Tests
 				var comp				= entity.Create<TestComp_CreateApply_A>(  );
 
 				// then
-				entity.Has<TestComp_CreateApply_A>(  ).should_be_false(  );
-			};
+				entity.Has<TestComp_CreateApply_A>(  ).Should(  ).BeFalse(  );
+			}
 
-			it["ICreateApply. Apply component"] = ()=>
+			[Test]
+			public				void					test_ICreateApply_ApplyComponent(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 
 				// when
 				var comp				= entity.Create<TestComp_CreateApply_A>(  );
-				comp.Value.should_be( 0f );
+				comp.Value.Should(  ).Be( 0f );
 				comp.Value				= 1f;
-				entity.Has<TestComp_CreateApply_A>(  ).should_be_false(  );
+				entity.Has<TestComp_CreateApply_A>(  ).Should(  ).BeFalse(  );
 				entity.Apply( comp );
 
 				// then
-				entity.Has<TestComp_CreateApply_A>(  ).should_be_true(  );
-				entity.Get<TestComp_CreateApply_A>(  ).should_be_same( comp );
-			};
-      
-			it["flag, is"] = ()=>
+				entity.Has<TestComp_CreateApply_A>(  ).Should(  ).BeTrue(  );
+				entity.Get<TestComp_CreateApply_A>(  ).Should(  ).BeSameAs( comp );
+			}
+
+			[Test]
+			public				void					test_Flag_Is(  )
 			{
 				// given
 				var entity				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
-				entity.Is<TestFlagA>(  ).should_be( false );
+				entity.Is<TestFlagA>(  ).Should().BeFalse();
 
 				// when
 				entity.Flag<TestFlagA>( true );
 
 				// then
-				entity.Is<TestFlagA>(  ).should_be( true );
+				entity.Is<TestFlagA>(  ).Should().BeTrue();
 
 				// when
 				entity.Flag<TestFlagA>( false );
 
 				// then
-				entity.Is<TestFlagA>(  ).should_be( false );
-			};
-		}
+				entity.Is<TestFlagA>(  ).Should().BeFalse();
+			}
 	}
 }

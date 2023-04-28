@@ -96,6 +96,27 @@ namespace Tests
 		}
 	}
 
+	internal sealed class TestCompB2
+			: IComponent
+			, ICompData
+			, ICopyFrom<TestCompB2>
+			, Scope<ScopeB>
+			, IGetSingleEntByIndex<Int32>
+	{
+		public				Int32					Value;
+
+		public				TestCompB2				Set						( Int32 value = 0 )
+		{
+			Value					= value;
+			return this;
+		}
+
+		public				void					CopyFrom				( TestCompB2 other )
+		{
+			Value					= other.Value;
+		}
+	}
+
 	public sealed class TestComp_CreateApply_A
 			: IComponent
 			, ICompData

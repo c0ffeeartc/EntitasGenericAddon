@@ -1,101 +1,104 @@
 using System;
 using Entitas.Generic;
 using FluentAssertions;
-using NSpec;
+using NUnit.Framework;
 
 namespace Tests
 {
-	public class describe_ScopedContext_StructMethods : nspec
+	[TestFixture]
+	public class describe_ScopedContext_StructMethods
 	{
 		private				Contexts				_contexts;
 
-		private				void					test_StructMethods		(  )
-		{
-			Lookup_ScopeManager.RegisterAll();
-			before					= ()=>
+			[SetUp]
+			public				void					BeforeEach()
 			{
 				_contexts			= new Contexts(  );
 				_contexts.AddScopedContexts(  );
-			};
+			}
 
-			it["Set component"]		= ()=>
+			[Test]
+			public				void					test_SetComponent(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has_<TestDataAUnique>(  ).should_be_false(  );
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeFalse(  );
 
 				// when
 				var entity			= context.Set_( new TestDataAUnique(  ) );
 
 				// then
-				context.Has_<TestDataAUnique>(  ).should_be_true(  );
-			};
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeTrue(  );
+			}
 
-			it["Set twice throws"] = ()=>
+			[Test]
+			public				void					test_SetTwiceThrows(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has_<TestDataAUnique>(  ).should_be_false(  );
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeFalse(  );
 
 				// when
 				var entity			= context.Set_( new TestDataAUnique(  ) );
 
 				// then
-				context.Has_<TestDataAUnique>(  ).should_be_true(  );
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeTrue(  );
 
 				// then
 				Action act = (  )=>
 					{
 						context.Set_( new TestDataAUnique(  ));
 					};
-				act.ShouldThrow<Exception>(  );
-			};
+				act.Should(  ).Throw<Exception>(  );
+			}
 
-			it["Remove component"]	= ()=>
+			[Test]
+			public				void					test_RemoveComponent(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has_<TestDataAUnique>(  ).should_be_false(  );
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeFalse(  );
 
 				var entity			= context.Set_( new TestDataAUnique(  ) );
-				context.Has_<TestDataAUnique>(  ).should_be_true(  );
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeTrue(  );
 
 				// when
 				context.Remove_<TestDataAUnique>(  );
 
 				// then
-				context.Has_<TestDataAUnique>(  ).should_be_false(  );
-			};
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeFalse(  );
+			}
 
-			it["Remove inexistent throws"]	= ()=>
+			[Test]
+			public				void					test_RemoveNonexistentThrows(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has_<TestDataAUnique>(  ).should_be_false(  );
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeFalse(  );
 
 				// then
 				Action act = (  )=>
 					{
 						context.Remove_<TestDataAUnique>(  );
 					};
-				act.ShouldThrow<Exception>(  );
-			};
+				act.Should(  ).Throw<Exception>(  );
+			}
 
-			it["Replace component"] = (  )=>
+			[Test]
+			public				void					test_ReplaceComponent(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has_<TestDataAUnique>(  ).should_be_false(  );
+				context.Has_<TestDataAUnique>(  ).Should(  ).BeFalse(  );
 
 				context.Set_( new TestDataAUnique( 1f ) );
-				context.Get_<TestDataAUnique>(  ).Value.should_be( 1f );
+				context.Get_<TestDataAUnique>(  ).Value.Should(  ).Be( 1f );
 
 				// when
 				context.Replace_( new TestDataAUnique( 2f ) );
 
 				// then
-				context.Get_<TestDataAUnique>(  ).Value.should_be( 2f );
-			};
-		}
+				context.Get_<TestDataAUnique>(  ).Value.Should(  ).Be( 2f );
+			}
 	}
 }

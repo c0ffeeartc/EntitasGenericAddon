@@ -1,24 +1,23 @@
 using Entitas.Generic;
-using NSpec;
 using NSubstitute;
+using NUnit.Framework;
 
 namespace Tests
 {
-	public class describe_Event_ClassMethods : nspec
+	[TestFixture]
+	public class describe_Event_ClassMethods
 	{
 		private				Contexts				_contexts;
 
-		private				void					test_CoreMethods		(  )
-		{
-			Lookup_ScopeManager.RegisterAll(  );
-
-			before					= ()=>
+			[SetUp]
+			public					void					BeforeEach()
 			{
 				_contexts			= new Contexts(  );
 				_contexts.AddScopedContexts(  );
-			};
+			}
 
-			it["OnAny listens other"] = ()=>
+			[Test]
+			public				void					test_OnAnyListensOthers	(  )
 			{
 				// given
 				var system			= new EventSystem_Any<ScopeA, TestCompA>( _contexts );
@@ -37,9 +36,10 @@ namespace Tests
 
 				// then
 				listener.ReceivedWithAnyArgs(  ).OnAny( null, null, null );
-			};
+			}
 
-			it["OnAnyRemoved listens other"] = (  ) =>
+			[Test]
+			public				void					test_OnAnyRemovedListensOthers(  )
 			{
 				// given
 				var system			= new EventSystem_AnyRemoved<ScopeA, TestCompA>( _contexts );
@@ -59,9 +59,10 @@ namespace Tests
 
 				// then
 				listener.ReceivedWithAnyArgs(  ).OnAnyRemoved( null, null, null );
-			};
+			}
 
-			it["OnSelf listens self"] = ()=>
+			[Test]
+			public				void					test_OnSelfListensSelf(  )
 			{
 				// given
 				var system			= new EventSystem_Self<ScopeA, TestCompA>( _contexts );
@@ -79,9 +80,10 @@ namespace Tests
 
 				// then
 				listener.ReceivedWithAnyArgs(  ).OnSelf( null, null, null );
-			};
+			}
 
-			it["OnSelf doesn't listen other"] = ()=>
+			[Test]
+			public				void					test_OnSelfNotListensOther(  )
 			{
 				// given
 				var system			= new EventSystem_Self<ScopeA, TestCompA>( _contexts );
@@ -102,9 +104,10 @@ namespace Tests
 
 				// then
 				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( null, null, null );
-			};
+			}
 
-			it["OnSelfRemoved listens self"] = ()=>
+			[Test]
+			public				void					test_OnSelfRemovedListensSelf(  )
 			{
 				// given
 				var system			= new EventSystem_SelfRemoved<ScopeA, TestCompA>( _contexts );
@@ -123,9 +126,10 @@ namespace Tests
 
 				// then
 				listener.ReceivedWithAnyArgs(  ).OnSelfRemoved( null, null, null );
-			};
+			}
 
-			it["OnSelfRemoved doesn't listen other"] = ()=>
+			[Test]
+			public				void					test_OnSelfRemovedNotListensOther(  )
 			{
 				// given
 				var system			= new EventSystem_SelfRemoved<ScopeA, TestCompA>( _contexts );
@@ -146,9 +150,10 @@ namespace Tests
 
 				// then
 				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( null, null, null );
-			};
+			}
 
-			it["OnSelfFlag listens self Added"] = ()=>
+			[Test]
+			public				void					test_OnSelfFlagListensSelfAdded(  )
 			{
 				// given
 				var ent				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -168,9 +173,10 @@ namespace Tests
 				system.Execute(  );
 				// then
 				listener.Received(  ).OnSelf( null, ent, _contexts );
-			};
+			}
 
-			it["OnSelfFlag listens self Removed"] = ()=>
+			[Test]
+			public				void					test_OnSelfFlagListensSelfRemoved(  )
 			{
 				// given
 				var ent				= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -191,7 +197,6 @@ namespace Tests
 				system.Execute(  );
 				// then
 				listener.Received(  ).OnSelf( null, ent, _contexts );
-			};
-		}
+			}
 	}
 }

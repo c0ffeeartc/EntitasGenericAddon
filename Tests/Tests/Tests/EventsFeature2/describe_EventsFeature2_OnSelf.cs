@@ -1,32 +1,35 @@
 using Entitas;
 using Entitas.Generic;
-using NSpec;
 using NSubstitute;
+using NUnit.Framework;
 
 namespace Tests
 {
-public class describe_EventsFeature2_OnSelf : nspec
-{
-	private				Contexts				_db;
-
-	private				void					test_OnSelf					(  )
+	[TestFixture]
+	public class describe_EventsFeature2_OnSelf
 	{
-		Lookup_ScopeManager.RegisterAll(  );
+		private				Contexts				_db;
 
-		before					= ()=>
+		[SetUp]
+		public				void					BeforeEach					(  )
 		{
 			_db					= new Contexts(  );
 			_db.AddScopedContexts(  );
-		};
+		}
 
-		after					= ()=>
+		[TearDown]
+		public				void					AfterEach					(  )
 		{
 			// Important
 			OnSelf<ScopeA,TestCompA>.I = null;
 			OnSelf<ScopeA,TestDataA>.I = null;
-		};
+			OnSelf_Removed<ScopeA,TestCompA>.I = null;
+			OnSelf_Removed<ScopeA,TestDataA>.I = null;
+			OnSelf_Flag<ScopeA,TestFlagA>.I = null;
+		}
 
-		it["OnSelf.Invoke is called for each entity in context with class component match"] = ()=>
+		[Test(Description="OnSelf.Invoke is called for each entity in context with class component match")]
+		public				void					test_OnSelf_InvokeIsCalledForEachEntInContextWithMatchingComp(  )
 		{
 			// given
 			OnSelf<ScopeA,TestCompA>.I = Substitute.For<IEventsFeature2_OnSelf<ScopeA,TestCompA>>(  );
@@ -45,9 +48,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 				.Invoke( ent.creationIndex, ent, context );
 
 			OnSelf<ScopeA,TestCompA>.I = null;
-		};
+		}
 
-		it["OnSelf.Invoke is not called for entities in context without class component"] = ()=>
+		[Test(Description = "OnSelf.Invoke is not called for entities in context without class component")]
+		public				void					test_OnSelf_InvokeIsNotCalledForEntsInContextWithoutMatchingComp(  )
 		{
 			// given
 			OnSelf<ScopeA,TestCompA>.I = Substitute.For<IEventsFeature2_OnSelf<ScopeA,TestCompA>>(  );
@@ -65,9 +69,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			OnSelf<ScopeA,TestCompA>.I
 				.DidNotReceiveWithAnyArgs(  )
 				.Invoke( 0, null, null );
-		};
+		}
 
-		it["OnSelf listens once self ent with matching class component"] = ()=>
+		[Test(Description = "OnSelf listens once self ent with matching class component")]
+		public				void					test_OnSelf_ListensOnceSelfEntWithMatchingComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self2<ScopeA, TestCompA>(_db);
@@ -85,9 +90,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.Received( 1 )
 				.OnSelf( ent );
-		};
+		}
 
-		it["OnSelf listens once self ent with matching structComp"] = ()=>
+		[Test(Description = "OnSelf listens once self ent with matching structComp")]
+		public				void					test_OnSelf_ListensOnceSelfEntWithMatchingStructComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self2<ScopeA, TestDataA>(_db);
@@ -105,9 +111,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.Received( 1 )
 				.OnSelf( ent );
-		};
+		}
 
-		it["OnSelf doesn't listen after OnSelf.Unsub"] = ()=>
+		[Test(Description = "OnSelf doesn't listen after OnSelf.Unsub")]
+		public				void					test_OnSelf_NotListensAfterOnSelfUnsub(  )
 		{
 			// given
 			var system			= new EventSystem_Self2<ScopeA, TestCompA>(_db);
@@ -125,9 +132,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
+		}
 
-		it["OnSelf doesn't listen after Events2.I.UnsubAll"] = ()=>
+		[Test(Description = "OnSelf doesn't listen after Events2.I.UnsubAll")]
+		public				void					test_OnSelf_NotListensAfterEvents2UnsubAll(  )
 		{
 			// given
 			var system			= new EventSystem_Self2<ScopeA, TestCompA>(_db);
@@ -145,9 +153,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
+		}
 
-		it["OnSelf doesn't listen other ent with matching class component"] = ()=>
+		[Test(Description = "OnSelf doesn't listen other ent with matching class component")]
+		public				void					test_OnSelf_NotListensOtherEntWithMatchingComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self2<ScopeA, TestCompA>(_db);
@@ -169,29 +178,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
-	}
+		}
 
-	private				void					test_OnSelf_Removed			(  )
-	{
-		Lookup_ScopeManager.RegisterAll(  );
-
-		before					= ()=>
-		{
-			_db					= new Contexts(  );
-			_db.AddScopedContexts(  );
-		};
-
-		after					= ()=>
-		{
-			// Important
-			OnSelf<ScopeA,TestCompA>.I = null;
-			OnSelf<ScopeA,TestDataA>.I = null;
-			OnSelf_Removed<ScopeA,TestCompA>.I = null;
-			OnSelf_Removed<ScopeA,TestDataA>.I = null;
-		};
-
-		it["OnSelf_Removed.Invoke is called for each entity in context with removed class component"] = ()=>
+		[Test(Description = "OnSelf_Removed.Invoke is called for each entity in context with removed class component")]
+		public				void					test_OnSelfRemoved_InvokeIsCalledForEachEntInContextWithRemovedComp(  )
 		{
 			// given
 			OnSelf_Removed<ScopeA,TestCompA>.I = Substitute.For<IEventsFeature2_OnSelf_Removed<ScopeA,TestCompA>>(  );
@@ -209,9 +199,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			OnSelf_Removed<ScopeA,TestCompA>.I
 				.Received(1)
 				.Invoke( ent.creationIndex, ent, context );
-		};
+		}
 
-		it["OnSelf_Removed.Invoke is not called for entities in context with class component"] = ()=>
+		[Test(Description = "OnSelf_Removed.Invoke is not called for entities in context with class component")]
+		public				void					test_OnSelfRemoved_InvokeIsNotCalledForEntsInContextWithRemovedComp(  )
 		{
 			// given
 			OnSelf_Removed<ScopeA,TestCompA>.I = Substitute.For<IEventsFeature2_OnSelf_Removed<ScopeA,TestCompA>>(  );
@@ -230,9 +221,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			OnSelf_Removed<ScopeA,TestCompA>.I
 				.DidNotReceiveWithAnyArgs(  )
 				.Invoke( 0, null, null );
-		};
+		}
 
-		it["OnSelf_Removed listens once self ent with matching removed class component"] = ()=>
+		[Test(Description = "OnSelf_Removed listens once self ent with matching removed class component")]
+		public				void					test_OnSelfRemoved_ListensOnceSelfEntWithMatchingRemovedComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Removed2<ScopeA, TestCompA>(_db);
@@ -251,9 +243,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.Received( 1 )
 				.OnSelf( ent );
-		};
+		}
 
-		it["OnSelf_Removed listens once self ent with matching structComp"] = ()=>
+		[Test(Description = "OnSelf_Removed listens once self ent with matching structComp")]
+		public				void					test_OnSelfRemoved_ListensOnceSelfEntWithMatchingStructComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Removed2<ScopeA, TestDataA>(_db);
@@ -272,9 +265,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.Received( 1 )
 				.OnSelf( ent );
-		};
+		}
 
-		it["OnSelf_Removed doesn't listen after OnSelf.Unsub"] = ()=>
+		[Test(Description = "OnSelf_Removed doesn't listen after OnSelf.Unsub")]
+		public				void					test_OnSelfRemoved_NotListensAfterOnSelfUnsub(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Removed2<ScopeA, TestCompA>(_db);
@@ -293,9 +287,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
+		}
 
-		it["OnSelf_Removed doesn't listen after Events2.I.UnsubAll"] = ()=>
+		[Test(Description = "OnSelf_Removed doesn't listen after Events2.I.UnsubAll")]
+		public				void					test_OnSelfRemoved_NotListensAfterEvents2UnsubAll(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Removed2<ScopeA, TestCompA>(_db);
@@ -314,9 +309,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
+		}
 
-		it["OnSelf_Removed doesn't listen other ent with matching class component"] = ()=>
+		[Test(Description = "OnSelf_Removed doesn't listen other ent with matching class component")]
+		public				void					test_OnSelfRemoved_NotListensOtherEntWithMatchingComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Removed2<ScopeA, TestCompA>(_db);
@@ -339,26 +335,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
-	}
+		}
 
-	private				void					test_OnSelf_Flag			(  )
-	{
-		Lookup_ScopeManager.RegisterAll(  );
-
-		before					= ()=>
-		{
-			_db					= new Contexts(  );
-			_db.AddScopedContexts(  );
-		};
-
-		after					= ()=>
-		{
-			// Important
-			OnSelf_Flag<ScopeA,TestFlagA>.I = null;
-		};
-
-		it["OnSelf_Flag.Invoke is called for each entity in context with Flag class component"] = ()=>
+		[Test(Description = "OnSelf_Flag.Invoke is called for each entity in context with Flag class component")]
+		public				void					test_OnSelfFlag_InvokeIsCalledForEachEntInContextWithFlagComp(  )
 		{
 			// given
 			OnSelf_Flag<ScopeA,TestFlagA>.I = Substitute.For<IEventsFeature2_OnSelf_Flag<ScopeA,TestFlagA>>(  );
@@ -376,9 +356,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			OnSelf_Flag<ScopeA,TestFlagA>.I
 				.Received(1)
 				.Invoke( ent.creationIndex, ent, context );
-		};
+		}
 
-		it["OnSelf_Flag.Invoke is not called if value is same as before"] = ()=>
+		[Test(Description = "OnSelf_Flag.Invoke is not called if value is same as before")]
+		public				void					test_OnSelfFlag_InvokeIsNotCalledIfValueIsSame(  )
 		{
 			// given
 			OnSelf_Flag<ScopeA,TestFlagA>.I = Substitute.For<IEventsFeature2_OnSelf_Flag<ScopeA,TestFlagA>>(  );
@@ -395,9 +376,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			OnSelf_Flag<ScopeA,TestFlagA>.I
 				.DidNotReceiveWithAnyArgs(  )
 				.Invoke( 0, null, null );
-		};
+		}
 
-		it["OnSelf_Flag listens once self ent with matching Flag class component"] = ()=>
+		[Test(Description = "OnSelf_Flag listens once self ent with matching Flag class component")]
+		public				void					test_OnSelfFlag_ListensOnceSelfEntWithMatchingFlagComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
@@ -416,9 +398,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.Received( 1 )
 				.OnSelf( ent );
-		};
+		}
 
-		it["OnSelf_Flag doesn't listen after OnSelf.Unsub"] = ()=>
+		[Test(Description = "OnSelf_Flag doesn't listen after OnSelf.Unsub")]
+		public				void					test_OnSelfFlag_NotListensAfterOnSelfUnsub(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
@@ -436,9 +419,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
+		}
 
-		it["OnSelf_Flag doesn't listen after Events2.I.UnsubAll"] = ()=>
+		[Test(Description = "OnSelf_Flag doesn't listen after Events2.I.UnsubAll")]
+		public				void					test_OnSelfFlag_NotListensAfterEvents2UnsubAll(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
@@ -456,9 +440,10 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
+		}
 
-		it["OnSelf_Flag doesn't listen other ent with matching class component"] = ()=>
+		[Test(Description = "OnSelf_Flag doesn't listen other ent with matching class component")]
+		public				void					test_OnSelfFlag_NotListensOtherEntWithMatchingComp(  )
 		{
 			// given
 			var system			= new EventSystem_Self_Flag2<ScopeA, TestFlagA>(_db);
@@ -481,9 +466,8 @@ public class describe_EventsFeature2_OnSelf : nspec
 			listener
 				.DidNotReceiveWithAnyArgs(  )
 				.OnSelf( null );
-		};
+		}
 	}
-}
 
 public interface IEventsFeature2_OnSelfSubscriber<TScope,TComp>
 		where TScope : IScope

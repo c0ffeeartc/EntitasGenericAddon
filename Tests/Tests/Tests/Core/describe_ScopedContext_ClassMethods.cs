@@ -1,123 +1,127 @@
 using System;
 using Entitas.Generic;
 using FluentAssertions;
-using NSpec;
+using NUnit.Framework;
 
 namespace Tests
 {
-	public class describe_ScopedContext_ClassMethods : nspec
+	[TestFixture]
+	public class describe_ScopedContext_ClassMethods
 	{
 		private				Contexts				_contexts;
 
-		private				void					test_CoreMethods		(  )
-		{
-			Lookup_ScopeManager.RegisterAll();
-			before					= ()=>
+			[SetUp]
+			public				void					BeforeEach()
 			{
 				_contexts			= new Contexts(  );
 				_contexts.AddScopedContexts(  );
-			};
+			}
 
-			it["Set component"]		= ()=>
+			[Test]
+			public				void					test_SetComponent(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has<TestCompAUnique>(  ).should_be_false(  );
+				context.Has<TestCompAUnique>(  ).Should(  ).BeFalse(  );
 
 				// when
 				var entity			= context.Set( new TestCompAUnique(  ) );
 
 				// then
-				context.Has<TestCompAUnique>(  ).should_be_true(  );
-			};
+				context.Has<TestCompAUnique>(  ).Should(  ).BeTrue(  );
+			}
 
-			it["Set twice throws"] = ()=>
+			[Test]
+			public				void					test_SetTwiceThrows(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has<TestCompAUnique>(  ).should_be_false(  );
+				context.Has<TestCompAUnique>(  ).Should(  ).BeFalse(  );
 
 				// when
 				var entity			= context.Set( new TestCompAUnique(  ) );
 
 				// then
-				context.Has<TestCompAUnique>(  ).should_be_true(  );
+				context.Has<TestCompAUnique>(  ).Should(  ).BeTrue(  );
 
 				// then
 				Action act = (  )=>
 					{
 						context.Set( new TestCompAUnique(  ));
 					};
-				act.ShouldThrow<Exception>(  );
-			};
+				act.Should().Throw<Exception>(  );
+			}
 
-			it["Remove component"]	= ()=>
+			[Test]
+			public				void					test_RemoveComponent(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has<TestCompAUnique>(  ).should_be_false(  );
+				context.Has<TestCompAUnique>(  ).Should(  ).BeFalse(  );
 
 				var entity			= context.Set( new TestCompAUnique(  ) );
-				context.Has<TestCompAUnique>(  ).should_be_true(  );
+				context.Has<TestCompAUnique>(  ).Should().BeTrue(  );
 
 				// when
 				context.Remove<TestCompAUnique>(  );
 
 				// then
-				context.Has<TestCompAUnique>(  ).should_be_false(  );
-			};
+				context.Has<TestCompAUnique>(  ).Should(  ).BeFalse(  );
+			}
 
-			it["Remove inexistent throws"]	= ()=>
+			[Test]
+			public				void					test_RemoveNonexistentThrows(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has<TestCompAUnique>(  ).should_be_false(  );
+				context.Has<TestCompAUnique>(  ).Should(  ).BeFalse(  );
 
 				// then
 				Action act = (  )=>
 					{
 						context.Remove<TestCompAUnique>(  );
 					};
-				act.ShouldThrow<Exception>(  );
-			};
+				act.Should(  ).Throw<Exception>(  );
+			}
 
-			it["Replace component"] = (  )=>
+			[Test]
+			public				void					test_ReplaceComponent(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Has<TestCompAUnique>(  ).should_be_false(  );
+				context.Has<TestCompAUnique>(  ).Should().BeFalse(  );
 
 				context.Set( Cache<TestCompAUnique>.I.Set( 1f ) );
-				context.Get<TestCompAUnique>(  ).Value.should_be( 1f );
+				context.Get<TestCompAUnique>(  ).Value.Should().Be( 1f );
 
 				// when
 				context.Replace( Cache<TestCompAUnique>.I.Set( 2f ) );
 				Cache<TestCompAUnique>.I.Set( 3f );
 
 				// then
-				context.Get<TestCompAUnique>(  ).Value.should_be( 2f );
-			};
+				context.Get<TestCompAUnique>(  ).Value.Should(  ).Be( 2f );
+			}
 
-			it["Flag, Is"] = ()=>
+			[Test]
+			public				void					test_Flag_Is(  )
 			{
 				// given
 				var context			= _contexts.Get<ScopeA>(  );
-				context.Is<TestFlagAUnique>(  ).should_be_false(  );
+				context.Is<TestFlagAUnique>(  ).Should().BeFalse(  );
 
 				// when
 				context.Flag<TestFlagAUnique>( true );
 
 				// then
-				context.Is<TestFlagAUnique>(  ).should_be_true(  );
-				context.GetEntity<TestFlagAUnique>(  ).should_not_be_null(  );
+				context.Is<TestFlagAUnique>(  ).Should(  ).BeTrue(  );
+				context.GetEntity<TestFlagAUnique>(  ).Should(  ).NotBeNull(  );
 
 				// when
 				context.Flag<TestFlagAUnique>( false );
 
 				// then
-				context.Is<TestFlagAUnique>(  ).should_be_false(  );
-				context.GetEntity<TestFlagAUnique>(  ).should_be_null(  );
-			};
-		}
+				context.Is<TestFlagAUnique>(  ).Should(  ).BeFalse(  );
+				context.GetEntity<TestFlagAUnique>(  ).Should(  ).BeNull(  );
+			}
 	}
 }

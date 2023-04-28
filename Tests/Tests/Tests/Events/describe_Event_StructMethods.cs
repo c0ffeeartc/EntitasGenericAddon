@@ -1,24 +1,23 @@
 using Entitas.Generic;
-using NSpec;
 using NSubstitute;
+using NUnit.Framework;
 
 namespace Tests
 {
-	public class describe_Event_StructMethods : nspec
+	[TestFixture]
+	public class describe_Event_StructMethods
 	{
 		private				Contexts				_contexts;
 
-		private				void					test_CoreMethods		(  )
-		{
-			Lookup_ScopeManager.RegisterAll(  );
-
-			before					= ()=>
+			[SetUp]
+			public				void					BeforeEach()
 			{
 				_contexts			= new Contexts(  );
 				_contexts.AddScopedContexts(  );
-			};
+			}
 
-			it["OnAny listens other"] = ()=>
+			[Test]
+			public				void					test_OnAnyListensOther	(  )
 			{
 				// given
 				var system			= new EventSystem_Any_<ScopeA, TestDataA>( _contexts );
@@ -27,7 +26,7 @@ namespace Tests
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 					ent.Add_OnAny( listener );
 				}
-				listener.DidNotReceiveWithAnyArgs(  ).OnAny( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnAny( default, null, null );
 
 				// when
 				var entity			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -36,10 +35,11 @@ namespace Tests
 				system.Execute(  );
 
 				// then
-				listener.ReceivedWithAnyArgs(  ).OnAny( default(TestDataA), null, null );
-			};
+				listener.ReceivedWithAnyArgs(  ).OnAny( default, null, null );
+			}
 
-			it["OnAnyRemoved listens other"] = (  ) =>
+			[Test]
+			public				void					test_OnAnyRemovedListensOther(  )
 			{
 				// given
 				var system			= new EventSystem_AnyRemoved_<ScopeA, TestDataA>( _contexts );
@@ -48,7 +48,7 @@ namespace Tests
 					var ent			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
 					ent.Add_OnAnyRemoved( listener );
 				}
-				listener.DidNotReceiveWithAnyArgs(  ).OnAnyRemoved( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnAnyRemoved( default, null, null );
 
 				// when
 				var entity			= _contexts.Get<ScopeA>(  ).CreateEntity(  );
@@ -58,15 +58,16 @@ namespace Tests
 				system.Execute(  );
 
 				// then
-				listener.ReceivedWithAnyArgs(  ).OnAnyRemoved( default(TestDataA), null, null );
-			};
+				listener.ReceivedWithAnyArgs(  ).OnAnyRemoved( default, null, null );
+			}
 
-			it["OnSelf listens self"] = ()=>
+			[Test]
+			public				void					test_OnSelfListensSelf(  )
 			{
 				// given
 				var system			= new EventSystem_Self_<ScopeA, TestDataA>( _contexts );
 				var listener		= Substitute.For<IOnSelf<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default, null, null );
 
 				// when
 				{
@@ -78,15 +79,16 @@ namespace Tests
 				system.Execute(  );
 
 				// then
-				listener.ReceivedWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
-			};
+				listener.ReceivedWithAnyArgs(  ).OnSelf( default, null, null );
+			}
 
-			it["OnSelf doesn't listen other"] = ()=>
+			[Test]
+			public				void					test_OnSelfNotListensOther(  )
 			{
 				// given
 				var system			= new EventSystem_Self_<ScopeA, TestDataA>( _contexts );
 				var listener		= Substitute.For<IOnSelf<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default, null, null );
 
 				// when
 				{
@@ -101,15 +103,16 @@ namespace Tests
 				system.Execute(  );
 
 				// then
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default(TestDataA), null, null );
-			};
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelf( default, null, null );
+			}
 
-			it["OnSelfRemoved listens self"] = ()=>
+			[Test]
+			public				void					test_OnSelfRemovedListensSelf(  )
 			{
 				// given
 				var system			= new EventSystem_SelfRemoved_<ScopeA, TestDataA>( _contexts );
 				var listener		= Substitute.For<IOnSelfRemoved<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default, null, null );
 
 				// when
 				{
@@ -122,15 +125,16 @@ namespace Tests
 				system.Execute(  );
 
 				// then
-				listener.ReceivedWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
-			};
+				listener.ReceivedWithAnyArgs(  ).OnSelfRemoved( default, null, null );
+			}
 
-			it["OnSelfRemoved doesn't listen other"] = ()=>
+			[Test]
+			public				void					test_OnSelfRemovedNotListensOther(  )
 			{
 				// given
 				var system			= new EventSystem_SelfRemoved_<ScopeA, TestDataA>( _contexts );
 				var listener		= Substitute.For<IOnSelfRemoved<ScopeA,TestDataA>>(  );
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default, null, null );
 
 				// when
 				{
@@ -145,8 +149,7 @@ namespace Tests
 				system.Execute(  );
 
 				// then
-				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default(TestDataA), null, null );
-			};
-		}
+				listener.DidNotReceiveWithAnyArgs(  ).OnSelfRemoved( default, null, null );
+			}
 	}
 }

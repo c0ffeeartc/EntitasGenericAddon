@@ -1,94 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
     <PropertyGroup>
-      <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    </PropertyGroup>
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{B529BEE1-A649-40BD-9F21-CC1301C4E60D}</ProjectGuid>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Tests</RootNamespace>
-        <AssemblyName>Tests_Performance</AssemblyName>
-        <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
+
     <ItemGroup>
-        <Reference Include="DesperateDevs.Utils, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\DesperateDevs.Utils.dll</HintPath>
-        </Reference>
-        <Reference Include="Entitas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\Libs\Entitas.dll</HintPath>
-        </Reference>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
+      <ProjectReference Include="..\..\Entitas.Generic\Entitas.Generic.csproj" />
     </ItemGroup>
+
     <ItemGroup>
-        <Compile Include="Sources\Component\Struct_ToString_Implemented.cs" />
-        <Compile Include="Sources\Component\Struct_ToString_NotImplemented.cs" />
-        <Compile Include="Sources\Component\Struct_ToString_ToGenericTypeString.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_CreateSetApply.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_AddNewInstance.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_SetUsingCache.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class_WithGroups.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct_IncludeInit.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct_WithGroups.cs" />
-        <Compile Include="Sources\Entity\Entity_Flag_CompFlag.cs" />
-        <Compile Include="Sources\Entity\Entity_Get_CompData_Class.cs" />
-        <Compile Include="Sources\Entity\Entity_Get_CompData_Struct.cs" />
-        <Compile Include="Sources\Entity\Entity_Has_CompData_Class.cs" />
-        <Compile Include="Sources\Entity\Entity_Has_CompData_Struct.cs" />
-        <Compile Include="Sources\Entity\Entity_Is_CompFlag.cs" />
-        <Compile Include="Sources\Entity\Entity_Replace_CompData_Class_WithGroups.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Class.cs" />
-        <Compile Include="Sources\Entity\Entity_AddRemove_CompData_Struct.cs" />
-        <Compile Include="Sources\Entity\Entity_Replace_CompData_Struct_WithGroups.cs" />
-        <Compile Include="Sources\Fixtures\TestCompA_Scope1.cs" />
-        <Compile Include="Sources\Fixtures\TestCompStruct_ToString.cs" />
-        <Compile Include="Sources\Fixtures\TestCompB_Scope1.cs" />
-        <Compile Include="Sources\Fixtures\TestScopes.cs" />
-        <Compile Include="Program.cs" />
-        <Compile Include="Sources\PerformanceTestsRunner\IPerformanceTest.cs" />
-        <Compile Include="Sources\PerformanceTestsRunner\IToTestString.cs" />
-        <Compile Include="Sources\PerformanceTestsRunner\MemoryHelper.cs" />
-        <Compile Include="Sources\PerformanceTestsRunner\PerformanceTestRunner.cs" />
+      <Reference Include="DesperateDevs.Caching">
+        <HintPath>..\..\Libs\DesperateDevs.Caching.dll</HintPath>
+      </Reference>
+      <Reference Include="Entitas">
+        <HintPath>..\..\Libs\Entitas.dll</HintPath>
+      </Reference>
     </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\..\Entitas.Generic\Entitas.Generic.csproj">
-        <Project>{ac9d294b-f10a-47f2-a557-925d497bdadc}</Project>
-        <Name>Entitas.Generic</Name>
-      </ProjectReference>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
 
 </Project>

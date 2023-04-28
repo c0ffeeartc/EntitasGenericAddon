@@ -1,35 +1,34 @@
 using Entitas.Generic;
-using NSpec;
+using FluentAssertions;
+using NUnit.Framework;
 
-namespace Tests
-{
-public class describe_Lookup : nspec
+namespace Tests;
+
+[TestFixture]
+public class describe_Lookup
 {
 	private					Contexts				_contexts;
 
-	private					void					test_Lookup				(  )
+	[SetUp]
+	public					void					BeforeEach()
 	{
-		Lookup_ScopeManager.RegisterAll();
-
-		before						= ()=>
-		{
-			_contexts				= new Contexts(  );
-			_contexts.AddScopedContexts(  );
-		};
-
-		it["Lookup.IsDefined"] = ()=>
-		{
-			Lookup<ScopeA>.IsDefined(typeof(TestCompA)).should_be_true(  );
-			Lookup<ScopeA>.IsDefined(typeof(TestCompB)).should_be_false(  );
-		};
-
-		it["Lookup.CompTypeToI"] = ()=>
-		{
-			(Lookup<ScopeA>.CompTypeToI[typeof(TestCompA)] == Lookup<ScopeA,TestCompA>.Id).should_be_true(  );
-			(Lookup<ScopeA>.CompTypeToI[typeof(TestDataA)] == Lookup<ScopeA,TestDataA>.Id).should_be_true(  );
-			(Lookup<ScopeA>.CompTypeToI[typeof(TestCompA)] != Lookup<ScopeA,TestDataA>.Id).should_be_true(  );
-			(Lookup<ScopeA>.CompTypeToI[typeof(TestDataA)] != Lookup<ScopeA,TestCompA>.Id).should_be_true(  );
-		};
+		_contexts			= new Contexts(  );
+		_contexts.AddScopedContexts(  );
 	}
-}
+
+	[Test]
+	public					void					test_Lookup_IsDefined	(  )
+	{
+		Lookup<ScopeA>.IsDefined(typeof(TestCompA)).Should().BeTrue();
+		Lookup<ScopeA>.IsDefined(typeof(TestCompB)).Should().BeFalse();
+	}
+
+	[Test]
+	public					void					test_Lookup_CompTypeToI	(  )
+	{
+		(Lookup<ScopeA>.CompTypeToI[typeof(TestCompA)] == Lookup<ScopeA,TestCompA>.Id).Should(  ).BeTrue(  );
+		(Lookup<ScopeA>.CompTypeToI[typeof(TestDataA)] == Lookup<ScopeA,TestDataA>.Id).Should(  ).BeTrue(  );
+		(Lookup<ScopeA>.CompTypeToI[typeof(TestCompA)] != Lookup<ScopeA,TestDataA>.Id).Should(  ).BeTrue(  );
+		(Lookup<ScopeA>.CompTypeToI[typeof(TestDataA)] != Lookup<ScopeA,TestCompA>.Id).Should(  ).BeTrue(  );
+	}
 }

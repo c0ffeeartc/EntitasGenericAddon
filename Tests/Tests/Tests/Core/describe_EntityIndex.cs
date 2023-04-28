@@ -2,25 +2,24 @@ using System;
 using Entitas;
 using Entitas.Generic;
 using FluentAssertions;
-using NSpec;
+using NUnit.Framework;
 
 namespace Tests
 {
-public class describe_EntityIndex : nspec
-{
-	private					Contexts				_contexts;
-
-	private					void					test_EntityIndex_GetAllEntsBy(  )
+	[TestFixture]
+	public class describe_EntityIndex
 	{
-		Lookup_ScopeManager.RegisterAll();
+		private					Contexts				_contexts = null!;
 
-		before						= ()=>
+		[SetUp]
+		public					void					BeforeEach()
 		{
 			_contexts				= new Contexts(  );
 			_contexts.AddScopedContexts(  );
-		};
+		}
 
-		it["gets 0 entity by non-matching index"] = ()=>
+		[Test]
+		public					void					test_EntityIndex_GetAllEntsBy_0EntsByNonMatchingIndex(  )
 		{
 			// given
 			var indexKey			= "indexKey";
@@ -49,10 +48,11 @@ public class describe_EntityIndex : nspec
 			var ents = contextA.GetAllEntsBy<ScopeA, TestCompA, Int32>(indexKey, 100);
 
 			// then
-			ents.Count.should_be( 0 );
-		};
+			ents.Count.Should(  ).Be( 0 );
+		}
 
-		it["gets correct amount of entities by matching index"] = ()=>
+		[Test]
+		public					void					test_EntityIndex_GetAllEntsBy_CorrectAmountOfEntsByMatchingIndex(  )
 		{
 			// given
 			var indexKey			= "indexKey";
@@ -82,7 +82,7 @@ public class describe_EntityIndex : nspec
 				var ents = contextA.GetAllEntsBy<ScopeA, TestCompA, Int32>(indexKey, 1);
 
 				// then
-				ents.Count.should_be( 1 );
+				ents.Count.Should(  ).Be( 1 );
 			}
 
 			{
@@ -90,22 +90,39 @@ public class describe_EntityIndex : nspec
 				var ents = contextA.GetAllEntsBy<ScopeA, TestCompA, Int32>(indexKey, 2);
 
 				// then
-				ents.Count.should_be( 2 );
+				ents.Count.Should(  ).Be( 2 );
 			}
-		};
-	}
+		}
 
-	private					void					test_PrimaryEntityIndex_GetSingleEntBy(  )
-	{
-		Lookup_ScopeManager.RegisterAll();
-
-		before						= ()=>
+		[Test]
+		public					void					test_PrimaryEntityIndex_GetSingleEntBy_NullByNonMatchingIndex(  )
 		{
-			_contexts				= new Contexts(  );
-			_contexts.AddScopedContexts(  );
-		};
+			// given
+			var indexKey			= "indexKey";
+			var indexKey2			= "indexKey2";
+			var contextB			= _contexts.Get<ScopeB>(  );
+			contextB.AddPrimaryEntityIndex(
+				indexKey
+				, contextB.GetGroup( Matcher<ScopeB,TestCompB>.I )
+				, ( e,  c ) => ((TestCompB )c).Value );
 
-		it["gets 0 entity by non-matching index"] = ()=>
+			contextB.AddPrimaryEntityIndex(
+				indexKey2
+				, contextB.GetGroup( Matcher<ScopeB,TestCompB2>.I )
+				, ( e,  c ) => ((TestCompB2)c).Value );
+
+			var entity			= contextB.CreateEntity(  );
+			entity.Add( new TestCompB(  ).Set( 1 ) );
+
+			// when
+			var ent = contextB.GetSingleEntBy<ScopeB, TestCompB, Int32>(indexKey2, 1);
+
+			// then
+			ent.Should().BeNull();
+		}
+
+		[Test]
+		public					void					test_PrimaryEntityIndex_GetSingleEntBy_CorrectByMatchingIndex(  )
 		{
 			// given
 			var indexKey			= "indexKey";
@@ -122,30 +139,11 @@ public class describe_EntityIndex : nspec
 			var ent = contextB.GetSingleEntBy<ScopeB, TestCompB, Int32>(indexKey, 1);
 
 			// then
-			ent.should_be_same( entity );
-		};
+			ent.Should().BeSameAs( entity );
+		}
 
-		it["gets 1 entity by matching index"] = ()=>
-		{
-			// given
-			var indexKey			= "indexKey";
-			var contextB			= _contexts.Get<ScopeB>(  );
-			contextB.AddPrimaryEntityIndex(
-				indexKey
-				, contextB.GetGroup( Matcher<ScopeB,TestCompB>.I )
-				, ( e,  c ) => ((TestCompB )c).Value );
-
-			var entity			= contextB.CreateEntity(  );
-			entity.Add( new TestCompB(  ).Set( 1 ) );
-
-			// when
-			var ent = contextB.GetSingleEntBy<ScopeB, TestCompB, Int32>(indexKey, 1);
-
-			// then
-			ent.should_be_same( entity );
-		};
-
-		it["add same value twice throws"] = ()=>
+		[Test]
+		public					void					test_PrimaryEntityIndex_AddSameValueTwiceThrows(  )
 		{
 			// given
 			var indexKey			= "indexKey";
@@ -168,8 +166,7 @@ public class describe_EntityIndex : nspec
 				};
 
 			// then
-			act.ShouldThrow<EntityIndexException>(  );
-		};
+			act.Should().Throw<EntityIndexException>(  );
+		}
 	}
-}
 }

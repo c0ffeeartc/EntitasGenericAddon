@@ -1,80 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{499C2104-A8AF-4AA9-8024-0A3961D44460}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EventsAction</RootNamespace>
-    <AssemblyName>Entitas.Generic.Events</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Entitas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libs\Entitas.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Events2\Events2.cs" />
-    <Compile Include="Events2\EventSystem_Any2.cs" />
-    <Compile Include="Events2\EventSystem_Any_Flag2.cs" />
-    <Compile Include="Events2\EventSystem_Any_Removed2.cs" />
-    <Compile Include="Events2\EventSystem_Self2.cs" />
-    <Compile Include="Events2\EventSystem_Self_Flag2.cs" />
-    <Compile Include="Events2\EventSystem_Self_Removed2.cs" />
-    <Compile Include="Events2\OnAny.cs" />
-    <Compile Include="Events2\OnAny_Base.cs" />
-    <Compile Include="Events2\OnAny_Flag.cs" />
-    <Compile Include="Events2\OnAny_Removed.cs" />
-    <Compile Include="Events2\OnSelf.cs" />
-    <Compile Include="Events2\OnSelf_Base.cs" />
-    <Compile Include="Events2\OnSelf_Flag.cs" />
-    <Compile Include="Events2\OnSelf_Removed.cs" />
-    <Compile Include="Events\EventSystem_AnyRemoved_.cs" />
-    <Compile Include="Events\EventSystem_Any_.cs" />
-    <Compile Include="Events\EventSystem_SelfFlag.cs" />
-    <Compile Include="Events\EventSystem_SelfRemoved_.cs" />
-    <Compile Include="Events\EventSystem_Self_.cs" />
-    <Compile Include="Events\Event_EntityMethods.cs" />
-    <Compile Include="Events\EventSystem_Any.cs" />
-    <Compile Include="Events\EventSystem_AnyRemoved.cs" />
-    <Compile Include="Events\EventSystem_Self.cs" />
-    <Compile Include="Events\EventSystem_SelfRemoved.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Entitas.Generic\Entitas.Generic.csproj">
-      <Project>{ac9d294b-f10a-47f2-a557-925d497bdadc}</Project>
-      <Name>Entitas.Generic</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="Entitas">
+        <HintPath>..\Libs\Entitas.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Entitas.Generic\Entitas.Generic.csproj" />
+    </ItemGroup>
+
 </Project>

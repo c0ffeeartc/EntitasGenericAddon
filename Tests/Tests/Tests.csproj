@@ -1,106 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{92A628D4-916C-4BCF-A816-55F3B4691F26}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <LangVersion>4</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="DesperateDevs.Utils, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../Libs/DesperateDevs.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="Entitas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../Libs/Entitas.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentAssertions, Version=4.19.4.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a">
-      <HintPath>..\..\packages\FluentAssertions.4.19.4\lib\net40\FluentAssertions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FluentAssertions.Core, Version=4.19.4.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a">
-      <HintPath>..\..\packages\FluentAssertions.4.19.4\lib\net40\FluentAssertions.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NSpec, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libs\NSpec.dll</HintPath>
-    </Reference>
-    <Reference Include="NSpecRunner, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libs\NSpecRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="NSubstitute, Version=2.0.3.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca">
-      <HintPath>..\Libs/NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <HintPath>..\Libs\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="TestRunner.cs" />
-    <Compile Include="Tests\Core\describe_EntityIndex.cs" />
-    <Compile Include="Tests\Core\describe_Entity_ClassMethods.cs" />
-    <Compile Include="Tests\Core\describe_Entity_StructMethods.cs" />
-    <Compile Include="Tests\Core\describe_Lookup.cs" />
-    <Compile Include="Tests\Core\describe_ScopedContext_ClassMethods.cs" />
-    <Compile Include="Tests\Core\describe_ScopedContext_StructMethods.cs" />
-    <Compile Include="Tests\Core\TestClasses.cs" />
-    <Compile Include="Tests\EventsFeature2\describe_EventsFeature2_OnSelf.cs" />
-    <Compile Include="Tests\EventsFeature2\describe_EventsFeature2_OnAny.cs" />
-    <Compile Include="Tests\Events\describe_Event_ClassMethods.cs" />
-    <Compile Include="Tests\Events\describe_Event_StructMethods.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Entitas.Generic.Events\Entitas.Generic.Events.csproj">
-      <Project>{499c2104-a8af-4aa9-8024-0a3961d44460}</Project>
-      <Name>Entitas.Generic.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Entitas.Generic\Entitas.Generic.csproj">
-      <Project>{ac9d294b-f10a-47f2-a557-925d497bdadc}</Project>
-      <Name>Entitas.Generic</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="DesperateDevs.Caching">
+        <HintPath>..\..\Libs\DesperateDevs.Caching.dll</HintPath>
+      </Reference>
+      <Reference Include="Entitas">
+        <HintPath>..\..\Libs\Entitas.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Entitas.Generic.Events\Entitas.Generic.Events.csproj" />
+      <ProjectReference Include="..\..\Entitas.Generic\Entitas.Generic.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentAssertions" Version="6.11.0" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+      <PackageReference Include="NSubstitute" Version="5.0.0" />
+      <PackageReference Include="NUnit" Version="3.13.3" />
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
-﻿﻿using System;
- using Entitas;
- using Entitas.Generic;
+﻿using System;
+using Entitas;
+using Entitas.Generic;
 
 public sealed class TestCompA_Scope1 : IComponent
 		, Scope<TestScope1>
